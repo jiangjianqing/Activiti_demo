@@ -1,0 +1,138 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.activiti5.demo</groupId>
+    <artifactId>webui</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>webui_springmvc</artifactId>
+  <packaging>war</packaging>
+  
+  <dependencies>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<scope>${scope.type}</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.5.3</version>
+			<scope>${scope.type}</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.5.3</version>
+			<scope>${scope.type}</scope>
+		</dependency>
+		
+
+		
+
+		<!-- <dependency> <groupId>com.alibaba</groupId> <artifactId>fastjson</artifactId> 
+			<version>1.2.6</version> <scope>compile</scope> </dependency> -->
+
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.8</version>
+			<scope>${scope.type}</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.joda</groupId>
+			<artifactId>joda-convert</artifactId>
+			<version>1.7</version>
+			<scope>${scope.type}</scope>
+		</dependency>
+
+		
+		<!-- Spring -->
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<scope>${scope.type}</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<scope>${scope.type}</scope>
+		</dependency>
+		
+	</dependencies>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<manifestLocation>META-INF</manifestLocation>
+					<supportedProjectTypes>
+						<supportedProjectType>war</supportedProjectType>
+						<supportedProjectType>bundle</supportedProjectType>
+						<supportedProjectType>jar</supportedProjectType>
+					</supportedProjectTypes>
+					<instructions>
+						<Web-ContextPath>${project.artifactId}</Web-ContextPath>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+
+						<Private-Package>com.focusight.platform3.*</Private-Package>
+						<Export-Package>!com.focusight.platform3.*</Export-Package>
+
+						<Import-Package>
+							javax.servlet*;version=2.5,
+							org.springframework.web.context,
+							org.springframework.context.config,
+							org.springframework.beans.factory,
+							org.springframework.web.filter,
+							org.springframework.web.servlet,
+							org.springframework.web.servlet.config,
+							org.springframework.web.servlet.view,
+							org.springframework.web.servlet.mvc.annotation,
+							org.springframework.http.converter.json,
+							com.fasterxml.jackson.core,
+							*
+						</Import-Package>
+
+						<_wab>src/main/webapp/</_wab>
+						<Bundle-ClassPath>{maven-dependencies}</Bundle-ClassPath>
+						<Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+						<Embed-Directory>WEB-INF/lib</Embed-Directory>
+					</instructions>
+				</configuration>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>manifest</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<archive>
+					<!--  
+						<manifestFile>META-INF/MANIFEST.MF</manifestFile>
+						-->
+						<addMavenDescriptor>false</addMavenDescriptor>
+					</archive>
+				</configuration>
+			</plugin>
+
+		</plugins>
+
+	</build>
+  
+</project>
