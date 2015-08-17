@@ -178,12 +178,9 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<!-- 不能指定最新的版本，会出错，默认即可
-				<version>2.6</version>
-				-->
 				<configuration>
 					<archive>
-						<manifestFile>target/classes/META-INF/MANIFEST.MF</manifestFile>
+						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
 						<addMavenDescriptor>false</addMavenDescriptor>
 					</archive>
 				</configuration>
