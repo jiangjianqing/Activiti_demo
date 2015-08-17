@@ -66,7 +66,7 @@ public class UserController {
 	public User showUserJson() {
 		log.debug("使用ResponseBody时记录日志");
 		User user = new User();
-		user.setName("中文测试123");
+		user.setName("中文测试789");
 		return user;
 	}
 

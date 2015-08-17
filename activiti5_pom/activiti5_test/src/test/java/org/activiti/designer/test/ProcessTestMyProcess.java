@@ -15,7 +15,7 @@ import org.junit.Test;
 
 public class ProcessTestMyProcess {
 
-	private String filename = "/home/cz_jjq/java_workspace/activiti5-demo/activiti5_pom/activiti5_test/src/main/resources/diagrams/MyProcess.bpmn";
+	private String filename = "src/main/resources/diagrams/MyProcess.bpmn";
 
 	@Rule
 	public ActivitiRule activitiRule = new ActivitiRule();

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans     
+	http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.1.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+	">
+   
+	<!-- 开启Spring的Annotation注解处理器 -->
+	<context:annotation-config />
+	<!-- 开启基于@AspectJ切面的注解处理器 -->
+	<aop:aspectj-autoproxy/>
+
+	<!-- 配置事务的传播特性  transaction-manager指定事务管理器为hibernateTransactionManager(也可以改用jdbcTransactionManager)-->
+	<tx:advice id="txAdvice" transaction-manager="hibernateTransactionManager">
+		<tx:attributes>
+			<!-- 需要启动事务的业务逻辑，如果当前没有事务，则新建一个事务-->
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="delete*" propagation="REQUIRED" no-rollback-for="IOException" />
+			<tx:method name="create*" propagation="REQUIRED"  rollback-for="DataAccessException"/>
+			<!-- 所有不需要启动事务的业务逻辑-->
+			<tx:method name="get*" propagation="NOT_SUPPORTED" read-only="true" />
+			<!-- 设定其他方法不启用事务-->
+			<tx:method name="*"  propagation="REQUIRED"  />
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 使用AOP技术实现事务管理，指定哪些类的哪些方法参与事务管理 （txAdvice是在spring-hibernate中定义的一个tx:advice 用于确定哪些事务需要处理）-->
+	<aop:config proxy-target-class="true"><!-- 加上proxy-target-class="true" 是为了解决spring 事务异常 Proxy12的错误 -->
+		<!--定义一个事务切入点，拦截指定包中的指定方法-->
+		<aop:pointcut id="txPointcut" expression="execution(* prj.ouroa..*.*(..))" />
+		<!-- 引用txAdvice事务通知-->
+		<aop:advisor pointcut-ref="txPointcut" advice-ref="txAdvice" />
+	</aop:config>
+	
+	<!-- 从这里开始配置自定义aop信息-->
+	<!--  切面配置例子  （目标对象要在spring-bean中申明，是aop:aspect操作的对象<bean id="目标对象名称" class="目标对象类全名"/> ）
+		<bean id="切面对象名称" class="切面对象类全名"/>
+		<aop:config expose-proxy="true">
+			<aop:aspect id="切面ID" ref="要引用的切面实例名称">
+				<aop:pointcut id="xxxxxxxPointcut" expression="execution(* com.lei.demo.service..*.*(..))" /> expression中为目标对象所在package的正则表达式
+				<aop:before pointcut-ref="xxxxxxxPointcut" method="切面类中用作前置通知的方法" />
+				<aop:after-returning pointcut-ref="xxxxxxxPointcut" method="切面类中用作后置通知的方法" />
+				<aop:after-throwing pointcut-ref="xxxxxxxPointcut" method="切面类中用作异常通知的方法" throwing="e"/>
+				<aop:after pointcut-ref="xxxxxxxPointcut" method="切面类中用作最终通知的方法" />
+				<aop:around pointcut-ref="xxxxxxxPointcut" method="切面类中用作环绕通知的方法" />
+			</aop:aspect>
+		</aop:config>
+		-->
+	
+</beans>
