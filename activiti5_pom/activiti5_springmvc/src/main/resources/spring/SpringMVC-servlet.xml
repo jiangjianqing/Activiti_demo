@@ -27,20 +27,15 @@
 	</context:component-scan>   
     -->
     
-	<!-- 完成请求和注解POJO的映射 -->
+	<!--20150818 deprecated: 当springMVC-servlet.xml中使用<mvc:annotation-driven />时，如果是3.1之前已经默认注入AnnotationMethodHandlerAdapter，3.1之后默认注入RequestMappingHandlerAdapter只需加上上面提及的jar包即可!
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+	-->
     
 	<bean class="common.spring.SpringContextHolder" lazy-init="false" />  
         
 	<!-- 默认的注解映射的支持 -->  
 	<mvc:annotation-driven />  
       
-	<!-- HandlerMapping -->      
-	<!--<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>      -->
-       
-	<!-- HandlerAdapter -->      
-	<!--<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>  -->
-	
       
 	<!-- 视图解释类 -->  <!-- 对转向页面的路径解析。prefix：前缀， suffix：后缀 -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">  

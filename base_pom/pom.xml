@@ -79,38 +79,33 @@
 						</instructions>
 					</configuration>
 				</plugin>
+				<!-- 这里不能使用属性，固给出参考目录 ：
+1、${manifest.location} 默认为META-INF 使用bundle插件时使用  
+2、src/main/resources/META-INF   手动写manifest.mf内容时才可用-->
+<!-- 20150818 非OSGi环境下不能设置这两个内容
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>2.6</version>
 					<configuration>
-						<archive>
-<!-- 这里不能使用属性，固给出参考目录 ：
-1、${manifest.location} 默认为META-INF 使用bundle插件时使用  
-2、src/main/resources/META-INF   手动写manifest.mf内容时才可用-->
-<!--  
+						<archive>  
 							<manifestFile>META-INF/MANIFEST.MF</manifestFile>
-							-->
 							<addMavenDescriptor>false</addMavenDescriptor>
 						</archive>
 					</configuration>
 				</plugin>		
+				
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-war-plugin</artifactId>
-					<!-- 不能指定最新的版本，会出错，默认即可
-					<version>2.6</version>
-					-->
 					<configuration>
 						<archive>
-<!-- 这里不能使用属性，固给出参考目录 ：
-1、${manifest.location} 默认为META-INF 使用bundle插件时使用  
-2、src/main/resources/META-INF   手动写manifest.mf内容时才可用-->
 							<manifestFile>META-INF/MANIFEST.MF</manifestFile>
 							<addMavenDescriptor>false</addMavenDescriptor>
 						</archive>
 					</configuration>
-				</plugin>		
+				</plugin>	
+				-->	
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>

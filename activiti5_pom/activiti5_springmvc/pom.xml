@@ -81,6 +81,13 @@
 			<version>${org.springframework.version}</version>
 			<scope>${scope.type}</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.json</groupId>
@@ -181,7 +188,7 @@
 				</configuration>
 				-->
 			</plugin>
-
+<!-- 20150818 非osgi项目不能设置这两项 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -192,6 +199,7 @@
 					</archive>
 				</configuration>
 			</plugin>
+			-->
 		</plugins>
 	</build>
 </project>

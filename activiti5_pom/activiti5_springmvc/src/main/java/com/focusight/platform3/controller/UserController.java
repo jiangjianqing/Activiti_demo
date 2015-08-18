@@ -40,6 +40,12 @@ public class UserController {
 		tmpJSONObj.put("errorMessage", "中文错误消息");
 		return tmpJSONObj.toString();
 	}
+	
+	@RequestMapping(value = "/say/{msg}", produces = "application/json;charset=UTF-8")  
+    public @ResponseBody  
+    String say(@PathVariable(value = "msg") String msg) {  
+        return "{\"msg\":\"you say:'" + msg + "'\"}";  
+    }  
 
 	@RequestMapping("/modelAndView")
 	public ModelAndView modelAndView() {

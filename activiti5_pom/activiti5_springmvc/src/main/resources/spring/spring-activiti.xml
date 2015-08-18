@@ -14,17 +14,40 @@
 	http://www.springframework.org/schema/tx
 	http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
 	">
-
-	<!-- 加载activiti引擎 -->  
-	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">  
-		<property name="processEngineConfiguration" ref="processEngineConfiguration" />  
-	</bean>  
+	<!-- activiti引擎配置 -->
 	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">  
+		<!-- 配置数据源,和系统使用同一个数据源 -->  
 		<property name="dataSource" ref="dataSource" />  
 		<property name="transactionManager" ref="jdbcTransactionManager" />  
 		<property name="databaseSchemaUpdate" value="true" />  
 		<property name="jobExecutorActivate" value="false" />  
+		
+		<!-- 如果没有beans属性表示所有bean都可以暴露给activiti的流程文件xml访问。
+			如果配置beans但是没有配置map中bean信息，则没有暴露的bean。
+			如果map中配置部分bean表示只是暴露部分bean给activiti使用。 -->
+		<property name="beans">
+			<map>		
+			<!--  
+				<entry key="printer" value-ref="printer" />		
+				-->
+			</map>		
+		</property>
+		
+		<!-- 自动资源部署（Automatic resource deploy） -->
+		<property name="deploymentResources" value="classpath*:/org/activiti/spring/test/autodeployment/autodeploy.*.bpmn20.xml" />
+		
+		
+		<!--  字体设置  -->
+		<!-- 是否存在问题 ？？ 20150818暂时屏蔽
+		<property name="activityFontName"  value="宋体" />  
+  		<property name="labelFontName"  value="宋体" />  
+  		-->
 	</bean>
+	
+	<!-- 加载activiti引擎 -->  
+	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">  
+		<property name="processEngineConfiguration" ref="processEngineConfiguration" />  
+	</bean>  
 	
 	<!-- activiti的各种服务接口 -->  
 	<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />  
@@ -32,5 +55,6 @@
 	<bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />  
 	<bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />  
 	<bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" /> 
-	
+	<bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService" /> 
+	<bean id="formService" factory-bean="processEngine" factory-method="getFormService" /> 
 </beans>
