@@ -17,13 +17,23 @@
 
 	<!-- Hibernate4 -->
 	<!-- 加载资源文件  其中包含变量信息，必须在Spring配置文件的最前面加载，即第一个加载-->
-	<context:property-placeholder location="classpath:persistence-hibernate-db.properties" />
+	<context:property-placeholder location="classpath:db.properties" />
    
 	<!-- 开启Spring的Annotation注解处理器 -->
 	<context:annotation-config />
+    <context:component-scan base-package="com.itxxz" use-default-filters="false">  
+    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />  
+    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />  
+    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />  
+    </context:component-scan>  
+    
 	<!-- 开启基于@AspectJ切面的注解处理器 -->
 	<aop:aspectj-autoproxy/>
 	
+	<!-- jndi数据源 -->  
+	<!--  
+	<jee:jndi-lookup id="jndiDataSource" jndi-name="java:comp/env/jdbc/datasource" /> 
+	--> 
 	<!-- 定义使用C3P0连接池的数据源 -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<!-- 指定连接数据库的JDBC驱动 -->
@@ -55,13 +65,34 @@
 			<value>2</value>
 		</property>
 		<!-- 设置数据库连接池的连接的最大空闲时间,单位为秒 -->
-		<property name="maxIdleTime">
-			<value>20</value>
-		</property>
+		<property name="maxIdleTime">   
+        	<value>25000</value>   
+        </property>   
+        <property name="acquireIncrement">   
+        	<value>5</value>   
+        </property>   
+        <property name="acquireRetryAttempts">   
+            <value>30</value>   
+        </property>   
+        <property name="acquireRetryDelay">   
+            <value>1000</value>   
+        </property>   
+        <property name="testConnectionOnCheckin">   
+            <value>false</value>   
+        </property>  
+        <property name="automaticTestTable">   
+            <value>t_c3p0</value>   
+        </property>   
+        <property name="idleConnectionTestPeriod">   
+            <value>18000</value>   
+        </property>  
+        <property name="checkoutTimeout">   
+        	<value>5000</value>   
+        </property>
 	</bean>
 
 	<!-- 定义Hibernate的SessionFactory -->
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+	<bean id="hibernateSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<!-- 依赖注入上面定义的数据源dataSource -->
 		<property name="dataSource" ref="dataSource"/>
 		<!-- 注册Hibernate的ORM映射文件 -->
@@ -96,7 +127,7 @@
    
 	<!-- 注册一个Hibernate事务管理器 -->
 	<bean id="hibernateTransactionManager" 	class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="sessionFactory" ref="hibernateSessionFactory" />
 	</bean>
       	
 	<!-- 注册一个JDBC数据源事务管理器 -->
@@ -109,13 +140,55 @@
 	</bean>
 	<!-- 注册一个hibernateTemplate实例名称为hibernateTemplate -->
 	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
-		<constructor-arg ref="sessionFactory"/>
+		<constructor-arg ref="hibernateSessionFactory"/>
 	</bean>
 	
-	<!-- 基于@Transactional注解方式的事务管理(也可以改用jdbcTransactionManager)  -->
-	<tx:annotation-driven transaction-manager="hibernateTransactionManager"/>
+	<!-- 基于@Transactional注解方式的事务管理(也可以改用jdbcTransactionManager)  根据需要选择-->
+	<!--  
+	<tx:annotation-driven transaction-manager="hibernateTransactionManager"/> 
+	-->
+	<!-- 20150818,测试activiti时改用jdbc,因为使用mybatis访问数据库 -->
+	<tx:annotation-driven transaction-manager="jdbcTransactionManager"/>
 	
 	<!-- 配置事务异常封装 -->
 	<bean id="persistenceExceptionTranslationPostProcessor"  	class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+	
+    
+	<!-- 以下为 mybatis配置区 -->    
+    
+    <!-- 配置mybatis的SqlSessionFactory -->  
+    <bean id="mybatisSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+    	<property name="dataSource" ref="dataSource"></property>  
+    	<property name="configLocation" value="classpath:mybatis-config.xml"></property>  
+    </bean>
+    
+
+	<bean id="mybatisSqlSessionTemplateSimple" class="org.mybatis.spring.SqlSessionTemplate">
+	  <constructor-arg index="0" ref="mybatisSqlSessionFactory" />
+	  <constructor-arg index="1" value="SIMPLE"/>  
+	</bean>
+
+	<bean id="mybatisSqlSessionTemplateBatch" class="org.mybatis.spring.SqlSessionTemplate">
+	  <constructor-arg index="0" ref="mybatisSqlSessionFactory" />
+	  <constructor-arg index="1" value="BATCH"/>  
+	</bean>
+    
+    <!-- 自动映射扫描，代替org.mybatis.spring.MapperFactoryBean -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    	<property name="basePackage" value="com.liming.manager"/>
+    	
+    	<!-- annotationClass和markerInterface是两个扫描过滤条件 -->
+    	<!-- 当指定了annotationClass的时候，MapperScannerConfigurer将只注册使用了annotationClass注解标记的接口 -->
+    	<property name="annotationClass" value="org.springframework.stereotype.Repository"/>
+    	<!-- markerInterface是用于指定一个接口的，当指定了markerInterface之后，MapperScannerConfigurer将只注册继承自markerInterface的接口。 -->
+    	<!--  
+    	<property name="markerInterface" value="com.tiantian.mybatis.mapper.SuperMapper"/>  
+    	-->
+    	
+    	
+    	<!-- 指定数据访问对象 -->
+    	<property name="sqlSessionTemplateBeanName" value="mybatisSqlSessionTemplateBatch" /> 
+    	<property name="sqlSessionFactoryBeanName" value="mybatisSqlSessionFactory"/>  
+    </bean>
 	
 </beans>
