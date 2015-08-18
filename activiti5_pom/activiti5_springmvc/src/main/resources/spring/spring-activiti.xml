@@ -27,14 +27,12 @@
 			如果map中配置部分bean表示只是暴露部分bean给activiti使用。 -->
 		<property name="beans">
 			<map>		
-			<!--  
-				<entry key="printer" value-ref="printer" />		
-				-->
+				<entry key="myBean" value-ref="myBean" />		
 			</map>		
 		</property>
 		
 		<!-- 自动资源部署（Automatic resource deploy） -->
-		<property name="deploymentResources" value="classpath*:/org/activiti/spring/test/autodeployment/autodeploy.*.bpmn20.xml" />
+		<property name="deploymentResources" value="classpath:diagrams/MyProcess.bpmn" />
 		
 		
 		<!--  字体设置  -->
@@ -57,4 +55,7 @@
 	<bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" /> 
 	<bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService" /> 
 	<bean id="formService" factory-bean="processEngine" factory-method="getFormService" /> 
+	
+	<!-- 下面为自定义的activiti bean -->
+	<bean id="myBean"  class="my.activiti.bean.MyBean"/>
 </beans>

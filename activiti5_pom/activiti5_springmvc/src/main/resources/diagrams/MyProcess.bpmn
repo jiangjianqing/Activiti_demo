@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="myProcess" name="My process" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <userTask id="usertask1" name="在用户任务上添加表达式">
+      <extensionElements>
+        <activiti:taskListener event="create" expression="${myBean.invokeTask(task)}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <serviceTask id="getAuthenticatedUserId" name="获取流程启动人" activiti:expression="${authenticatedUserId}" activiti:resultVariableName="authenticatedUserIdForTest"></serviceTask>
+    <sequenceFlow id="flow1" name="to Service Task" sourceRef="startevent1" targetRef="getAuthenticatedUserId"></sequenceFlow>
+    <serviceTask id="execExpression" name="计算表达式" activiti:expression="${myBean.print(name)}" activiti:resultVariableName="returnValue"></serviceTask>
+    <sequenceFlow id="flow2" sourceRef="getAuthenticatedUserId" targetRef="execExpression"></sequenceFlow>
+    <serviceTask id="executionExample" name="Execution变量" activiti:expression="${myBean.printBkey(execution)}" activiti:resultVariableName="businessKey"></serviceTask>
+    <sequenceFlow id="flow3" sourceRef="execExpression" targetRef="executionExample"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="executionExample" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_myProcess">
+    <bpmndi:BPMNPlane bpmnElement="myProcess" id="BPMNPlane_myProcess">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="80.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="220.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="71.0" width="131.0" x="400.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="getAuthenticatedUserId" id="BPMNShape_getAuthenticatedUserId">
+        <omgdc:Bounds height="55.0" width="105.0" x="230.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="execExpression" id="BPMNShape_execExpression">
+        <omgdc:Bounds height="55.0" width="105.0" x="380.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="executionExample" id="BPMNShape_executionExample">
+        <omgdc:Bounds height="55.0" width="105.0" x="530.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="115.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="97.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="13.0" width="100.0" x="115.0" y="97.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="335.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="485.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="530.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="582.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="465.0" y="180.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="400.0" y="215.0"></omgdi:waypoint>
+        <omgdi:waypoint x="255.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

@@ -2,16 +2,27 @@ package my.activiti.test;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.activiti.engine.IdentityService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import my.activiti.bean.MyBean;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/spring-*.xml")
@@ -19,6 +30,13 @@ import org.springframework.transaction.annotation.Transactional;
 @TransactionConfiguration(transactionManager = "jdbcTransactionManager", defaultRollback = false)
 public class TestSpringActivitiTemplate {
 
+	@Autowired
+	private IdentityService identityService;
+	@Autowired
+	private RuntimeService runtimeService;
+	@Autowired
+	private TaskService taskService;
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
@@ -37,7 +55,18 @@ public class TestSpringActivitiTemplate {
 
 	@Test
 	public void test() {
-		System.out.println("测试成功");
+		Map<String,Object> variables=new HashMap<String,Object>();
+		String name="Henry yan";
+		variables.put("name", name);
+		identityService.setAuthenticatedUserId("henryyan");
+		String businessKey="9999";
+		ProcessInstance processInstance=runtimeService.startProcessInstanceByKey("myProcess", businessKey,variables);
+		assertEquals("henryyan",runtimeService.getVariable(processInstance.getId(), "authenticatedUserIdForTest"));
+		assertEquals(name+", added by print(String name)",runtimeService.getVariable(processInstance.getId(), "returnValue"));
+		assertEquals(businessKey,runtimeService.getVariable(processInstance.getId(), "businessKey"));
+		Task task=taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+		String setByTask=(String)taskService.getVariable(task.getId(), "setByTask");
+		System.out.println("测试通过，setByTask:"+setByTask);
 	}
 
 }
