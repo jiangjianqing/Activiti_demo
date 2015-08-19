@@ -33,32 +33,15 @@
     	<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>  
     </listener>  
     
-    <!-- hibernate的 getCurrentSession()事务会自动关闭 
-    所以在所有jsp页面查询数据都会关闭session。要想在jsp查询数据库需要加入openSessionInViewFilter
-    在使用opensessioninviewFilter时，session的flushMode默认是never的，
-		如果想要进行保存，更新等操作，必须要修改session的flushMode 
-		1，增加初始化参数（init-param，灵活性不高)
-		2，使用声明式事务代理（灵活性很高，推荐）
-    -->
-    <!--  
-    <filter>  
-		<filter-name>openSessionInViewFilter</filter-name>  
-		<filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter </filter-class>  
-		
-		<init-param>  
-			<param-name>sessionFactoryBeanName</param-name>  
-			<param-value>hibernateSessionFactory</param-value>  
-		</init-param>   
-		<init-param>  
-        	<param-name>flushMode</param-name>  
-        	<param-value>AUTO</param-value>  
-    	</init-param>  
-	</filter> 	 
-	<filter-mapping>  
-		<filter-name>openSessionInViewFilter</filter-name>  
-		<url-pattern>/*</url-pattern>  
-	</filter-mapping>
-    -->
+    <!-- 用于初始化 Sping Security 的 filterChain -->  
+   <filter>  
+       <filter-name>springSecurityFilterChain</filter-name>  
+       <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>  
+   </filter>  
+   <filter-mapping>  
+       <filter-name>springSecurityFilterChain</filter-name>  
+       <url-pattern>/*</url-pattern>  
+   </filter-mapping>  
     
 	<!-- springMVC的配置 -->
 	<servlet>

@@ -92,7 +92,7 @@
 	</bean>
 
 	<!-- 定义Hibernate的SessionFactory -->
-	<bean id="hibernateSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+	<bean id="hibernateSessionFactory" name="hibernateSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<!-- 依赖注入上面定义的数据源dataSource -->
 		<property name="dataSource" ref="dataSource"/>
 		<!-- 注册Hibernate的ORM映射文件 -->
@@ -121,6 +121,8 @@
 				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
 				<!-- 设置Hibernate一个提交批次中的最大SQL语句数 -->
 				<prop key="hibernate.jdbc.batch_size">50</prop>
+				<!--20150819 在 Spring @Transactional声明式事务管理,”currentSession”的定义为: 当前被 Spring事务管理器 管理的Session,此时应配置 -->
+				<prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</prop> 
 			</props>
 		</property>
 	</bean>

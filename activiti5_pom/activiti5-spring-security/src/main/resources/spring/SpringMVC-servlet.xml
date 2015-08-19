@@ -20,7 +20,7 @@
 	<!-- 启用spring mvc 注解 -->
 	<context:annotation-config />
 	<!-- 开启Spring的Bean自动扫描机制来查找与管理Bean实例 -->
-	<context:component-scan base-package="com.action,com.focusight.platform3.controller" />	     
+	<context:component-scan base-package="org.security.controller" />	     
 	<!--  下面的例子使用context:include-filter加快扫描速度
 	<context:component-scan base-package="com.itxxz.*.web,com.itxxz.sys.*.web,com.jfok.server" use-default-filters="false">    
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />  
@@ -41,17 +41,6 @@
 		<property name="suffix" value=".jsp"/><!--可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑  -->  
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />  
 	</bean>  
-         
-	<!-- 拦截器 -->
-	<mvc:interceptors>  
-		<!-- 使用bean定义一个Interceptor，直接定义在mvc:interceptors根下面的Interceptor将拦截所有的请求 -->  
-		<!--<bean class="com.host.app.web.interceptor.AllInterceptor"/>  -->
-		<mvc:interceptor>  
-			<mvc:mapping path="/**"/>  
-			<!-- 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 -->  
-			<bean class="common.spring.AvoidDuplicateSubmissionInterceptor"/>  
-		</mvc:interceptor>  
-	</mvc:interceptors>  
       
 	<!-- 对静态资源文件的访问  方案一 （二选一） -->  
 	<mvc:default-servlet-handler/>  
