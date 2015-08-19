@@ -9,6 +9,11 @@ import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 
+/**
+ * 加载资源与权限的对应关系
+ * @author cz_jjq
+ *
+ */
 public class MyInvocationSecurityMetadataSourceService implements FilterInvocationSecurityMetadataSource {
 
 	@Override
@@ -17,6 +22,9 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
 		return null;
 	}
 
+	/**
+	 * 返回所请求资源所需要的权限
+	 */
 	@Override
 	public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
 		/*

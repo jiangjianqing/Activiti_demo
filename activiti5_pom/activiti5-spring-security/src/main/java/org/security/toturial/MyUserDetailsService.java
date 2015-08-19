@@ -69,7 +69,7 @@ public class MyUserDetailsService implements UserDetailsService {
      * @param access 
      * @return 
      */  
-    public Collection<GrantedAuthority> getAuthorities(Integer access) {  
+    private Collection<GrantedAuthority> getAuthorities(Integer access) {  
   
         List<GrantedAuthority> authList = new ArrayList<GrantedAuthority>(2);  
   

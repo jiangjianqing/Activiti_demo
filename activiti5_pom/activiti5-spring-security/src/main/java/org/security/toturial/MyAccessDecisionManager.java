@@ -20,14 +20,17 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
 		if( configAttributes == null ) {  
             return ;  
         }  
-          
+		//所请求的资源拥有的权限(一个资源对多个权限)
         Iterator<ConfigAttribute> ite = configAttributes.iterator();  
           
         while( ite.hasNext()){  
             ConfigAttribute ca = ite.next();  
-            String needRole = ((SecurityConfig)ca).getAttribute();  
+            //访问所请求资源所需要的权限
+            String needPermission = ((SecurityConfig)ca).getAttribute(); 
+            System.out.println("needPermission is " + needPermission); 
+            //用户所拥有的权限authentication  
             for( GrantedAuthority ga: authentication.getAuthorities()){  
-                if(needRole.trim().equals(ga.getAuthority().trim())){  
+                if(needPermission.trim().equals(ga.getAuthority().trim())){  
                     return;  
                 }  
             }  
