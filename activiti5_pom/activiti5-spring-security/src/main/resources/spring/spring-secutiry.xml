@@ -4,7 +4,10 @@
         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd  
                             http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">  
 	<!-- 以下都是专用于security的配置 -->
-	
+	<!-- 
+	<global-method-security pre-post-annotations="enabled" />
+ -->
+	<http pattern="/js/**" security="none"/>  
 	<http pattern="/adminLogin.action" security="none"/>  
     <http pattern="/adminLoginSubmit.action" security="none"/>  
     <http pattern="/static/**" security="none"/>  
@@ -13,20 +16,29 @@
         <intercept-url pattern="/auth/login" access="permitAll"/>  
         <intercept-url pattern="/main/admin" access="hasRole('ROLE_ADMIN')"/>  
         <intercept-url pattern="/main/common" access="hasRole('ROLE_USER')"/> 
-        
-        <form-login login-page="/adminLogin.action"  
-            authentication-failure-url="/adminLogin.action?error=true "
-            default-target-url="/main/common"/>  
+        <!-- 实现免登陆验证 -->  
+        <!-- 
+        <remember-me />   --> 
+          
+        <form-login  
+                login-page="/auth/login"   
+                authentication-failure-url="/auth/login?error=true"   
+                default-target-url="/main/common"/> 
             
-        <logout logout-success-url="/adminLogin.action"   
-            invalidate-session="true" 
-            logout-url="/auth/logout"/>  
+        <logout   
+                invalidate-session="true"   
+                logout-success-url="/auth/login"   
+                logout-url="/auth/logout"/>  
             
-        <session-management invalid-session-url="/adminLogin.action">  
-            <concurrency-control max-sessions="1" />  
+        <session-management invalid-session-url="/auth/login">  
+            <concurrency-control max-sessions="1"  error-if-maximum-exceeded="true"  />  
         </session-management>  
-        
-        <custom-filter ref="myFilter" before="FILTER_SECURITY_INTERCEPTOR"/>   
+        <!--这里的FILTER_SECURITY_INTERCEPTOR是Spring Security默认的Filter，
+			我们自定义的Filter必须在它之前，过滤客服请求
+        -->
+       	<!-- 20150819 暂时屏蔽，这里可以实现资源的访问策略  
+        <custom-filter ref="myFilter" before="FILTER_SECURITY_INTERCEPTOR"/> 
+        -->  
     </http>  
     
     <authentication-manager alias="authenticationManager">  
@@ -36,7 +48,7 @@
     </authentication-manager>  
     
     <!-- 对密码进行MD5编码 -->  
-    <bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/> 
+    <beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/> 
     
     <!-- 以下为自定义bean声明  -->
     
