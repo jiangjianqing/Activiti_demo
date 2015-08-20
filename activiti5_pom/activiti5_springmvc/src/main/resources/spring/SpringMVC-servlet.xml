@@ -37,7 +37,7 @@
       
 	<!-- 视图解释类 -->  <!-- 对转向页面的路径解析。prefix：前缀， suffix：后缀 -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
-		<property name="prefix" value="WEB-INF/views/"/>  <!--value="/WEB-INF/jsp/"-->
+		<property name="prefix" value="/WEB-INF/views/"/>  <!--value="/WEB-INF/jsp/"-->
 		<property name="suffix" value=".jsp"/><!--可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑  -->  
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />  
 	</bean>  

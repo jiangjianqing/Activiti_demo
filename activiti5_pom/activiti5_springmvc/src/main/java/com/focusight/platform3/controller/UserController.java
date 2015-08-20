@@ -23,7 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.focusight.platform3.views.model.User;
 
 @Controller
-// @RequestMapping("/User")
+@RequestMapping("/user")
 public class UserController {
 	// private Map<String, Info> model = Collections.synchronizedMap(new
 	// HashMap<String, Info>());
