@@ -133,6 +133,13 @@
 			<version>1.2</version>
 			<scope>${scope.type}</scope>
 		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.2</version>
+			<scope>${scope.type}</scope>
+		</dependency>
+		
   <!--  jackson 相关库会由spring4依赖引入，这里可以屏蔽 
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
