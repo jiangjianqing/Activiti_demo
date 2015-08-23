@@ -28,11 +28,16 @@
 		<property name="beans">
 			<map>		
 				<entry key="myBean" value-ref="myBean" />		
+				<entry key="processEndListener" value-ref="processEndListener"/>
+				<entry key="taskAssignmentDelegate" value-ref="taskAssignmentDelegate"/>
 			</map>		
 		</property>
 		
 		<!-- 自动资源部署（Automatic resource deploy） -->
+		<!-- 
 		<property name="deploymentResources" value="classpath:diagrams/MyProcess.bpmn" />
+		 -->
+		<property name="deploymentResources" value="classpath:diagrams/*.bpmn" />
 		
 		
 		<!--  字体设置  -->
@@ -58,4 +63,7 @@
 	
 	<!-- 下面为自定义的activiti bean -->
 	<bean id="myBean"  class="my.activiti.bean.MyBean"/>
+	<bean id="processEndListener" class="my.activiti.bean.listener.ProcessEndExecutionListener"/>
+	<bean id="taskAssignmentDelegate" class="my.activiti.bean.listener.TaskAssigneeListener"/>
+	
 </beans>
