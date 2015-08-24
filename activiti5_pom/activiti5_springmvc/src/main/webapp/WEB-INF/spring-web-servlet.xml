@@ -20,7 +20,7 @@
 	<!-- 启用spring mvc 注解 -->
 	<context:annotation-config />
 	<!-- 开启Spring的Bean自动扫描机制来查找与管理Bean实例 -->
-	<context:component-scan base-package="com.action,com.focusight.platform3.controller" />	     
+	<context:component-scan base-package="com.action,com.focusight.platform3.controller,my.activiti.controller" />	     
 	<!--  下面的例子使用context:include-filter加快扫描速度
 	<context:component-scan base-package="com.itxxz.*.web,com.itxxz.sys.*.web,com.jfok.server" use-default-filters="false">    
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />  
@@ -51,5 +51,7 @@
 	<mvc:resources mapping="/css/**" location="/css/" cache-period="31556926"/>  
 	<mvc:resources mapping="/fonts/**" location="/fonts/" />   
 	<mvc:resources mapping="/upload/**" location="/upload/" />   
+	<mvc:resources mapping="/lib/**" location="/lib/" />   
+	<mvc:resources mapping="/styles/**" location="/styles/" />   
 
 </beans>
