@@ -40,9 +40,14 @@
 		<property name="prefix" value="/WEB-INF/views/"/>  <!--value="/WEB-INF/jsp/"-->
 		<property name="suffix" value=".jsp"/><!--可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑  -->  
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />  
-	</bean>  
-      
-	<!-- 对静态资源文件的访问  方案一 （二选一） -->  
+	</bean>
+
+	<!-- 这个是使用文件上传功能时的必要配置，同时在pom.xml中需要引入commons-fileupload 组件 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+
+		<!-- 对静态资源文件的访问  方案一 （二选一） -->
 	<mvc:default-servlet-handler/>  
       
 	<!-- 对静态资源文件的访问  方案二 （二选一）-->  
