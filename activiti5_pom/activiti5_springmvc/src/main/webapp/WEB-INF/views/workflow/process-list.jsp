@@ -1,23 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-
-<c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<%@ include file="/common/global.jsp"%>
 <html>
 <head>
-  <title></title>
-  <meta name="description" content="">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="<%=request.getContextPath()%>/styles/bootstrap.min.css" />
-
-  <script src="<%=request.getContextPath()%>/lib/jquery/jquery.js"></script>
-  <script src="<%=request.getContextPath()%>/lib/bootstrap/bootstrap.js"></script>
+	<script>
+	<%--  
+	    var notLogon = ${empty user};
+	    if (notLogon) {
+	      location.href = '${ctx}/login.jsp?timeout=true';
+	    }
+	    --%>
+	    <!-- 如果没有登录 ，则转向登录界面 -->
+    </script>
+	<%@ include file="/common/meta.jsp"%>
+	<%@ include file="/common/include-base-files.jsp"%>
+	
+	<title></title>
+  	<meta name="description" content="">
 </head>
 <body>
   <div class="container-fluid">
@@ -56,7 +55,13 @@
           <td>${pd.version}</td>
           <td><a target="_blank" href="${ctx}/workflow/read-resource?pdid=${pd.id}&resourceName=${pd.resourceName}">${pd.resourceName}</a></td>
           <td><a target="_blank" href="${ctx}/workflow/read-resource?pdid=${pd.id}&resourceName=${pd.diagramResourceName}">${pd.diagramResourceName}</a></td>
-          <td><a class="btn btn-danger" href="${ctx}/workflow/delete-deployment?deploymentId=${pd.deploymentId}">删除</a></td>
+          <td >
+
+          	<a class="btn btn-danger" href="${ctx}/workflow/delete-deployment?deploymentId=${pd.deploymentId}"><i class="glyphicon glyphicon-trash"></i>删除</a>
+          	<a class="btn btn-primary" href='${ctx }/workflow/start-process/${pd.id }'><i class="glyphicon glyphicon-play"></i>启动</a>
+          	
+          </td>
+          
         </tr>
       </c:forEach>
       </tbody>

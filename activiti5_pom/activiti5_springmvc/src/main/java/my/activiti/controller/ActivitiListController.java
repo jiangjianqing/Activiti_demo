@@ -1,8 +1,11 @@
 package my.activiti.controller;
 
 import com.focusight.platform3.controller.UserController;
+
+import org.activiti.engine.FormService;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.repository.DeploymentBuilder;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
@@ -11,12 +14,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.InputStream;
 import java.util.List;
 import java.util.zip.ZipInputStream;
@@ -31,6 +36,8 @@ public class ActivitiListController {
 	private ProcessEngine processEngine;
 	@Autowired
 	private RepositoryService repositoryService;
+	@Autowired
+	private FormService formService;
 	
 	@RequestMapping(value = "/process-list")
 	public ModelAndView getProcessList(){
@@ -95,5 +102,26 @@ public class ActivitiListController {
 	@RequestMapping(value = "/redeploy/all")
 	public String redeployAll() throws Exception{
 		return "redirect:/workflow/process-list";
+	}
+	
+	@RequestMapping(value = "/start-process/{processDefinitionId}")
+	public ModelAndView readStartForm(@PathVariable("processDefinitionId") String processDefinitionId){
+		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(processDefinitionId).singleResult();
+        boolean hasStartFormKey = processDefinition.hasStartFormKey();
+		ModelAndView mav=new ModelAndView("workflow/start-process-form");
+		
+		// 根据是否有formkey属性判断使用哪个展示层
+		// 判断是否有formkey属性
+        if (hasStartFormKey) {
+            Object renderedStartForm = formService.getRenderedStartForm(processDefinitionId);
+            mav.addObject("startFormData", renderedStartForm);
+            mav.addObject("processDefinition", processDefinition);
+        } else { // 动态表单字段
+            StartFormData startFormData = formService.getStartFormData(processDefinitionId);
+            mav.addObject("startFormData", startFormData);
+        }
+        mav.addObject("hasStartFormKey", hasStartFormKey);
+        mav.addObject("processDefinitionId", processDefinitionId);
+		return mav;
 	}
 }
