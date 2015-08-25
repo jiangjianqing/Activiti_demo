@@ -138,9 +138,9 @@ public class TestDynamicForm {
 		Task reApplyTask=taskService.createTaskQuery()
 				.processInstanceId(processInstance.getId()).taskAssignee(currentUserId).singleResult();
 		variables=new HashMap<String,String>();
-		//variables.put("startDate", startDate);
-		//variables.put("endDate", endDate);
-		//variables.put("reason", "公休");
+		variables.put("startDate", startDate);//这里重新指定这三个参数是因为activiti在对参数做动态表单转换时有bug，字符串转日期无法成功
+		variables.put("endDate", endDate);
+		variables.put("reason", "公休");
 		variables.put("reApply", "false");
 		formService.submitTaskFormData(reApplyTask.getId(), variables);
 		
