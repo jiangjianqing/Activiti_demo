@@ -24,18 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import my.activiti.bean.MyBean;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/spring-*.xml")
-@Transactional
-@TransactionConfiguration(transactionManager = "jdbcTransactionManager", defaultRollback = false)
-public class TestSpringActivitiTemplate {
+public class TestSpringActivitiTemplate extends BaseSpringActivitiTester  {
 
-	@Autowired
-	private IdentityService identityService;
-	@Autowired
-	private RuntimeService runtimeService;
-	@Autowired
-	private TaskService taskService;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {

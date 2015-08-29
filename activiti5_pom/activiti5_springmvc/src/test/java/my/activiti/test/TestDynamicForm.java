@@ -32,29 +32,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/spring-*.xml")
-@Transactional
-@TransactionConfiguration(transactionManager = "jdbcTransactionManager", defaultRollback = true)
 //@Deployment(resources="diagrams/Leave.bpmn")
-public class TestDynamicForm {
-
-	@Autowired
-	private IdentityService identityService;
-	@Autowired
-	private RuntimeService runtimeService;
-	@Autowired
-	private TaskService taskService;
-	@Autowired
-	private HistoryService historyService;
-	@Autowired
-	private RepositoryService repositoryService;
-	@Autowired
-	private FormService formService;
-	@Autowired
-	private ProcessEngine processEngine;
+public class TestDynamicForm extends BaseSpringActivitiTester{
 	
-	//@Test
+	@Test
 	public void testApprove() {
 
 		String currentUserId="henryyan";
@@ -97,7 +78,7 @@ public class TestDynamicForm {
 		variables.put("reportBackDate", sdf.format(ca.getTime()));
 		formService.submitTaskFormData(reportBackTask.getId(), variables);
 		
-		HistoricProcessInstance historicProcessInstance=historyService.createHistoricProcessInstanceQuery().finished().singleResult();
+		HistoricProcessInstance historicProcessInstance=historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstance.getId()).finished().singleResult();
 		assertNotNull(historicProcessInstance);
 		
 		Map<String,Object> historyVariables=packageVariables(processInstance);
@@ -144,7 +125,7 @@ public class TestDynamicForm {
 		variables.put("reApply", "false");
 		formService.submitTaskFormData(reApplyTask.getId(), variables);
 		
-		HistoricProcessInstance historicProcessInstance=historyService.createHistoricProcessInstanceQuery().finished().singleResult();
+		HistoricProcessInstance historicProcessInstance=historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstance.getId()).finished().singleResult();
 		assertNotNull(historicProcessInstance);
 		
 		Map<String,Object> historyVariables=packageVariables(processInstance);

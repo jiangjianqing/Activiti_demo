@@ -32,7 +32,20 @@
 	-->
         
 	<!-- 默认的注解映射的支持 -->  
-	<mvc:annotation-driven />  
+	<mvc:annotation-driven >
+		<!-- 消息转换器 -->
+	    <mvc:message-converters register-defaults="true">
+	      <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+	        <property name="supportedMediaTypes">
+	        	<list>
+                	<!-- 这里顺序不能反，一定先写text/html,不然ie下出现下载提示 -->
+                    <value>text/html;charset=UTF-8</value>
+                    <value>application/json;charset=UTF-8</value>
+                </list>
+	        </property>
+	      </bean>
+	    </mvc:message-converters>
+	</mvc:annotation-driven>  
       
       
 	<!-- 视图解释类 -->  <!-- 对转向页面的路径解析。prefix：前缀， suffix：后缀 -->
@@ -45,12 +58,13 @@
 	<!-- 这个是使用文件上传功能时的必要配置，同时在pom.xml中需要引入commons-fileupload 组件 -->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="defaultEncoding" value="UTF-8" />
+		<property name="maxUploadSize" value="1046666000"/>
 	</bean>
 
 		<!-- 对静态资源文件的访问  方案一 （二选一） -->
 	<mvc:default-servlet-handler/>  
       
-	<!-- 对静态资源文件的访问  方案二 （二选一）-->  
+	<!-- 对静态资源文件的访问  方案二 （二选一）*代表当前目录下  **代表当前目录及子目录下-->  
 	<mvc:resources mapping="/images/**" location="/images/" cache-period="31556926"/>  
 	<mvc:resources mapping="/js/**" location="/js/" cache-period="31556926"/>  
 	<mvc:resources mapping="/css/**" location="/css/" cache-period="31556926"/>  

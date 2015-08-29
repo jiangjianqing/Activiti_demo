@@ -28,17 +28,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/spring-*.xml")
-@Transactional
-@TransactionConfiguration(transactionManager = "jdbcTransactionManager", defaultRollback = false)
-public class IdentifyServiceTest {
-
-	@Autowired
-	private IdentityService identityService;
-	
-	@Resource
-	private TaskService taskService;
+public class IdentifyServiceTest extends BaseSpringActivitiTester {
 	
 	@Before
 	public void setUp() throws Exception {
