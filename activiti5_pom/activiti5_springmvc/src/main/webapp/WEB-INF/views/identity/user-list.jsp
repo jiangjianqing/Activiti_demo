@@ -50,6 +50,7 @@
 					<th>LastName</th>
 					<th>Email</th>
 					<th>Password</th>
+					<th>Groups</th>
 					<th>Operate</th>
 				</tr>
 			</thead>
@@ -61,6 +62,7 @@
 					<td>${user.lastName}</td>
 					<td>${user.email}</td>
 					<td>${user.password}</td>
+					<td name="groups"></td>
 					<td>
 						<div class="btn-group">
 							<a name="modify" class="btn btn-default"><i class="glyphicon glyphicon-adjust"></i> 修改</a>
@@ -193,16 +195,39 @@
 		$("table a[name='modify']").on("click",function(event){
 			//console.log(this);
 			//console.log($(this).parents("tr[data-id]")[0]);
-			$.ajax(ctx+"/identity/user/groups/"+$(this).parents("tr[data-id]").attr("data-id"),{
+			$.ajax(ctx+"/identity/user/groups/"+$(this).parents("tr[data-id]").data("id"),{
 				type:"GET",
 				dataType:"json",
 				success:function(data, textStatus, jqXHR){
+					$.each(data,function(index){
+						console.log(this.name);
+						console.log(this.type);
+					})
 					console.log(data);
 				}
 			});
 			console.log(ctx);
 			return false;
 		});
+
+		var refreshCurrentGroups=function(userId,$group){
+			$.post(ctx+"/identity/user/groups/"+userId,function(data){
+				var groups="";
+				$.each(data,function(index){
+					if(groups!=="")
+						groups+=",";
+					//groups+=(this.name+"["+this["type"]+"]");
+					groups+=String.format("{0}[{1},{2}]",this.id,this.name,this["type"]);
+				});
+				$group.text(groups);
+			});
+		}
+
+		$("td[name='groups']").each(function(index){
+			var $this=$(this);
+			var userId=$this.parents("tr[data-id]").data("id");
+			refreshCurrentGroups(userId,$this);
+		})
 
 		$("#createUser").on("click",function(event){
 			$("#formAddUser").submit();
@@ -225,9 +250,39 @@
 		}
 		$("table a[name='adjustMembership']").on("click",function(event){
 			var $this=$(this);
+			var $form=$("#dlgAdjustMembership #formCreateMembership");
+			$form.empty();
+			//1、填充当前用户
+			var $tr=$this.parents("tr[data-id]");
+			var userId=$tr.data("id");
+			var $tdGroup=$tr.find("td[name='groups']");
+			var $hideinput=$(String.format("<input type='hidden' name='userId' value='{0}'>",userId));
+			$form.append($hideinput);
+
+			$.get(ctx+"/identity/group/list.json",function(groupdata){
+				var template="<div class='checkbox'>\
+					<label>\
+					<input type='checkbox' name='groupIds' value='{0}'>{0} {1}\
+					</label>\
+				</div>";
+				//2、遍历添加用户组
+				$.each(groupdata,function(index){
+					var $checkbox=$(template.format(this.id,this["name"]));
+					$form.append($checkbox);
+				});
+				//3、已经在该用户组则设置checked
+				$.post(ctx+"/identity/user/groups/"+userId,function(groupdata){
+					$.each(groupdata,function(index){
+						$form.find(String.format("input[value='{0}']",this.id)).prop("checked","checked");
+					});
+				});
+			});
 			$.when(ShowAdjustMembershipDialog()).done(function(){
-				var $form=$("#dlgAdjustMembership #formCreateMembership");
-				$form.submit();
+				$.post($form.prop("action"),$form.serialize(),function(data){
+					refreshCurrentGroups(userId,$tdGroup);
+					console.log(String.format("服务器返回数据【应该为乱码】：{0}",data));
+				})
+
 			})
 		})
 	});

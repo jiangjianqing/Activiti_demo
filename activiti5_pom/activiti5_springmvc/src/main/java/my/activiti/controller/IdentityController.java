@@ -98,17 +98,19 @@ public class IdentityController {
 	 * @return
 	 */
 	@RequestMapping(value="user/addgroup",method=RequestMethod.POST)
-	public ResponseEntity<String> createMembership(@RequestParam String userId,@RequestParam String[] groupIds){
+	public ResponseEntity<String> createMembership(@RequestParam String userId,@RequestParam(required=false) String[] groupIds){
 		//将该用户原来的用户组信息清空
 		List<Group> oldGroupList=identityService.createGroupQuery().groupMember(userId).list();
 		for(Group grp:oldGroupList){
 			identityService.deleteMembership(userId, grp.getId());
 		}
 		//添加新的用户组信息
-		for(String groupid:groupIds){
-			System.out.println(String.format("createMembership，userid=%s,groupid=%s", userId,groupid));
-			identityService.createMembership(userId, groupid);
-		}		
+		if(groupIds!=null){
+			for(String groupid:groupIds){
+				System.out.println(String.format("createMembership，userid=%s,groupid=%s", userId,groupid));
+				identityService.createMembership(userId, groupid);
+			}		
+		}
 		HttpHeaders headers=new HttpHeaders();
 		headers.setContentType(MediaType.TEXT_PLAIN);
 		//headers.setAcceptCharset(Charset.);
