@@ -55,7 +55,7 @@
 			</thead>
 			<tbody>
 			<c:forEach items="${userlist}" var="user" varStatus="status">
-				<tr>
+				<tr data-id="${user.id}">
 					<td>${user.id}</td>
 					<td>${user.firstName}</td>
 					<td>${user.lastName}</td>
@@ -63,7 +63,7 @@
 					<td>${user.password}</td>
 					<td>
 						<div class="btn-group">
-							<a class="btn btn-default disabled"><i class="glyphicon glyphicon-adjust"></i> 修改</a>
+							<a name="modify" class="btn btn-default"><i class="glyphicon glyphicon-adjust"></i> 修改</a>
 							<a name="del" href="${ctx}/identity/user/del/${user.id}" class="btn btn-danger" ><i class="glyphicon glyphicon-remove"></i>删除</a>
 						</div>
 						<div class="btn-group">
@@ -169,14 +169,14 @@
 			var dfd= $.Deferred();
 			$("#dlgDelUser").modal("show");
 			var btnSelector="#dlgDelUser button";
-			$(btnSelector).on("click",function(event){
+			$(btnSelector).one("click",function(event){
 				if (event.target.id==="delUser"){
 					dfd.resolve();
 					$("#dlgDelUser").modal("hide");
 				}else{
 					dfd.reject();
 				}
-				$(btnSelector).off("click");
+				//$(btnSelector).off("click");20150831:用one代替on
 
 			});
 			return dfd.promise();
@@ -190,6 +190,20 @@
 			})
 			return false;
 		});
+		$("table a[name='modify']").on("click",function(event){
+			//console.log(this);
+			//console.log($(this).parents("tr[data-id]")[0]);
+			$.ajax(ctx+"/identity/user/groups/"+$(this).parents("tr[data-id]").attr("data-id"),{
+				type:"GET",
+				dataType:"json",
+				success:function(data, textStatus, jqXHR){
+					console.log(data);
+				}
+			});
+			console.log(ctx);
+			return false;
+		});
+
 		$("#createUser").on("click",function(event){
 			$("#formAddUser").submit();
 		});
@@ -198,14 +212,14 @@
 			var dfd= $.Deferred();
 			$("#dlgAdjustMembership").modal("show");
 			var btnSelector="#dlgAdjustMembership button";
-			$(btnSelector).on("click",function(event){
+			$(btnSelector).one("click",function(event){
 				if(event.target.id==="createMembership"){
 					dfd.resolve();
 					$("#dlgAdjustMembership").modal("hide");
 				}else{
 					dfd.reject();
 				}
-				$(btnSelector).off("click");
+				//$(btnSelector).off("click");20150831:用one代替on
 			});
 			return dfd.promise();
 		}
