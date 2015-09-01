@@ -14,7 +14,8 @@
     </script>
 	<%@ include file="/common/meta.jsp"%>
 	<%@ include file="/common/include-base-files.jsp"%>
-	
+
+	<script data-main="<%=request.getContextPath()%>/app/main" src="<%=request.getContextPath()%>/lib/requirejs/require.js"></script>
 	<title>Group列表</title>
   	<meta name="description" content="">
 </head>
@@ -156,4 +157,5 @@
 		})
 	});
 </script>
+
 </html>

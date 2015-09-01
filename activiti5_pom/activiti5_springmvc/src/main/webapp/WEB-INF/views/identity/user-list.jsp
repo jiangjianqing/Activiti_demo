@@ -136,7 +136,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="myMembershipModalLabel">Add User</h4>
+						<h4 class="modal-title" id="myMembershipModalLabel">Adjust Membership</h4>
 					</div>
 					<div class="modal-body">
 						<form id="formCreateMembership" class="form-horizontal" action="${ctx}/identity/user/addgroup" method="post">
@@ -248,6 +248,8 @@
 			});
 			return dfd.promise();
 		}
+
+
 		$("table a[name='adjustMembership']").on("click",function(event){
 			var $this=$(this);
 			var $form=$("#dlgAdjustMembership #formCreateMembership");
@@ -259,7 +261,12 @@
 			var $hideinput=$(String.format("<input type='hidden' name='userId' value='{0}'>",userId));
 			$form.append($hideinput);
 
-			$.get(ctx+"/identity/group/list.json",function(groupdata){
+			$.get(ctx+"/identity/group/list.json").then(function(groupdata){
+				if (groupdata.length===0){
+					alert("请先配置用户组");
+					return $.Deferred().reject("没有用户组数据").promise();
+					//return "请先配置用户组";20150901 直接返回值无法改变promise的状态
+				}
 				var template="<div class='checkbox'>\
 					<label>\
 					<input type='checkbox' name='groupIds' value='{0}'>{0} {1}\
@@ -276,14 +283,16 @@
 						$form.find(String.format("input[value='{0}']",this.id)).prop("checked","checked");
 					});
 				});
-			});
-			$.when(ShowAdjustMembershipDialog()).done(function(){
+			}).then(ShowAdjustMembershipDialog,function(error){
+				console.log(error);
+			}).then(function(){
 				$.post($form.prop("action"),$form.serialize(),function(data){
 					refreshCurrentGroups(userId,$tdGroup);
 					console.log(String.format("服务器返回数据【应该为乱码】：{0}",data));
 				})
 
-			})
+			});
+
 		})
 	});
 </script>
