@@ -9,6 +9,12 @@ require.config({
     // The shim config allows us to configure dependencies for
     // scripts that do not call define() to register a module
     shim: {
+        bootstrap:{
+            deps: [
+                'jquery'
+            ],
+            exports:'bootstrap'
+        },
         underscore: {
             exports: '_'
         },
@@ -20,6 +26,7 @@ require.config({
         }
     },
     paths: {
+        bootstrap:'../lib/bootstrap/bootstrap',
         jquery: '../lib/jquery/jquery',
         underscore: '../lib/underscore/underscore',
         backbone: '../lib/backbone/backbone',
@@ -31,7 +38,8 @@ require.config({
 
 require([
     'backbone',
-    'views/group'
+    'views/group',
+    'bootstrap',
 ], function (backbone,GroupView) {
     /*jshint nonew:false*/
     // Initialize routing and start Backbone.history()

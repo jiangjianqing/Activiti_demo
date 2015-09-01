@@ -20,11 +20,12 @@ define([
         collection:new GroupsCollection(),
         template:Handlebars.compile(ViewTemplate),//替换underscoe的模板  _.template(ViewTemplate),
         events: {
-            'click .btn':		'testBtnClick'
+            "click a[name='del']":"OnDelGroupClick"
         },
 
         initialize: function () {
             this.listenTo(this.collection, "sync", this.render);
+            //this.listenTo(this.collection, "remove", this.render);
             this.collection.fetch();
         },
 
@@ -34,13 +35,46 @@ define([
             //console.log(this.collection.at(0));
 
             //将collection的数据转为json并向模板输出
+            this.$el.empty();
             this.$el.append(this.template(this.collection.toJSON()));
 
             return this;
         },
 
-        testBtnClick:function(){
-            alert("测试");
+        OnDelGroupClick:function(event){
+            var collection=this.collection;
+            var $dlgDelGroup=this.$el.find("#dlgDelGroup");
+            console.log($dlgDelGroup);
+            var ShowDelGroupDialog=function(){
+                var dfd=$.Deferred();
+                $dlgDelGroup.modal("show");
+                $dlgDelGroup.one("click","button",function(event){
+                    if(event.currentTarget.id==="delGroup"){
+                        dfd.resolve();
+                    }else{
+                        dfd.reject();
+                    }
+                    $dlgDelGroup.modal("hide");
+                });
+
+                return dfd.promise();
+            }
+
+            var $tr=$(event.currentTarget).parents("tr[data-id]");
+            var groupId=$tr.data("id");
+            var group=this.collection.get(groupId);
+            ShowDelGroupDialog().done(function(){
+                group.destroy().done(function(){
+                    //注意：服务器端一定要返回json数据，否则永远都是触发fail，应该是parse出错导致,backbone默认请求的都是json数据
+                    $tr.remove();
+                    //经测试，这里已经不需要单独执行remove操作，backbone内部触发collection的删除操作
+                    //console.log(collection.length);
+                    //collection.remove(group);
+                    //console.log(collection.length);
+                })
+            });
+            //this.collection.remove(this.collection.get(groupId));collection.remove没有从服务器上删除数据
+
         }
     });
 
