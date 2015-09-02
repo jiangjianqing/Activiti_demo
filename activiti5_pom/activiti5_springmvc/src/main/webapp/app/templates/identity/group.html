@@ -1,59 +1,9 @@
-<div class="container-fluid">
-    <button class="btn btn-primary" data-toggle="modal" data-target="#dlgAddGroup">添加Group</button>
-    <table class="table" id="grouplist">
-        <caption>Group表</caption>
-        <thead>
-        <tr>
-            <th>id</th>
-            <th>name</th>
-            <th>type</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        {{#each this}}
-            <tr data-id="{{id}}">
-                <td>{{id}}</td>
-                <td>{{name}}</td>
-                <td>{{type}}</td>
-                <td>
-                    <div class="btn-group">
-                        <a class="btn btn-default"><i class="glyphicon glyphicon-adjust"></i>修改</a>
-                        <a name="del" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i>删除</a>
-                    </div>
-                </td>
-            </tr>
-        {{/each}}
-        <!--
-        <c:forEach items="${grouplist}" var="group" varStatus="status">
-            <tr>
-                <td>${group.id}</td>
-                <td>${group.name}</td>
-                <td>${group.type}</td>
-                <td><div class="btn-group"><a class="btn btn-default disabled" ><i class="glyphicon glyphicon-adjust"></i>修改</a><a name="del" href="${ctx}/identity/group/del/${group.id}" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i>删除</a></div></td>
-            </tr>
-        </c:forEach>
-        -->
-        </tbody>
-    </table>
-</div>
-
-
-<div class="modal fade" id="dlgDelGroup" tabindex="-1" role="dialog" aria-labelledby="delGroupModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="delGroupModalLabel">Delete Group</h4>
-            </div>
-            <div class="modal-body">
-                <form id="formDelGrop" action="abc" method="post"></form>
-                <p>确定要删除该用户组吗？</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                <button type="button" id="delGroup" class="btn btn-primary">Yes</button>
-            </div>
-        </div>
+<td>{{id}}</td>
+<td>{{name}}</td>
+<td>{{type}}</td>
+<td>
+    <div class="btn-group">
+        <a class="btn btn-default"><i class="glyphicon glyphicon-adjust"></i>修改</a>
+        <a name="del" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i>删除</a>
     </div>
-</div>
+</td>
