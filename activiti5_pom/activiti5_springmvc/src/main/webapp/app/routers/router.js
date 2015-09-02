@@ -6,30 +6,35 @@ define([
 	'use strict';
 
 	var AppRouter = Backbone.Router.extend({
+		initialize: function () {
+			console.log("Route initialize");
+		},
 		routes: {
-			'*filter': 'setFilter',
+			//'*filter': 'setFilter',//*filter会拦截所有的请求
 			"" : "index",
-			"/teams" : "getTeams",
-			"/teams/:country" : "getTeamsCountry",
-			"/teams/:country/:name ": "getTeam",
+			"teams" : "getTeamList",
+			"teams/:country" : "getTeamsCountry",
+			"teams/:country/:name": "getTeam",
 			"*error" : "fourOfour"
 		},
 
 		index: function(){
 			// Homepage
+			console.log("route.index ");
 		},
 
-		getTeams: function() {
+		getTeamList: function() {
 			// List all teams
+			console.log("route.getTeamList ");
 		},
 		getTeamsCountry: function(country) {
-			// Get list of teams for specific country
+			console.log("route.getTeamsCountry "+country);
 		},
 		getTeam: function(country, name) {
-			// Get the teams for a specific country and with a specific name
+			console.log(String.format("route.getTeam country={0},name={1}",country,name));
 		},
 		fourOfour: function(error) {
-			// 404 page
+			console.log("route.fourOfour 404 "+error);
 		},
 
 		setFilter: function (param) {
