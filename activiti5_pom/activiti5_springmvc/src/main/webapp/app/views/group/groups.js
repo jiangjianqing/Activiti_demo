@@ -202,14 +202,13 @@ define([
             //var newGroup=this.collection.create(indexed_array);
             var $dlg=this.$dlgInputGroupInfo;
             var view=this;
-            group.save([],{type:"POST",context:this}).done(function(){
+            //20150903:由于Activiti5的Group要求id由用户输入，所以在新增的时候人工指定POST，以便add和modify保持一致
+            //backbone默认情况下：POST =create  ，put=update
+            group.save([],isNew?{type:"POST",context:this}:{}).done(function(){
                 $dlg.modal("hide");
-                console.log(this);
                 if (isNew)
                     this.addOne(group);
             });
-            //console.log(newGroup);
-
         }
     });
 

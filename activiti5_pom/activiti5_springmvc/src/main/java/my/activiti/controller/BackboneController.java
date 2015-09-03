@@ -82,10 +82,15 @@ public class BackboneController {
 	}*/
 	
 
-	@RequestMapping(value="group/{groupId}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	/**
+	 * 新增、修改Group，根据banckbone和activiti5的特点集成为一个方法,新增是POST，修改为PUT
+	 * @param group
+	 * @return
+	 */
+	@RequestMapping(value="group/{groupId}",method={RequestMethod.POST,RequestMethod.PUT},produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ResponseStatus(value=HttpStatus.OK)
-	public String addGroupJson(@RequestBody org.activiti.engine.impl.persistence.entity.GroupEntity  group){
+	public String modifyGroup(@RequestBody org.activiti.engine.impl.persistence.entity.GroupEntity  group){
 		Group old=identityService.createGroupQuery().groupId(group.getId()).singleResult();
 		if(old!=null){//20150903:这里不能直接用传递过来的group更新，会导致乐观锁异常ActivitiOptimisticLockingException
 			old.setName(group.getName());
