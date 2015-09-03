@@ -10,8 +10,10 @@ define([
     'text!templates/identity/groups.html',
     'collections/groups',
     'views/group/group',
+    'models/group',
+    'models/ViewState',
     'domReady!'
-], function ($, _, Backbone,Handlebars,ViewTemplate,GroupsCollection,GroupItemView) {
+], function ($, _, Backbone,Handlebars,ViewTemplate,GroupsCollection,GroupItemView,GroupModel,ViewStateModel) {
     'use strict';
 
     // Our overall **AppView** is the top-level piece of UI.
@@ -23,8 +25,8 @@ define([
         * */
 
         el:'#appView',
-        //viewState用于保存视图状态，做到view Data-Less
-        viewState:new Backbone.Model(),
+        //
+        //
         //model : new App.Models.Team();
         collection:new GroupsCollection(),
         template:Handlebars.compile(ViewTemplate),//替换underscoe的模板  _.template(ViewTemplate),
@@ -35,7 +37,11 @@ define([
          event context= this view
         * */
         events: {
-            "click a[name='del']":"OnDelGroupClick"
+            "click a[name='del']":"onDelGroupClick",
+            "click #btnShowAddGroupForm":"onShowGroupForm",
+            "click a[name='modify']":"onShowGroupForm",
+            "hidden.bs.modal #dlgInputGroupInfo":"onHideGroupForm",
+            "click button[id='btnAddGroup']":"onAddGroupClick"
         },
 
         initialize: function () {
@@ -47,12 +53,13 @@ define([
             * */
             //this.model.bind("change", this.render, this);
 
-
+            //viewState用于保存视图状态，做到view Data-Less
+            this.viewState=new ViewStateModel();
 
             //做到Dom只在model发生改变时才改变
-            this.listenTo(this.viewState,"change",this.render());
+            //this.listenTo(this.viewState,"change",this.render());
             //更好的版本，绑定具体的事件
-            //this.listenTo(this.viewState, 'change:readMore', this.renderReadMore);
+            this.listenTo(this.viewState, 'change:state', this.onStateChange);
             //this.listenTo(this.collection, "remove", this.render);
             this.render();
 
@@ -63,7 +70,7 @@ define([
         render: function () {
 
             //Collection.at 根据数组编号获取模型
-            //Collection.get 根据id字段获取数据
+            //Collection.get 根据id、cid字段获取数据
             //console.log(this.collection.at(0));
 
             //将collection的数据转为json并向模板输出
@@ -71,6 +78,8 @@ define([
             this.$el.html(this.template());
 
             this.$groupList=this.$("tbody");
+            this.$formAddGroup=this.$('#formAddGrop');
+            this.$dlgInputGroupInfo=this.$("#dlgInputGroupInfo");
 
             return this;
         },
@@ -83,8 +92,37 @@ define([
             this.$groupList.empty();
             this.collection.each(this.addOne,this);
         },
+        onStateChange:function(){
+            if(this.viewState.has("state")){
+                var state = this.viewState.get("state");
+                console.log(state);
+                if (state == "add") {
+                    this.$dlgInputGroupInfo.find("#myModalLabel").text("Add Group");
+                    this.$dlgInputGroupInfo.find("input[id$=id]").removeAttr("disabled");
+                    this.$dlgInputGroupInfo.find("input[id]").val("");
+                } else {
+                    this.$dlgInputGroupInfo.find("#myModalLabel").text("Modify Group");
+                    var groupId = this.viewState.get("groupId");
+                    var group=this.collection.get(groupId);
 
-        OnDelGroupClick:function(event){
+                    var $idInput = this.$dlgInputGroupInfo.find("input[id$='id']");
+                    $idInput.attr("disabled", "disabled");
+                    $idInput.val(groupId);
+
+                    var $nameInput = this.$dlgInputGroupInfo.find("input[id$='name']");
+                    $nameInput.val(group.get("name"));
+
+                    var type=group.get("type");
+                    this.$dlgInputGroupInfo.find("input:radio").removeAttr("checked").filter(function(index,item){
+                        if(item.value==type){
+                            $(item).prop("checked","checked");
+                        }
+                    })
+                }
+            }
+        },
+
+        onDelGroupClick:function(event){
             //20150902 经测试 context=this view
             var $dlgDelGroup=this.$el.find("#dlgDelGroup");
             var ShowDelGroupDialog=function(){
@@ -122,6 +160,55 @@ define([
                 })
             });
             //this.collection.remove(this.collection.get(groupId));collection.remove没有从服务器上删除数据
+
+        },
+        onShowGroupForm:function(event){
+            if(event.currentTarget.tagName=="BUTTON" && event.currentTarget.id==="btnShowAddGroupForm"){
+                this.viewState.set("state","add");
+                this.viewState.unset("groupId");
+            }else{
+                var $tr=$(event.currentTarget).parents("tr[data-id]");
+                this.viewState.set("groupId",$tr.data("id"));
+                this.viewState.set("state","modify");
+            }
+            this.$dlgInputGroupInfo.modal("show");
+        },
+        onHideGroupForm:function(){
+            this.viewState.unset("state");
+        },
+        onAddGroupClick:function(event){
+            //console.log(this.$formAddGroup.serialize());
+            //var form=new FormData(this.$formAddGroup.get(0));
+            //console.log(form);
+            //console.log(this.$formAddGroup.serializeArray());
+            //var newGroup=new GroupModel(this.$formAddGroup.serializeArray());
+            var fieldArray=this.$formAddGroup.serializeArray();
+            console.log(fieldArray);
+            var indexed_array = {};
+            $.map(fieldArray, function(item, index){
+                indexed_array[item['name']] = item['value'];
+                //console.log("%o ,index=%d",n,index);
+            });
+            var isNew=this.viewState.get("state")==="add";
+            var group=null;
+            if(isNew){
+                group=new GroupModel(indexed_array);
+                this.collection.add(group);
+            }else{
+                group=this.collection.get(this.viewState.get("groupId"));
+                group.set(indexed_array);
+            }
+
+            //var newGroup=this.collection.create(indexed_array);
+            var $dlg=this.$dlgInputGroupInfo;
+            var view=this;
+            group.save([],{type:"POST",context:this}).done(function(){
+                $dlg.modal("hide");
+                console.log(this);
+                if (isNew)
+                    this.addOne(group);
+            });
+            //console.log(newGroup);
 
         }
     });

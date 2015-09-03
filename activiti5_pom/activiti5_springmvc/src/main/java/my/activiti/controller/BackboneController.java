@@ -6,18 +6,22 @@ import org.activiti.engine.IdentityService;
 import org.activiti.engine.identity.Group;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+@Scope(value="session")
 @Controller
 @RequestMapping(value="backbone")
 public class BackboneController {
@@ -62,5 +66,38 @@ public class BackboneController {
 		//HttpHeaders headers=new HttpHeaders();
 		//headers.setContentType(MediaType.TEXT_PLAIN);
 		//return new ResponseEntity<String>("ok",headers,HttpStatus.OK);
+	}
+	
+	/*
+	@RequestMapping(value="group/{groupId}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(value=HttpStatus.OK,reason="op is successed")
+	public String addGroup(@RequestParam String id,@RequestParam String name,@RequestParam String type){
+		Group newGroup=identityService.newGroup(id);
+		newGroup.setName(name);
+		newGroup.setType(type);
+		identityService.saveGroup(newGroup);
+		JSONObject tmpJSONObj = new JSONObject();
+		tmpJSONObj.put("status", "ok");
+		return tmpJSONObj.toString();
+	}*/
+	
+
+	@RequestMapping(value="group/{groupId}",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@ResponseStatus(value=HttpStatus.OK)
+	public String addGroupJson(@RequestBody org.activiti.engine.impl.persistence.entity.GroupEntity  group){
+		Group old=identityService.createGroupQuery().groupId(group.getId()).singleResult();
+		if(old!=null){//20150903:这里不能直接用传递过来的group更新，会导致乐观锁异常ActivitiOptimisticLockingException
+			old.setName(group.getName());
+			old.setType(group.getType());
+			identityService.saveGroup(old);
+		}else{
+			identityService.saveGroup(group);
+		}
+		
+		System.out.println(String.format("id=%s,name=%s,type=%s",group.getId(),group.getName(),group.getType()));
+		JSONObject tmpJSONObj = new JSONObject();
+		tmpJSONObj.put("status", "ok");
+		return tmpJSONObj.toString();
 	}
 }
