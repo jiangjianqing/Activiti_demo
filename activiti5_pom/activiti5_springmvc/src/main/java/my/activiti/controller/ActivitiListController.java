@@ -146,26 +146,14 @@ public class ActivitiListController {
 		String url="";
 		Object obj=session.getAttribute(SessionVar.AUTHENTICATED_USER);
 		if(obj!=null){
-			//User user=(User)obj;
-			Map<String,String> formValues=new HashMap<String,String>();
+			User user=(User)obj;
+			//identityService.setAuthenticatedUserId(user.getId());//登录时已经执行过，20150905测试代码：有时StartUserID=null，导致任务无法继续处理
+			System.out.println("注意观察StartUserID=空的情况，会导致任务无法处理");
 			StartFormData formData=formService.getStartFormData(processDefinitionId);
-			if(formData.getFormKey()!=null){//外置表单
-				Map<String,String[]> parameterMap=request.getParameterMap();
-				Set<Entry<String,String[]>> entrySet=parameterMap.entrySet();
-				for(Entry<String,String[]> entry:entrySet){
-					String key=entry.getKey();
-					formValues.put(key, entry.getValue()[0]);
-				}
-			}else{//动态表单
-				List<FormProperty> formProperties=formData.getFormProperties();
-				for(FormProperty prop:formProperties){
-					String id=prop.getId();
-					formValues.put(id, request.getParameter(id));
-					System.out.println(String.format("formValue id=%s,value=%s", id,request.getParameter(id)));
-				}				
-			}
-			formService.submitStartFormData(processDefinitionId, formValues);
-			//identityService.setAuthenticatedUserId(user.getId());//登录时已经执行过，这里可以屏蔽
+			List<FormProperty> formProperties=formData.getFormProperties();
+			boolean hasFormKey=formData.getFormKey()!=null && formData.getFormKey().length()>0;
+			Map<String,String> formValues=generateFormValueMap(hasFormKey,formProperties,request);
+			formService.submitStartFormData(processDefinitionId, formValues);//生成提交数据
 			
 			url="redirect:/workflow/process-list";
 		}else{
@@ -199,8 +187,9 @@ public class ActivitiListController {
 		ModelAndView mav=new ModelAndView("workflow/task-form");
 		Task task=taskService.createTaskQuery().taskId(taskId).singleResult();
 		TaskFormData taskFormData=formService.getTaskFormData(taskId);
+		boolean hasFormKey=taskFormData.getFormKey()!=null && taskFormData.getFormKey().length()>0;
 		mav.addObject("task",task);
-		mav.addObject("hasFormKey",taskFormData.getFormKey().length()>0);
+		mav.addObject("hasFormKey",hasFormKey);
 		if(task.getFormKey()!=null){
 			Object renderFormData=formService.getRenderedTaskForm(taskId);		
 			mav.addObject("taskFormData", renderFormData);
@@ -213,15 +202,37 @@ public class ActivitiListController {
 	@RequestMapping(value="/complete-task/{taskId}")
 	public String completeTask(@PathVariable String taskId,HttpServletRequest request){
 		TaskFormData taskFormData=formService.getTaskFormData(taskId);
+		boolean hasFormKey=taskFormData.getFormKey()!=null && taskFormData.getFormKey().length()>0;
 		List<FormProperty> formProperties=taskFormData.getFormProperties();
-		Map<String,String> formValues=new HashMap<String,String>();
-		for(FormProperty prop:formProperties){
-			if(prop.isWritable()){
-				String value=request.getParameter(prop.getId());
-				formValues.put(prop.getId(), value);
-			}
-		}
+		Map<String,String> formValues=generateFormValueMap(hasFormKey,formProperties,request);//生成提交数据
 		formService.submitTaskFormData(taskId, formValues);
 		return "redirect:/identity/user";
+	}
+	
+	/**
+	 * 根据输入的参数生成提交数据，process和task通用
+	 * @param hasFormKey
+	 * @param formProperties
+	 * @param request
+	 * @return
+	 */
+	private Map<String,String> generateFormValueMap(boolean hasFormKey,List<FormProperty> formProperties,HttpServletRequest request){
+		Map<String,String> formValues=new HashMap<String,String>();
+		if(hasFormKey){//外置表单
+			Map<String,String[]> parameterMap=request.getParameterMap();
+			Set<Entry<String,String[]>> entrySet=parameterMap.entrySet();
+			for(Entry<String,String[]> entry:entrySet){
+				String key=entry.getKey();
+				formValues.put(key, entry.getValue()[0]);
+			}
+		}else{//动态表单
+			for(FormProperty prop:formProperties){
+				if(prop.isWritable()){
+					String value=request.getParameter(prop.getId());
+					formValues.put(prop.getId(), value);
+				}
+			}
+		}	
+		return formValues;
 	}
 }

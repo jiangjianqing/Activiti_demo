@@ -42,11 +42,11 @@
 		</property>
 		
 		<!-- 自动资源部署（Automatic resource deploy） -->
-		<!-- 
+		 
 		<property name="deploymentResources" value="classpath:diagrams/MyProcess.bpmn" />
-		 -->
+		<!--
 		<property name="deploymentResources" value="classpath:diagrams/*.bpmn" />
-		
+		-->
 		
 		<!--  字体设置  -->
 		<!-- 是否存在问题 ？？ 20150818暂时屏蔽

@@ -162,15 +162,15 @@ public class IdentityController {
 		if(obj!=null){
 			User user=(User)obj;
 			//读取直接分配给当前用户或已经签收的任务
-			//List<Task> doingTasks=taskService.createTaskQuery().taskAssignee(user.getId()).list();
+			List<Task> doingTasks=taskService.createTaskQuery().taskAssignee(user.getId()).list();
 			//等待签收的任务
-			//List<Task> wattingClaimTasks=taskService.createTaskQuery().taskCandidateUser(user.getId()).list();
+			List<Task> wattingClaimTasks=taskService.createTaskQuery().taskCandidateUser(user.getId()).list();
 			//合并两种任务
-			//List<Task> allTasks=new ArrayList<Task>();
-			//allTasks.addAll(doingTasks);
-			//allTasks.addAll(wattingClaimTasks);
+			List<Task> allTasks=new ArrayList<Task>();
+			allTasks.addAll(doingTasks);
+			allTasks.addAll(wattingClaimTasks);
 			//activiti5.16以后提供的方法，一步就可以获取上述两种任务
-			List<Task> allTasks=taskService.createTaskQuery().taskCandidateOrAssigned(user.getId()).list();
+			//List<Task> allTasks=taskService.createTaskQuery().taskCandidateOrAssigned(user.getId()).list();
 			mav.addObject("taskList",allTasks);
 			
 			List<HistoricProcessInstance> hisProcessInstanceList=historyService.createHistoricProcessInstanceQuery()
