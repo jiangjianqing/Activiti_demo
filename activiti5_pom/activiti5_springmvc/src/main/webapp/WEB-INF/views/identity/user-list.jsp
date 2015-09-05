@@ -52,11 +52,14 @@
 					<th>Password</th>
 					<th>Groups</th>
 					<th>Operate</th>
+					<th>Login</th>
 				</tr>
 			</thead>
 			<tbody>
 			<c:forEach items="${userlist}" var="user" varStatus="status">
-				<tr data-id="${user.id}">
+				<c:if test="${authenticatedUser!=null && authenticatedUser.id==user.id}" var="isAuthenticatedUser">
+				</c:if>
+				<tr data-id="${user.id}" class="${isAuthenticatedUser?"active":""}">
 					<td>${user.id}</td>
 					<td>${user.firstName}</td>
 					<td>${user.lastName}</td>
@@ -72,11 +75,82 @@
 							<a name="adjustMembership" class="btn btn-default"><i class="glyphicon glyphicon-adjust"></i>Membership</a>
 						</div>
 					</td>
+					<td>
+						<c:if test="${isAuthenticatedUser==true}">
+							<a class="btn btn-danger disabled" href="${ctx}/identity/user/authentication/${user.id}">已登录</a>
+						</c:if>
+						<c:if test="${!isAuthenticatedUser}">
+							<a class="btn btn-default" href="${ctx}/identity/user/authentication/${user.id}">登录</a>
+						</c:if>
+					</td>
+
 				</tr>
 			</c:forEach>
 			</tbody>
 		</table>
 
+		<table class="table">
+			<caption>当前用户的任务</caption>
+			<thead>
+				<tr>
+					<th>任务ID</th>
+					<th>任务名称</th>
+					<th>流程实例ID</th>
+					<th>任务创建时间</th>
+					<th>办理人</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+			<c:if test="${taskList!=null}">
+				<c:forEach items="${taskList}" var="task">
+					<tr>
+						<td>${task.id}</td>
+						<td>${task.name}</td>
+						<td>${task.processInstanceId}</td>
+						<td>${task.createTime}</td>
+						<td>${task.assignee}</td>
+						<td>
+							<div class="btn-group">
+								<c:if test="${empty task.assignee}">
+									<a class="btn btn-default" href="${ctx}/workflow/claim-task/${task.id}"><i class="glyphicon glyphicon-apple"></i>claim</a>
+								</c:if>
+								<c:if test="${not empty task.assignee}">
+									<a class="btn btn-primary" href="${ctx}/workflow/do-task/${task.id}"><i class="glyphicon glyphicon-apple"></i>办理</a>
+								</c:if>
+							</div>
+						</td>
+					</tr>
+				</c:forEach>
+			</c:if>
+			</tbody>
+		</table>
+
+		<table class="table">
+			<caption>HistoricProcessInstanceList</caption>
+			<thead>
+				<tr>
+					<th>ProcessDefinitionId</th>
+					<th>Name</th>
+					<th>BusinessKey</th>
+					<th>StartTime</th>
+					<th>EndTime</th>
+					<th>StartUserId</th>
+				</tr>
+			</thead>
+			<tbody>
+			<c:forEach items="${historicProcessInstanceList}" var="hisProcessInstance">
+				<tr>
+					<td>${hisProcessInstance.processDefinitionId}</td>
+					<td>${hisProcessInstance.name}</td>
+					<td>${hisProcessInstance.businessKey}</td>
+					<td>${hisProcessInstance.startTime}</td>
+					<td>${hisProcessInstance.endTime}</td>
+					<td>${hisProcessInstance.startUserId}</td>
+				</tr>
+			</c:forEach>
+			</tbody>
+		</table>
 		<div class="modal fade" id="dlgAddUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">

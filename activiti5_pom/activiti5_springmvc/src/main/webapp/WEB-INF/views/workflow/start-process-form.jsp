@@ -31,16 +31,9 @@
 			}, 5000);
 		</script>
 		</c:if>
-		<h3>启动流程—
-			<c:if test="${hasStartFormKey}">
-				[${processDefinition.name}]，版本号：${processDefinition.version}
-			</c:if>
-			<c:if test="${!hasStartFormKey}">
-				[${startFormData.processDefinition.name}]，版本号：${startFormData.processDefinition.version}
-			</c:if>
-		</h3>
+		<h3>启动流程—[${processDefinition.name}]，版本号：${processDefinition.version}	</h3>
 		<hr/>
-		<form action="${ctx }/chapter6/process-instance/start/${processDefinitionId}" class="form-horizontal" method="post">
+		<form action="${ctx }/workflow/start-process-instance/${processDefinition.id}" class="form-horizontal" method="post">
 			<c:if test="${hasStartFormKey}">
 			${startFormData}
 			</c:if>
