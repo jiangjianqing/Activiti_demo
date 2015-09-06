@@ -46,8 +46,8 @@ require([
     // Initialize routing and start Backbone.history()
     var router = new AppRouter();
 
-    //20150902测试，在Router的setFilter中要想捕获param，必须设置pushState=true
-    backbone.history.start(/*{pushState : true}*/);
+    //20150906,使用Html5的pushState特性，服务器端也必须设定Rewrite attributes，尚未测试
+    backbone.history.start(/*{pushState : true,root: '/'}*/);
 /**启用 HTML5 特性 pushState 的配置调用 start() 方法。
  * 对于那些支持 pushState 的浏览器，Backbone 将监视 popstate 事件以触发一个新状态。
  * 如果浏览器不能支持 HTML5 特性，那么 onhashchange 活动会被监视。
