@@ -1,13 +1,24 @@
 /*global define*/
 define([
 	'jquery',
-	'backbone'
-], function ($, Backbone) {
+	'backbone',
+	'views/app'
+], function ($, Backbone,AppView) {
 	'use strict';
 
 	var AppRouter = Backbone.Router.extend({
-		initialize: function () {
-			console.log("Route initialize");
+		initialize: function (el) {
+			this.el=el;//表明本应用对应的已有DOM元素，比如body
+			this.$el=$(el);
+			console.log("AppRouter initialized！");
+
+			var router = this;
+			this.cleanAppView();
+			var view = new AppView({
+					router:router//重点：将路由传递到每个具体的视图中，
+				}
+			);
+			this.setAppView(view);
 		},
 		routes: {
 			//'*filter': 'setFilter',//*filter会拦截所有的请求
@@ -20,6 +31,30 @@ define([
 
 		index: function(){
 			// Homepage
+			//var router = this;
+			//this.cleanAppView();
+			//var view = new AppView({
+			//		router:router//重点：将路由传递到每个具体的视图中，
+			//	}
+			//);
+			//this.setAppView(view);
+			//20150906,这里对appView进行初始化
+			/*
+			var view = new UserListView({
+					collection: router.userCollection,
+					router:router//重点：将路由传递到每个具体的视图中，
+				}
+			);
+			this.setAppView(view);
+			*/
+
+			//20150906,在各个view中调用router的方式
+			//触发事件处理器，假如不加{trigger:true}则不会触发help事件处理器。
+			//this.router.navigate("help/troubleshooting",{trigger: true});
+
+			//应用replace:true表示导航之前那个url将不会计入history，不会被形成浏览记录（即后退也
+			//不能回到http://127.0.0.1/index.html）
+			//this.router.navigate("help/troubleshooting",{replace: true});
 			console.log("route.index ");
 		},
 
@@ -44,6 +79,18 @@ define([
 			// Trigger a collection filter event, causing hiding/unhiding
 			// of the Todo view items
 			//Todos.trigger('filter');
+		},
+
+		//--------------以下为内部函数--------------
+		cleanAppView:function () {/*清除当前页面的appView*/
+			if (this.appView) {
+				this.appView.remove();
+				this.appView = null;
+			}
+		},
+		setAppView:function(newView){/*切换视图函数*/
+			this.cleanAppView();
+			this.appView=newView.render().$el.appendTo($(this.el));
 		}
 
 		/**

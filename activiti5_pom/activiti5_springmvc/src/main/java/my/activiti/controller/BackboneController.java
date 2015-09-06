@@ -33,6 +33,13 @@ public class BackboneController {
 		return mav;
 	}
 	
+	@RequestMapping(value="activiti_explorer.do")
+	public ModelAndView activitiExplorerIndex(){
+		ModelAndView mav=new ModelAndView("backbone-test");
+		mav.addObject(type, "ActivitiExplorer");
+		return mav;
+	}
+	
 	@Autowired
 	protected IdentityService identityService;
 	
