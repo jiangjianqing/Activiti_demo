@@ -2,15 +2,20 @@
 define([
 	'jquery',
 	'backbone',
-	'views/app'
-], function ($, Backbone,AppView) {
+	'views/app',
+	'views/layout/dashboard',
+	'views/layout/report'
+], function ($, Backbone,AppView,DashboardView,ReportView) {
 	'use strict';
 
 	var AppRouter = Backbone.Router.extend({
 		initialize: function (el) {
+			//20150908,initialize的参数由new AppRouter("#appView")的形式指定
+			console.log(arguments.length);
 			this.el=el;//表明本应用对应的已有DOM元素，比如body
 			this.$el=$(el);
 			console.log("AppRouter initialized！");
+
 
 			var router = this;
 			this.cleanAppView();
@@ -26,6 +31,9 @@ define([
 			"teams" : "getTeamList",
 			"teams/:country" : "getTeamsCountry",
 			"teams/:country/:name": "getTeam",
+			"overview":"getOverview",
+			"report":"getReport",
+
 			"*error" : "fourOfour"
 		},
 
@@ -56,6 +64,7 @@ define([
 			//不能回到http://127.0.0.1/index.html）
 			//this.router.navigate("help/troubleshooting",{replace: true});
 			console.log("route.index ");
+			this.getOverview();
 		},
 
 		getTeamList: function() {
@@ -70,6 +79,7 @@ define([
 		},
 		fourOfour: function(error) {
 			console.log("route.fourOfour 404 "+error);
+			this.cleanMainview();
 		},
 
 		setFilter: function (param) {
@@ -79,6 +89,12 @@ define([
 			// Trigger a collection filter event, causing hiding/unhiding
 			// of the Todo view items
 			//Todos.trigger('filter');
+		},
+		getOverview:function(){
+			this.setMainview(new DashboardView());
+		},
+		getReport:function(){
+			this.setMainview(new ReportView());
 		},
 
 		//--------------以下为内部函数--------------
@@ -91,6 +107,16 @@ define([
 		setAppView:function(newView){/*切换视图函数*/
 			this.cleanAppView();
 			this.appView=newView.render().$el.appendTo($(this.el));
+		},
+		cleanMainview:function(){
+			if(this.mainView){
+				this.mainView.remove();
+				this.mainView=null;
+			}
+		},
+		setMainview:function(newView){
+			this.cleanMainview();
+			this.mainView=newView.render().$el.appendTo(this.$el.find("#main"));
 		}
 
 		/**
