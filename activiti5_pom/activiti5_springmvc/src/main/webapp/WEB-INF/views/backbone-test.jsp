@@ -16,7 +16,7 @@
 	<%@ include file="/common/include-base-files.jsp"%>
 
 	<script data-main="<%=request.getContextPath()%>/app/main-${type}" src="<%=request.getContextPath()%>/lib/requirejs/require.js"></script>
-	<title>Group列表</title>
+	<title>Backbone</title>
   	<meta name="description" content="">
 </head>
 <body id="appView">

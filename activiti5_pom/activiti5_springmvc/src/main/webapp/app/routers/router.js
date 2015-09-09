@@ -4,14 +4,15 @@ define([
 	'backbone',
 	'views/app',
 	'views/layout/dashboard',
-	'views/layout/report'
-], function ($, Backbone,AppView,DashboardView,ReportView) {
+	'views/layout/report',
+	'views/group/groups'
+], function ($, Backbone,AppView,DashboardView,ReportView,GroupsView) {
 	'use strict';
 
 	var AppRouter = Backbone.Router.extend({
 		initialize: function (el) {
 			//20150908,initialize的参数由new AppRouter("#appView")的形式指定
-			console.log(arguments.length);
+			//console.log(arguments.length);
 			this.el=el;//表明本应用对应的已有DOM元素，比如body
 			this.$el=$(el);
 			console.log("AppRouter initialized！");
@@ -20,7 +21,8 @@ define([
 			var router = this;
 			this.cleanAppView();
 			var view = new AppView({
-					router:router//重点：将路由传递到每个具体的视图中，
+					router:router,//重点：将路由传递到每个具体的视图中，
+					routes:this.routes
 				}
 			);
 			this.setAppView(view);
@@ -33,6 +35,7 @@ define([
 			"teams/:country/:name": "getTeam",
 			"overview":"getOverview",
 			"report":"getReport",
+			"group":"getGroup",
 
 			"*error" : "fourOfour"
 		},
@@ -95,6 +98,9 @@ define([
 		},
 		getReport:function(){
 			this.setMainview(new ReportView());
+		},
+		getGroup:function(){
+			this.setMainview(new GroupsView());
 		},
 
 		//--------------以下为内部函数--------------

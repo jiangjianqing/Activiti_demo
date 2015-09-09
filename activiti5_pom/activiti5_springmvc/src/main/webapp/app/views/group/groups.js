@@ -24,7 +24,7 @@ define([
         * el、tagName、className 和 id 属性为空，那么会默认将一个空的 DIV 分配给 el。
         * */
 
-        el:'#appView',
+        //el:'#appView',
         //
         //
         //model : new App.Models.Team();
@@ -54,17 +54,17 @@ define([
             //this.model.bind("change", this.render, this);
 
             //viewState用于保存视图状态，做到view Data-Less
-            this.viewState=new ViewStateModel();
+            this.viewState=new Backbone.Model();
 
             //做到Dom只在model发生改变时才改变
             //this.listenTo(this.viewState,"change",this.render());
             //更好的版本，绑定具体的事件
             this.listenTo(this.viewState, 'change:state', this.onStateChange);
             //this.listenTo(this.collection, "remove", this.render);
-            this.render();
+            //this.render();
 
             this.listenTo(this.collection, "reset", this.addAll);
-            this.collection.fetch({reset:true});
+            //this.collection.fetch({reset:true});
         },
 
         render: function () {
@@ -81,6 +81,7 @@ define([
             this.$formAddGroup=this.$('#formAddGrop');
             this.$dlgInputGroupInfo=this.$("#dlgInputGroupInfo");
 
+            this.collection.fetch({reset:true});
             return this;
         },
         addOne:function(group){
