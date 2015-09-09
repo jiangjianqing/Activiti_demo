@@ -4,10 +4,9 @@ define([
 	'underscore',
 	'backbone',
 	'text!templates/app.html',
-	'models/ViewState',
 	'domReady!'
 
-], function ($, _, Backbone,appTemplate,ViewStateModel) {
+], function ($, _, Backbone,appTemplate) {
 	'use strict';
 
 	// Our overall **AppView** is the top-level piece of UI.

@@ -10,10 +10,8 @@ define([
     'text!templates/identity/groups.html',
     'collections/groups',
     'views/group/group',
-    'models/group',
-    'models/ViewState',
-    'domReady!'
-], function ($, _, Backbone,Handlebars,ViewTemplate,GroupsCollection,GroupItemView,GroupModel,ViewStateModel) {
+    'models/group'
+], function ($, _, Backbone,Handlebars,ViewTemplate,GroupsCollection,GroupItemView,GroupModel) {
     'use strict';
 
     // Our overall **AppView** is the top-level piece of UI.

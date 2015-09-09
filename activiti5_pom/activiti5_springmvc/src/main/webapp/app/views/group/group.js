@@ -40,7 +40,7 @@ define([
             this.$el.html(this.template(this.model.toJSON()));
             this.$el.attr("data-id",this.model.id);//把groupId放这里主要是为了体验parent
             return this;
-        },
+        }
 
     });
 

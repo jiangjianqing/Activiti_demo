@@ -5,8 +5,9 @@ define([
 	'views/app',
 	'views/layout/dashboard',
 	'views/layout/report',
-	'views/group/groups'
-], function ($, Backbone,AppView,DashboardView,ReportView,GroupsView) {
+	'views/group/groups',
+	'views/process/processes'
+], function ($, Backbone,AppView,DashboardView,ReportView,GroupsView,ProcessesView) {
 	'use strict';
 
 	var AppRouter = Backbone.Router.extend({
@@ -36,6 +37,7 @@ define([
 			"overview":"getOverview",
 			"report":"getReport",
 			"group":"getGroup",
+			"process":"getProcess",
 
 			"*error" : "fourOfour"
 		},
@@ -101,6 +103,9 @@ define([
 		},
 		getGroup:function(){
 			this.setMainview(new GroupsView());
+		},
+		getProcess:function(){
+			this.setMainview(new ProcessesView());
 		},
 
 		//--------------以下为内部函数--------------
