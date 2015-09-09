@@ -35,7 +35,6 @@ define([
                 context:this
             }).done(function(){
                 this.model.destroy();
-                this.remove();
             });
             //console.log("process deleted!");
             return false;
