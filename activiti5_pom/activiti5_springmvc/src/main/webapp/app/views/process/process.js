@@ -13,7 +13,7 @@ define([
         tagName:'tr',
         template:Handlebars.compile(ViewTemplate),
         events:{
-            "click a[name='del']":"onDel",
+            "click a[name='delete']":"onDel",
             "click a[name='start']":"onStart"
         },
         initialize:function(){
@@ -27,8 +27,17 @@ define([
             }));
             return this;
         },
-        onDel:function(){
-            this.destroy();
+        onDel:function(event){
+            console.log(event.currentTarget.href);
+            //this.model.destroy();//20150909 不能调用model.del触发删除，因为只能删除部署
+
+            $.ajax(event.currentTarget.href,{
+                context:this
+            }).done(function(){
+                this.model.destroy();
+                this.remove();
+            });
+            //console.log("process deleted!");
             return false;
         },
         onStart:function(){

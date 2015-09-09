@@ -149,4 +149,11 @@ public class BackboneController {
 		}
 		return my_pd_list;
 	}
+	
+	@RequestMapping(value="process/{deploymentId}",method={RequestMethod.DELETE})
+	@ResponseStatus(value=HttpStatus.OK)
+	public void deleteDeployment(@PathVariable String deploymentId){
+		//注意：这里删除的是一个部署，用spring统一部署的时候会使得N个流程定义都使用一个部署id，导致全部被删除
+		repositoryService.deleteDeployment(deploymentId, true);
+	}
 }

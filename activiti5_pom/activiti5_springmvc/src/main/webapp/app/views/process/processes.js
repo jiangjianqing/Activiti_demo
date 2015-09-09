@@ -21,7 +21,7 @@ define([
         initialize:function(){
             this.listenTo(this.collection,"reset",this.addAll);
             //有流程删除后，必须重新加载，因为删除是以部署为单位，可能一次部署了多个资源
-            this.listenTo(this.collection,"remove",this.addAll);
+            this.listenTo(this.collection,"remove",this.resetCollection);
         },
         render:function(){
             this.$el.html(this.template({
@@ -30,7 +30,7 @@ define([
             this.$processList=this.$("tbody");
             this.$formUpload=this.$("form");
 
-            this.collection.fetch({reset:true});
+            this.resetCollection();
             return this;
         },
         addOne:function(process){
@@ -41,6 +41,12 @@ define([
             this.$processList.empty();
             this.collection.each(this.addOne,this);
         },
+        resetCollection:function(){
+            var this_collection=this.collection;
+            setTimeout(function(){
+                this_collection.fetch({reset:true});
+            },50);
+        },
         onSubmitUpload:function(){
             var formData=new FormData(this.$formUpload[0]);
             $.ajax(this.$formUpload.prop('action'),{
@@ -50,7 +56,7 @@ define([
                 type:"POST",
                 contentType:false//this.$formUpload.prop('enctype') 20150909不设置false会报错
             }).done(function(){
-                this.collection.fetch({reset:true});
+                this.resetCollection();
             });
             //console.log("submit "+this.$formUpload.prop("action"));
             return false;//必须拦截原来的event
