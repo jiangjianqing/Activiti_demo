@@ -54,5 +54,6 @@
 	</build>
 	<modules>
 		<module>activiti5_test</module>
+		<module>activiti5_springmvc</module>
 	</modules>
 </project>
