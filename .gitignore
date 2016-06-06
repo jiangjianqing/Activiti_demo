@@ -10,7 +10,7 @@ buildNumber.properties
 .metadata
 RemoteSystemsTempFiles
 META-INF/
-#.project
-#.settings/
-#.classpath
-#bin/
+.project
+.settings/
+.classpath
+bin/
