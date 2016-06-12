@@ -55,6 +55,11 @@
 
 	<build>
 		<!-- 资源部分 -->
+		<!-- 20151012屏蔽，原因：1、导致DecisionTableTest无法测试通过，error——info：
+		java.lang.IllegalArgumentException: Your InputStream was neither an OLE2 stream, nor an OOXML stream
+	at org.apache.poi.ss.usermodel.WorkbookFactory.create(WorkbookFactory.java:81)
+		2、作用不明-->
+		<!-- 
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -64,6 +69,7 @@
 				</includes>
 			</resource>
 		</resources>
+		 -->
 		<!-- 插件部分1 -->
 		<pluginManagement>
 			<plugins>

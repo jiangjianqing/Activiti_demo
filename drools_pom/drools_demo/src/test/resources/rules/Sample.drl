@@ -1,0 +1,34 @@
+package com.sample
+ 
+import com.sample.DroolsTest.Message;
+import com.sample.Utility;
+import function com.sample.Utility.help;//demonstrate import static function
+
+//demonstrate custom function
+function void myFunction(Message m,String myMessage) {
+	System.out.println( myMessage );
+    m.setMessage( "测试 使用myFunction自定义函数修改Message" );
+    m.setStatus( Message.GOODBYE );
+}
+
+
+ 
+rule "Hello World"
+    when
+        m : Message( status == Message.HELLO, myMessage : message )
+    then
+    	myFunction(m,myMessage);
+        //System.out.println( myMessage );
+        //m.setMessage( "Goodbye cruel world" );
+        //m.setStatus( Message.GOODBYE );
+        Utility.helper(drools);
+        update( m );
+end
+
+rule "GoodBye"
+    when
+        Message( status == Message.GOODBYE, myMessage : message )
+    then
+        System.out.println( myMessage );
+        help(drools,"Utility功能展示");
+end
