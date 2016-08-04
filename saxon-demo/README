@@ -1,0 +1,15 @@
+Saxon 是一个 XSLT 和XQuery处理器。它是使用 XML 文档和样式表作为输入，然后生成结果文档作为输出的程序，它还包括了一个串行化器，用于将结果树转换成 XML、HTML 或纯文本。
+Saxon8以上版本主要组成有：XSLT 2.0处理器、 XPath 2.0处理器、 XQuery 1.0处理器、XML Schema 1.0处理器。
+
+常用的XSLT转换处理器：
+
+1：Xalan：Apache的子项目。网站http://xalan.apache.org
+2：Saxon：SourceForge的子项目。网站http://saxon.sourceforge.net
+
+Saxon处理器
+Saxon的功能很强大，其实现了XSLT3.0、XQuery3.0和XPath3.0等规范。
+saxon9.jar与此名相似的为核心类库。
+其使用方法与Xalan类似。
+使用命令：
+java -jar saxon9.jar -s:xmlSource.xml -o:outputTarget.html xsl:name.xslt
+编程方法与Xalan的编程方法一样，因为都是面向JAXP规范编程。
