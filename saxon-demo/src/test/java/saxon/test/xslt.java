@@ -24,7 +24,9 @@ import net.sf.saxon.s9api.XsltTransformer;
 public class xslt {
 
 	@Test
-	public void test() throws TransformerException, SaxonApiException {
+	public void test1() throws TransformerException, SaxonApiException {
+		System.out.println("\n《--------------------以下为增强方式---------------------------------》");
+		
 		//方式1：略复杂，但可配置能力强
 		Processor proc = new Processor(false);
         XsltCompiler comp = proc.newXsltCompiler();
@@ -41,13 +43,20 @@ public class xslt {
         trans.transform();
 
 		
+ 
+	}
+	
+	@Test
+	public void test2() throws TransformerException{
+		System.out.println("\n《--------------------以下为标准方式---------------------------------》");
+		
 		//方式2：最简单
 		//创建一个转换工厂  
-		//TransformerFactory tFactory = TransformerFactory.newInstance();  
+		TransformerFactory tFactory = TransformerFactory.newInstance();  
 		//用指定的XSLT样式单文件创建一个转换器  
-		//Transformer transformer = tFactory.newTransformer(new StreamSource(Class.class.getResourceAsStream("/styles/books.xsl")));  
+		Transformer transformer = tFactory.newTransformer(new StreamSource(Class.class.getResourceAsStream("/styles/books.xsl")));  
 		//执行转换，并将转换后的目标文档作为响应输出  
-		//transformer.transform(new StreamSource(Class.class.getResourceAsStream("/data/books.xml")), new StreamResult(System.out));  
+		transformer.transform(new StreamSource(Class.class.getResourceAsStream("/data/books.xml")), new StreamResult(System.out)); 		
 	}
 
 }
