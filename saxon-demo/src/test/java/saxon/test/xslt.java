@@ -13,6 +13,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.junit.Test;
 
+import my.xslt.XsltUtil;
 import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.Serializer;
@@ -23,31 +24,21 @@ import net.sf.saxon.s9api.XsltTransformer;
 
 public class xslt {
 
+	private XsltUtil xsltUtil=new XsltUtil();
+	
 	@Test
-	public void test() throws TransformerException, SaxonApiException {
-		//方式1：略复杂，但可配置能力强
-		Processor proc = new Processor(false);
-        XsltCompiler comp = proc.newXsltCompiler();
-        XsltExecutable exp = comp.compile(new StreamSource(Class.class.getResourceAsStream("/styles/books.xsl")));
-        XdmNode source = proc.newDocumentBuilder().build(new StreamSource(Class.class.getResourceAsStream("/data/books.xml")));
-        
-        Serializer out = proc.newSerializer(System.out);
-        //Serializer out = proc.newSerializer(new File("books.html"));
-        out.setOutputProperty(Serializer.Property.METHOD, "html");
-        out.setOutputProperty(Serializer.Property.INDENT, "yes");
-        XsltTransformer trans = exp.load();
-        trans.setInitialContextNode(source);
-        trans.setDestination(out);
-        trans.transform();
-
+	public void test1() throws SaxonApiException {
+		System.out.println("\n《--------------------以下为增强方式---------------------------------》");
 		
-		//方式2：最简单
-		//创建一个转换工厂  
-		//TransformerFactory tFactory = TransformerFactory.newInstance();  
-		//用指定的XSLT样式单文件创建一个转换器  
-		//Transformer transformer = tFactory.newTransformer(new StreamSource(Class.class.getResourceAsStream("/styles/books.xsl")));  
-		//执行转换，并将转换后的目标文档作为响应输出  
-		//transformer.transform(new StreamSource(Class.class.getResourceAsStream("/data/books.xml")), new StreamResult(System.out));  
+		//方式1：略复杂，但可配置能力强
+		xsltUtil.doExtendXslt("/xsl/books.xsl", "/data/books.xml", System.out);
+	}
+	
+	@Test
+	public void test2() throws TransformerException{
+		System.out.println("\n《--------------------以下为标准方式---------------------------------》");
+		
+		xsltUtil.doSimpleXslt("/xsl/books.xsl", "/data/books.xml", System.out);	
 	}
 
 }

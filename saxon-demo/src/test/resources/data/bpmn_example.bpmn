@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+	xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+	xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	targetNamespace="test123"
+	xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd">
+	<process id="Process_0dczmuw">
+		<startEvent id="StartEvent_0vphe7k">
+
+		</startEvent>
+		<endEvent id="EndEvent_0lqqb8t">
+
+		</endEvent>
+		<task id="Task_1766jza" name="算法1">
+
+		</task>
+		<sequenceFlow id="SequenceFlow_1l7k1j8" sourceRef="Task_1766jza"
+			targetRef="EndEvent_0lqqb8t" />
+		<sequenceFlow id="SequenceFlow_0cd6h0a" sourceRef="StartEvent_0vphe7k"
+			targetRef="Task_1766jza" />
+	</process>
+</definitions>
