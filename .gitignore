@@ -14,3 +14,4 @@ META-INF/
 .settings/
 .classpath
 bin/
+.DS_Store
