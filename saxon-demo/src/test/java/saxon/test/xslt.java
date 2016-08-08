@@ -30,7 +30,7 @@ public class xslt {
 		//方式1：略复杂，但可配置能力强
 		Processor proc = new Processor(false);
         XsltCompiler comp = proc.newXsltCompiler();
-        XsltExecutable exp = comp.compile(new StreamSource(Class.class.getResourceAsStream("/styles/books.xsl")));
+        XsltExecutable exp = comp.compile(new StreamSource(Class.class.getResourceAsStream("/xsl/books.xsl")));
         XdmNode source = proc.newDocumentBuilder().build(new StreamSource(Class.class.getResourceAsStream("/data/books.xml")));
         
         Serializer out = proc.newSerializer(System.out);
@@ -54,7 +54,7 @@ public class xslt {
 		//创建一个转换工厂  
 		TransformerFactory tFactory = TransformerFactory.newInstance();  
 		//用指定的XSLT样式单文件创建一个转换器  
-		Transformer transformer = tFactory.newTransformer(new StreamSource(Class.class.getResourceAsStream("/styles/books.xsl")));  
+		Transformer transformer = tFactory.newTransformer(new StreamSource(Class.class.getResourceAsStream("/xsl/books.xsl")));  
 		//执行转换，并将转换后的目标文档作为响应输出  
 		transformer.transform(new StreamSource(Class.class.getResourceAsStream("/data/books.xml")), new StreamResult(System.out)); 		
 	}
