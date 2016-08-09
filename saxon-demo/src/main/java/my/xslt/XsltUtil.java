@@ -31,8 +31,11 @@ public class XsltUtil {
 
 		Serializer out = proc.newSerializer(outputStream);
 		// Serializer out = proc.newSerializer(new File("books.html"));
+/*注意：这里可以单独设置输出的属性，但是会导致丢失<?xml version="1.0" encoding="UTF-8"?>
 		out.setOutputProperty(Serializer.Property.METHOD, "html");
 		out.setOutputProperty(Serializer.Property.INDENT, "yes");
+		out.setOutputProperty(Serializer.Property.OMIT_XML_DECLARATION, "no");
+		out.setOutputProperty(Serializer.Property.STANDALONE, "yes");*/
 		XsltTransformer trans = exp.load();
 		trans.setInitialContextNode(source);
 		trans.setDestination(out);

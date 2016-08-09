@@ -2,7 +2,7 @@
 <xsl:stylesheet version="2.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xpath-default-namespace="http://www.omg.org/spec/BPMN/20100524/MODEL">
-	<xsl:output method="xml" indent="yes"/>
+	<xsl:output method="xml" indent="yes" omit-xml-declaration="no" encoding="UTF-8"/>
 	<xsl:strip-space elements="*"/>
 	
 	<xsl:template match="/" >
