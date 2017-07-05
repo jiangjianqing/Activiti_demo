@@ -2,6 +2,10 @@
 <!DOCTYPE tiles-definitions PUBLIC
        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+       
+<!--
+具体使用查看该帖子
+ http://blog.csdn.net/qq_27093465/article/details/48650719 -->
 <tiles-definitions>
 	<!-- 主布局 -->
 	<definition name="classic.layout" template="/WEB-INF/tiles/mainLayout.jsp">
@@ -12,7 +16,7 @@
         <put-attribute name="footer" value="/WEB-INF/tiles/pieces/footer.jsp" />  
 	</definition>
 	<!-- 主布局 -->
-	<!-- 项目 -->
+	<!-- 项目（继承布局） -->
 	<definition name="myFirstTilesView" extends="classic.layout">
 		<put-attribute name="title" value="my first tiles view" />
 		<put-attribute name="body" value="/WEB-INF/tiles/pieces/a.jsp" />
