@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import common.spring.AvoidDuplicateSubmission;
 
 @Controller
-@RequestMapping("/tiles")
-public class TilesController {
+@RequestMapping("/thymeleaf")
+public class ThymeleafController {
 
-	public TilesController() {
+	public ThymeleafController() {
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -24,7 +24,9 @@ public class TilesController {
     public String getAll(Model model,HttpServletRequest request,HttpServletResponse response){
 		model.addAttribute("name", "Dear");
 		//特别注意：这里返回的是tiles.xml中定义的definition.name
-        return "myFirstTilesView";
+        return "first-template";
     }
+	
+	//注意:thymeleaf目前还无法与tiles整合
 
 }

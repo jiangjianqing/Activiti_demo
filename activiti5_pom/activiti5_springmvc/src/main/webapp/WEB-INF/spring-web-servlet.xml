@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:tx="http://www.springframework.org/schema/tx"  
-	xmlns:context="http://www.springframework.org/schema/context"    
-	xmlns:mvc="http://www.springframework.org/schema/mvc"    
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans     
 	http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -21,70 +19,101 @@
 	<!-- 启用spring mvc 注解 -->
 	<context:annotation-config />
 	<!-- 开启Spring的Bean自动扫描机制来查找与管理Bean实例 -->
-	<context:component-scan base-package="com.action,com.focusight.platform3.controller,my.activiti.controller" />	     
-	<!--  下面的例子使用context:include-filter加快扫描速度
-	<context:component-scan base-package="com.itxxz.*.web,com.itxxz.sys.*.web,com.jfok.server" use-default-filters="false">    
-		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />  
-	</context:component-scan>   
-    -->
-    
-	<!--20150818 deprecated: 当springMVC-servlet.xml中使用<mvc:annotation-driven />时，如果是3.1之前已经默认注入AnnotationMethodHandlerAdapter，3.1之后默认注入RequestMappingHandlerAdapter只需加上上面提及的jar包即可!
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
-	-->
-        
-	<!-- 默认的注解映射的支持 -->  
-	<mvc:annotation-driven >
+	<context:component-scan
+		base-package="com.action,com.focusight.platform3.controller,my.activiti.controller" />
+	<!-- 下面的例子使用context:include-filter加快扫描速度 <context:component-scan base-package="com.itxxz.*.web,com.itxxz.sys.*.web,com.jfok.server" 
+		use-default-filters="false"> <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" 
+		/> </context:component-scan> -->
+
+	<!--20150818 deprecated: 当springMVC-servlet.xml中使用<mvc:annotation-driven 
+		/>时，如果是3.1之前已经默认注入AnnotationMethodHandlerAdapter，3.1之后默认注入RequestMappingHandlerAdapter只需加上上面提及的jar包即可! 
+		<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" 
+		/> -->
+
+	<!-- 默认的注解映射的支持 -->
+	<mvc:annotation-driven>
 		<!-- 消息转换器 -->
-	    <mvc:message-converters register-defaults="true">
-	      <bean class="org.springframework.http.converter.StringHttpMessageConverter">
-	        <property name="supportedMediaTypes">
-	        	<list>
-                	<!-- 这里顺序不能反，一定先写text/html,不然ie下出现下载提示 -->
-                    <value>text/html;charset=UTF-8</value>
-                    <value>application/json;charset=UTF-8</value>
-                </list>
-	        </property>
-	      </bean>
-	    </mvc:message-converters>
-	</mvc:annotation-driven>  
-      
-      
-    <!-- tiles 配置 ，同时展示了p命名空间的用法，现在可以使用p: 作为<bean> 元素所有属性的前缀来装配Bean 的属性 -->
-    <bean id="tilesViewResolver" class="org.springframework.web.servlet.view.tiles3.TilesViewResolver" p:order="1"/>
-    <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
-        <property name="definitions">
-            <list>
-                <value>/WEB-INF/tiles.xml</value>
-                <!-- 
-                <value>classpath:layout.xml</value>
-                -->
-            </list>
-        </property>
+		<mvc:message-converters register-defaults="true">
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<!-- 这里顺序不能反，一定先写text/html,不然ie下出现下载提示 -->
+						<value>text/html;charset=UTF-8</value>
+						<value>application/json;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+
+	<!-- tiles 配置 ，同时展示了p命名空间的用法，现在可以使用p: 作为<bean> 元素所有属性的前缀来装配Bean 的属性 -->
+	<bean id="tilesViewResolver"
+		class="org.springframework.web.servlet.view.tiles3.TilesViewResolver"
+		p:order="1" />
+	<bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles.xml</value>
+				<!-- <value>classpath:layout.xml</value> -->
+			</list>
+		</property>
 	</bean>
-      
+
+	<!-- 加入thymeleaf模板支持 -->
+	<bean id="templateResolver"
+		class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
+		<property name="prefix" value="/WEB-INF/templates/" />
+		<property name="suffix" value=".html" />
+		<property name="templateMode" value="HTML5" />
+		<!-- #开发时关闭缓存,不然没法看到实时页面 -->
+		<property name="cacheable" value="false" />
+	</bean>
+	<bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
+		<property name="templateResolver" ref="templateResolver" />
+		<property name="additionalDialects">
+        <set>
+          <!-- thymeleaf与其他框架集成的地方，例如tiles,但目前还不支持tiles3 -->
+          <bean class="org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect"/>
+        </set>
+      </property>
+	</bean>
+	<bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+		<property name="templateEngine" ref="templateEngine" />
+		<!--解决中文乱码 -->
+		<property name="characterEncoding" value="UTF-8" />
+	</bean>
+
 	<!-- 视图解释类 -->  <!-- 对转向页面的路径解析。prefix：前缀， suffix：后缀 -->
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
-		<property name="prefix" value="/WEB-INF/views/"/>  <!--value="/WEB-INF/jsp/"-->
-		<property name="suffix" value=".jsp"/><!--可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑  -->  
-		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />  
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />  <!--value="/WEB-INF/jsp/" -->
+		<property name="suffix" value=".jsp" /><!--可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑 -->
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
 	</bean>
 
 	<!-- 这个是使用文件上传功能时的必要配置，同时在pom.xml中需要引入commons-fileupload 组件 -->
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="defaultEncoding" value="UTF-8" />
-		<property name="maxUploadSize" value="1046666000"/>
+		<property name="maxUploadSize" value="1046666000" />
 	</bean>
 
-		<!-- 对静态资源文件的访问  方案一 （二选一） -->
-	<mvc:default-servlet-handler/>  
-      
-	<!-- 对静态资源文件的访问  方案二 （二选一）*代表当前目录下  **代表当前目录及子目录下-->  
-	<mvc:resources mapping="/images/**" location="/images/" cache-period="31556926"/>  
-	<mvc:resources mapping="/js/**" location="/js/" cache-period="31556926"/>  
-	<mvc:resources mapping="/css/**" location="/css/" cache-period="31556926"/>  
-	<mvc:resources mapping="/fonts/**" location="/fonts/" />   
-	<mvc:resources mapping="/upload/**" location="/upload/" />   
-	<mvc:resources mapping="/lib/**" location="/lib/" />   
-	<mvc:resources mapping="/styles/**" location="/styles/" />   
+	<!-- 对静态资源文件的访问 方案一 （二选一） -->
+	<mvc:default-servlet-handler />
+
+	<!-- 对静态资源文件的访问 方案二 （二选一）*代表当前目录下 **代表当前目录及子目录下 -->
+	<mvc:resources mapping="/images/**" location="/images/"
+		cache-period="31556926" />
+	<mvc:resources mapping="/js/**" location="/js/"
+		cache-period="31556926" />
+	<mvc:resources mapping="/css/**" location="/css/"
+		cache-period="31556926" />
+	<mvc:resources mapping="/fonts/**" location="/fonts/" />
+	<mvc:resources mapping="/upload/**" location="/upload/" />
+	<mvc:resources mapping="/lib/**" location="/lib/" />
+	<mvc:resources mapping="/styles/**" location="/styles/" />
 
 </beans>
