@@ -22,11 +22,14 @@ public class ThymeleafController {
 	
 	@RequestMapping(value={"" , "/list"},method=RequestMethod.GET/*, method = RequestMethod.POST*/)
     public String getAll(Model model,HttpServletRequest request,HttpServletResponse response){
-		model.addAttribute("name", "Dear");
+		model.addAttribute("name", "中文测试  Dear");
 		//特别注意：这里返回的是tiles.xml中定义的definition.name
         return "first-template";
     }
+	//
+	//注意:thymeleaf目前还无法与tiles3整合,可以使用layout-dialet实现同样的功能
+	//https://ultraq.github.io/thymeleaf-layout-dialect/Installation.html
 	
-	//注意:thymeleaf目前还无法与tiles整合
+	//https://github.com/thymeleaf/thymeleaf-extras-springsecurity
 
 }

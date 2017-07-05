@@ -66,7 +66,7 @@
 		class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
 		<property name="prefix" value="/WEB-INF/templates/" />
 		<property name="suffix" value=".html" />
-		<property name="templateMode" value="HTML5" />
+		<property name="templateMode" value="HTML" />
 		<!-- #开发时关闭缓存,不然没法看到实时页面 -->
 		<property name="cacheable" value="false" />
 	</bean>
@@ -74,8 +74,13 @@
 		<property name="templateResolver" ref="templateResolver" />
 		<property name="additionalDialects">
         <set>
-          <!-- thymeleaf与其他框架集成的地方，例如tiles,但目前还不支持tiles3 -->
+        	<bean class="nz.net.ultraq.thymeleaf.LayoutDialect"/>
+          <!-- 20170705:thymeleaf与其他框架集成的地方，例如tiles,但目前还不支持tiles3
+          	thymeleaf有layout-dialect,已经可以不需要tiles了
+           -->
+          <!-- 
           <bean class="org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect"/>
+           -->
         </set>
       </property>
 	</bean>
@@ -101,10 +106,10 @@
 		<property name="maxUploadSize" value="1046666000" />
 	</bean>
 
-	<!-- 对静态资源文件的访问 方案一 （二选一） -->
+	<!-- 重要：默认处理 -->
 	<mvc:default-servlet-handler />
 
-	<!-- 对静态资源文件的访问 方案二 （二选一）*代表当前目录下 **代表当前目录及子目录下 -->
+	<!-- 对静态资源文件的访问 *代表当前目录下 **代表当前目录及子目录下 -->
 	<mvc:resources mapping="/images/**" location="/images/"
 		cache-period="31556926" />
 	<mvc:resources mapping="/js/**" location="/js/"
