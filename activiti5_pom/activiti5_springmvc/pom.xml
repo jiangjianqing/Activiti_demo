@@ -11,9 +11,9 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<org.springframework.version>4.1.5.RELEASE</org.springframework.version>
+		<org.springframework.version>4.3.9.RELEASE</org.springframework.version>
 		<org.json.version>20140107</org.json.version>
-		<jackson.version>2.6.1</jackson.version>
+		<jackson.version>2.8.9</jackson.version>
 		<scope.type>compile</scope.type> <!--  provided  compile -->
 	</properties>
 
@@ -173,7 +173,7 @@
 			<scope>${scope.type}</scope>
 		</dependency>
 		
-  <!--  jackson 相关库会由spring4依赖引入，只是版本较低，这里可以屏蔽 
+  <!--  jackson 相关库会由spring4依赖引入，只是版本较低，这里可以屏蔽 -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
@@ -194,7 +194,7 @@
 			<version>${jackson.version}</version>
 			<scope>${scope.type}</scope>
 		</dependency>
--->
+
 	</dependencies>
 	
 	<build>
@@ -204,7 +204,7 @@
 
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>9.2.10.v20150310</version>
+				<version>9.4.6.v20170531</version>
 				<configuration>
 					<scanIntervalSeconds>10</scanIntervalSeconds>
 			        <httpConnector>
