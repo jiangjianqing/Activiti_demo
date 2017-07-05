@@ -76,6 +76,10 @@
 		</init-param>
 		-->
 		<load-on-startup>1</load-on-startup>
+		<!--spring mvc3.2及以上版本增加了对请求的异步处理，是在servlet3的基础上进行封装。
+		这么做的好处避免web server的连接池被长期占用而引起性能问题，调用后生成一个非web的服务线程来处理，增加web服务器的吞吐
+		具体参考 http://www.cnblogs.com/yangzhilong/p/3725128.html -->
+		<async-supported>true</async-supported>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>spring-web</servlet-name>
@@ -87,6 +91,7 @@
 	<filter>
 		<filter-name>characterEncodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<async-supported>true</async-supported>
 		<init-param>
 			<param-name>encoding</param-name>
 			<param-value>UTF-8</param-value>
