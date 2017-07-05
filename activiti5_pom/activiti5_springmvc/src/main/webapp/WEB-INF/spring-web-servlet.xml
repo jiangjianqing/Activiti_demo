@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:tx="http://www.springframework.org/schema/tx"  
 	xmlns:context="http://www.springframework.org/schema/context"    
@@ -47,6 +48,19 @@
 	    </mvc:message-converters>
 	</mvc:annotation-driven>  
       
+      
+    <!-- tiles 配置 ，同时展示了p命名空间的用法，现在可以使用p: 作为<bean> 元素所有属性的前缀来装配Bean 的属性 -->
+    <bean id="tilesViewResolver" class="org.springframework.web.servlet.view.tiles3.TilesViewResolver" p:order="1"/>
+    <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+        <property name="definitions">
+            <list>
+                <value>/WEB-INF/tiles.xml</value>
+                <!-- 
+                <value>classpath:layout.xml</value>
+                -->
+            </list>
+        </property>
+	</bean>
       
 	<!-- 视图解释类 -->  <!-- 对转向页面的路径解析。prefix：前缀， suffix：后缀 -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
