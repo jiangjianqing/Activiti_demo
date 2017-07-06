@@ -16,3 +16,4 @@ META-INF/
 bin/
 .DS_Store
 .idea
+*.iml
