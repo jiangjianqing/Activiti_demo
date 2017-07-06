@@ -101,12 +101,17 @@
 	<!-- 导航条 -->
 
 	<div layout:fragment="content"></div>
-
+	
+	
 	<!-- put the scripts below -->
 	<script src="../../lib/jquery/jquery.js"
-		th:src="@{lib/jquery/jquery.js}"></script>
+			th:src="@{lib/jquery/jquery.js}"></script>
 	<script src="../../lib/bootstrap/bootstrap.js"
-		th:src="@{lib/bootstrap/bootstrap.js}"></script>
+			th:src="@{lib/bootstrap/bootstrap.js}"></script>
+	
+	<div layout:fragment="otherScripts" style="display:none;position:absolute;width:0;height:0">
+		<!--重要： 这里用于插入其他自定义js代码 -->
+	</div>
 
 </body>
 

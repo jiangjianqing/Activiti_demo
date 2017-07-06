@@ -10,3 +10,7 @@ tiles用在jsp解析上可以，但html模板还是用thymeleaf,
 ##版本关注
 
 servlet-api待升级到4.0
+
+##异常信息归属
+###[WARNING] Error page loop /404.html
+是由于thymeleaf在处理th:src="@{/js/security/mainframe.js}"时，该文件不存在引起的

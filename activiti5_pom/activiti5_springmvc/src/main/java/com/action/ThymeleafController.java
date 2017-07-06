@@ -26,7 +26,9 @@ public class ThymeleafController {
 		//特别注意：这里返回的是tiles.xml中定义的definition.name
         return "first-template";
     }
-	//
+	//教程：
+	//http://www.cnblogs.com/nuoyiamy/p/5591559.html
+	
 	//注意:thymeleaf目前还无法与tiles3整合,可以使用layout-dialet实现同样的功能
 	//https://ultraq.github.io/thymeleaf-layout-dialect/Installation.html
 	
