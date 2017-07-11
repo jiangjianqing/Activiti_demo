@@ -34,9 +34,18 @@
 
 
 				<!-- 退出 -->
+				<!-- 如果开启了csrf，则必须携带csrf ，否则无效 -->
+				<form action="${loginUrl}" th:attr="action=@{/auth/logout}" method="post"> 
+					<input type="hidden"                        
+					name="${_csrf.parameterName}" th:attr="name=${_csrf.parameterName} , value=${_csrf.token}"
+					value="${_csrf.token}"/>  
+					<a class="navbar-brand" href="#" style="color: #fff; float: right;"
+					onclick="javascript:logoutFun(this);">退出</a>
+				</form>
+	<!-- 
 				<a class="navbar-brand" href="#" style="color: #fff; float: right;"
 					onclick="javascript:safeLogoutFun();">退出</a>
-
+-->
 				<!-- 欢迎语 -->
 				<div class="navbar-brand"
 					style="margin-right: 30px; font-size: 15px; float: right; color: #f5d313;">
@@ -66,6 +75,17 @@
 						}
 						setInterval("setTime()", 1000);
 
+						function logoutFun(el){
+							while(el.parentNode){
+								if (el.parentNode.tagName === "FORM"){
+									el.parentNode.submit();
+									return;
+								}
+								el = el.parentNode;
+							}
+							console.error("没有发现提交logout请求 的 form");
+							//el.parentNode.submit()
+						}
 						//20151013  安全退出
 						function safeLogoutFun() {
 							if (confirm("确定需要退出吗？")) {

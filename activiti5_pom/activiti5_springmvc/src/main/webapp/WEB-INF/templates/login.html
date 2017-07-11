@@ -16,7 +16,13 @@
 	<!-- 重写<div layout:fragment = "content">元素，css文件和js文件均可继承 -->
 	<div layout:fragment="content"
 		style="width: 96%; margin-left: auto; margin-right: auto;">
-		<form action="${loginUrl}" th:attr="action=@{${loginUrl}}" method="post">       
+		<form action="${loginUrl}" th:attr="action=@{${loginUrl}}" method="post">   
+			<p th:if="${param.error != null}">
+				Invalid username or password.
+			</p> 
+			<p th:if="${param.logout != null}">
+				You have been logged out.
+			</p> 
 			<p>
 				<label for="username">Username</label>
 				<input type="text" id="username" name="username"/>	

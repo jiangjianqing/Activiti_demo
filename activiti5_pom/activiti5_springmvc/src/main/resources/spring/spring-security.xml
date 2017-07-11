@@ -61,16 +61,14 @@
             username-parameter:表示登录时用户使用的是哪个参数，即用户名输入框的name
             password-parameter:表示登录时密码使用的是哪个参数，即密码输入框的name
              -->
+        <!--  20160517 默认的form-login无法支持用户名和密码之外的登录信息，customLoginFilter完成替换 -->
         <form-login login-page="/auth/login" default-target-url="/"
+        	authentication-failure-url="/auth/login?error=true"
             username-parameter="username"
             password-parameter="password"/>
            
-       	<!-- 20160517 默认的form-login无法支持用户名和密码之外的登录信息，customLoginFilter完成替换
-        <form-login  
-                login-page="/auth/login"   
-                authentication-failure-url="/login?error=true"   
-                default-target-url="/main/common"/> 
-         -->
+       	
+
         <!-- 开启了session失效功能.
 			20160425 注销时删除JSESSIONID cookie (Unfortunately this can’t be guaranteed to work with every servlet container, so you will need to test it in your environment)
 			注销URL为:/auth/logout
