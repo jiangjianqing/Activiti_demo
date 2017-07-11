@@ -11,14 +11,27 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<org.springframework.version>4.3.9.RELEASE</org.springframework.version>
+		<springframework.version>4.3.9.RELEASE</springframework.version>
+		<springsecurity.version>4.2.3.RELEASE</springsecurity.version>
 		<jackson.version>2.8.9</jackson.version>
 	</properties>
 
 	<!-- 依赖部分1 -->
 	<dependencyManagement>
 		<dependencies>
-			
+		<!--
+		从spring-security doc中看到的：
+		Spring Security builds against Spring Framework 4.3.9.RELEASE, but should work with 4.0.x. The problem that many users will have is that Spring Security’s transitive dependencies resolve Spring Framework 4.3.9.RELEASE which can cause strange classpath problems.
+
+		One (tedious) way to circumvent this issue would be to include all the Spring Framework modules in a <dependencyManagement> section of your pom. An alternative approach is to include the spring-framework-bom within your <dependencyManagement> section of your pom.xml as shown below:
+		  -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-framework-bom</artifactId>
+				<version>${springframework.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>
@@ -94,11 +107,22 @@
 			<version>1.3.1</version>
 			<scope>${scope.type}</scope>
 		</dependency>
+		<!-- Spring Security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${springsecurity.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${springsecurity.version}</version>
+		</dependency>
 	<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${org.springframework.version}</version>
+			<version>${springframework.version}</version>
 			<exclusions>
 					<!-- Exclude Commons Logging in favor of SLF4j -->
 				<exclusion>
@@ -111,14 +135,14 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${org.springframework.version}</version>
+			<version>${springframework.version}</version>
 			<scope>${scope.type}</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${org.springframework.version}</version>
+			<version>${springframework.version}</version>
 			<scope>test</scope>
 		</dependency>
 
