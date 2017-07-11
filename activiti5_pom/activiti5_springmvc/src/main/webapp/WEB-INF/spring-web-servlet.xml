@@ -78,9 +78,7 @@
           <!-- 20170705:thymeleaf与其他框架集成的地方，例如tiles,但目前还不支持tiles3
           	thymeleaf有layout-dialect,已经可以不需要tiles了
            -->
-          <!-- 
           <bean class="org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect"/>
-           -->
         </set>
       </property>
 	</bean>
@@ -110,6 +108,13 @@
 	<mvc:default-servlet-handler />
 
 	<!-- 对静态资源文件的访问 *代表当前目录下 **代表当前目录及子目录下 -->
+	<!-- 
+	对应的xx.propterties文件中的值如下：
+		mapping_path=poster
+		local_path=D:/poster
+	<mvc:resources mapping="/${mapping_path}/**" location="file:${local_path}/">  
+	 -->
+	
 	<mvc:resources mapping="/images/**" location="/static/images/"
 		cache-period="31556926" />
 	<mvc:resources mapping="/js/**" location="/static/js/"
@@ -117,8 +122,9 @@
 	<mvc:resources mapping="/css/**" location="/static/css/"
 		cache-period="31556926" />
 	<mvc:resources mapping="/fonts/**" location="/static/fonts/" />
-	<mvc:resources mapping="/upload/**" location="/upload/" />
 	<mvc:resources mapping="/lib/**" location="/static/lib/" />
 	<mvc:resources mapping="/styles/**" location="/static/styles/" />
+	<mvc:resources mapping="/vender/**" location="/static/vender/"/>
+	<mvc:resources mapping="/static/**" location="/static/"/>
 
 </beans>

@@ -18,34 +18,33 @@
 		 -->
 	</global-method-security>
    	 
-   	<!-- 静态资源配置,注意:**代表可以多级目录 -->  
-	<http pattern="/js/**" security="none"/>  
+   	<!-- 注意:静态资源**代表可以多级目录，即使已经在mvc:resource中设为静态资源的内容也需要再次设置，
+   		因为静态资源是不通过filter和interceptor的
+   	 -->  
 	<http pattern="/i18n/**" security="none"/>  
-    <http pattern="/styles/**" security="none"/>  
-    <http pattern="/images/**" security="none"/>  
-    <http pattern="/fonts/**" security="none"/>  
-    <http pattern="/lib/**" security="none"/>  
-    <http pattern="/static/**" security="none"/>  
-    <http pattern="/language/**" security="none"/>  
-    <http pattern="/**/*.png" security="none"/>  
-    <http pattern="/**/*.jpg" security="none"/>  
-    <http pattern="/**/*.gif" security="none"/>  
-    <http pattern="/**/*.css" security="none"/>  
-    <http pattern="/**/*.js" security="none"/>  
-    
-    <!-- 登录页,不需要拦截 -->  
-    <http pattern="/user/login.htm" security="none"/>  
+    <http pattern="/language/**" security="none"/>   
+    <http pattern="/static/**" security="none"/> 
+    <http pattern="/styles/**" security="none"/> 
+    <http pattern="/fonts/**" security="none"/> 
+    <http pattern="/images/**" security="none"/> 
+    <http pattern="/lib/**" security="none"/> 
+    <http pattern="/js/**" security="none"/> 
+    <http pattern="/css/**" security="none"/> 
+    <http pattern="/vender/**" security="none"/> 
+   
     <!-- 验证码不校验 -->  
-    <http pattern="/verify/*" security="none"/>  
+    <http pattern="/verify/**" security="none"/>  
 
 <!--20170711 spring-security4.2 移除该设置 access-denied-page="/auth/denied" -->
     <!-- auto-config="true" 不推荐使用，其会自动注册一些默认的过滤器 -->
-    <http access-decision-manager-ref="webUrlAccessDecisionManager"  entry-point-ref="loginEntryPoint" use-expressions="true" >  <!--  当访问被拒绝时，403.jsp  -->
+    <!-- 20170711 使用form-login 代替   entry-point-ref="loginEntryPoint" -->
+    <http access-decision-manager-ref="webUrlAccessDecisionManager"   use-expressions="true" >  <!--  当访问被拒绝时，403.jsp  -->
     	
     	<!-- caution：测试、开发时才允许打开本设置，生产环境中必须关闭 -->
     	<intercept-url pattern="/rest/**" access="permitAll"/>
     	
     	<intercept-url pattern="/auth/invalidsession" access="permitAll"/>  
+    	<!-- 登录页,不需要拦截 -->  
         <intercept-url pattern="/auth/login" access="permitAll"/>  
         <intercept-url pattern="/user/hello" access="hasRole('ROLE_ADMIN')"/>  
         
@@ -55,7 +54,17 @@
         <!-- 实现免登陆验证 -->  
         <!-- 
         <remember-me />   --> 
-          
+        
+        <!-- login-page:需要登陆时 拦截后执行的请求
+            default-target-url:身份验证通过后执行的请求
+            authentication-failure-url:如果验证失败，则转向URL
+            username-parameter:表示登录时用户使用的是哪个参数，即用户名输入框的name
+            password-parameter:表示登录时密码使用的是哪个参数，即密码输入框的name
+             -->
+        <form-login login-page="/auth/login" default-target-url="/"
+            username-parameter="username"
+            password-parameter="password"/>
+           
        	<!-- 20160517 默认的form-login无法支持用户名和密码之外的登录信息，customLoginFilter完成替换
         <form-login  
                 login-page="/auth/login"   
@@ -75,6 +84,7 @@
         max-sessions是设置单个用户最大并行会话数；You can set the maximumSession property to -1 to allow unlimited sessions
         error-if-maximum-exceeded是配置当用户登录数达到最大时是否报错，设置为true时会报错且后登录的会话不能登录，默认为false不报错且将前一会话置为失效 -->
         <!-- 2016-01-21 由于调试restful api需要，暂时屏蔽session-manage配置 -->
+        <!-- 2017-07-11 如果不希望session失效后就进入invalid-session-url ，删除该配置属性即可 -->
 
         <session-management session-authentication-strategy-ref="sas" invalid-session-url="/auth/invalidsession">  
             <!-- 重点：设置了custom-filter可能会导致下述简单配置失效，所以直接使用explicit setup ： session-authentication-strategy-ref
