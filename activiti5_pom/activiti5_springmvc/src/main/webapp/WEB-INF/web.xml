@@ -133,24 +133,24 @@
 	</error-page>
 	<error-page>
 		<error-code>404</error-code>
-		<location>/404.html</location>
+		<location>/WEB-INF/templates/error-page/404.html</location>
 	</error-page>
 	<!-- 仅仅在调试的时候注视掉,在正式部署的时候不能注释 -->
 	<!-- 这样配置也是可以的，表示发生500错误的时候，转到500.jsp页面处理。 -->
 	<error-page> 
 		<error-code>500</error-code> 
-		<location>/500.html</location> 
+		<location>/WEB-INF/templates/error-page/500.jsp</location> 
 	</error-page> 
 	
 	<!-- 这样的配置表示如果jsp页面或者servlet发生java.lang.Exception类型（当然包含子类）的异常就会转到500.jsp页面处理。 -->
 	<error-page> 
 		<exception-type>java.lang.Exception</exception-type> 
-		<location>/500.jsp</location> 
+		<location>/WEB-INF/templates/error-page/500.jsp</location> 
 	</error-page> 
 	
 	<error-page> 
 		<exception-type>java.lang.Throwable</exception-type> 
-		<location>/500.jsp</location> 
+		<location>/WEB-INF/templates/error-page/500.jsp</location> 
 	</error-page>
 	<!-- 
 	当error-code和exception-type都配置时，exception-type配置的页面优先级高
