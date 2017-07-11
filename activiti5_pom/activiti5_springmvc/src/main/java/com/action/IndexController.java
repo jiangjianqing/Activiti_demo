@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configurers.FormLoginC
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,18 @@ public class IndexController {
 
 	public IndexController() {
 		// TODO Auto-generated constructor stub
+	}
+	
+	private UserDetails getUserDetails(){
+		UserDetails ret = null;
+		// check if user is login
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (!(auth instanceof AnonymousAuthenticationToken)) {
+			ret = (UserDetails) auth.getPrincipal();
+			
+		}
+		//model.addObject("username", userDetail.getUsername());
+		return ret;
 	}
 	
 	private boolean isAuthenticated() {
