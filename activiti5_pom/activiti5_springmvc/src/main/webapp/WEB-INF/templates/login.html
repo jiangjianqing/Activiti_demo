@@ -31,9 +31,12 @@
 			<button type="submit" class="btn btn-default">Log in</button>
 		</form>
 
-		
+		<div th:replace="fragments/varlist :: list">
 	</div>
-
+	
+	
+	
+	
 	<div layout:fragment="otherScripts">
 		<!--重要： 这里用于插入其他自定义js代码 -->
 		<!-- 20170706:如果文件不存在，会出现警告信息：

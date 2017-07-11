@@ -32,6 +32,8 @@ public class ThymeleafController {
 	//注意:thymeleaf目前还无法与tiles3整合,可以使用layout-dialet实现同样的功能
 	//https://ultraq.github.io/thymeleaf-layout-dialect/Installation.html
 	
+	//http://blog.csdn.net/sun1021873926/article/details/61615219
+	//http://blog.csdn.net/mygzs/article/details/52668099
 	//https://github.com/thymeleaf/thymeleaf-extras-springsecurity
 
 }
