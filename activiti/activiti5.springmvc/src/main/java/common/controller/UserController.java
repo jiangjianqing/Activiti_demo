@@ -1,4 +1,4 @@
-package com.focusight.platform3.controller;
+package common.controller;
 
 import java.io.PrintWriter;
 import java.util.*;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.focusight.platform3.views.model.User;
+import common.model.User;
 
 /**
  * 如类级别的映射为 @RequestMapping(value="/narrow", produces="text/html")，
@@ -55,27 +55,14 @@ import com.focusight.platform3.views.model.User;
  */
 @Scope("session")
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/rest/user")
 @SessionAttributes(types = {User.class,/*String.class*/},value={"currentUser","session.message"})//将符合types或者vlaue的ModelMap对象 存入Session
 //放到Session属性列表中，以便这个属性可以跨请求访问
 public class UserController {
 	// private Map<String, Info> model = Collections.synchronizedMap(new
 	// HashMap<String, Info>());
-	private static final Logger log = LoggerFactory
-			.getLogger(UserController.class);
 
-	@RequestMapping(value = "/hello", produces = "text/plain;charset=UTF-8")
-	@ResponseBody
-	public String hello() {
-		log.info("使用JSONObject时记录日志");
-		JSONObject tmpJSONObj = null;
-		tmpJSONObj = new JSONObject();
-		tmpJSONObj.put("status", "ok");
-		tmpJSONObj.put("errorMessage", "中文错误消息");
-		return tmpJSONObj.toString();
-	}
-	
-	@RequestMapping(value="/add",method=RequestMethod.POST)
+	@RequestMapping(value="/",method=RequestMethod.POST)
 	public String addUser(@Valid User User, BindingResult result /*其他参数必须在result后面*/){
 		if(result.hasErrors()) { //验证失败 
 			System.out.println("验证User出现错误");
@@ -86,19 +73,11 @@ public class UserController {
 	}
 	
 	
-	@RequestMapping(value = "/say/{msg}", produces = "application/json;charset=UTF-8")  
+	@RequestMapping(value = "/{id}", produces = "application/json;charset=UTF-8")  
     public @ResponseBody  
-    String say(@PathVariable(value = "msg") String msg) {  
-        return "{\"msg\":\"you say:'" + msg + "'\"}";  
+    String say(@PathVariable(value = "id") String msg) {  
+        return "{\"userid\":\"you say:'" + msg + "'\"}";  
     }  
-
-	@RequestMapping("/modelAndView")
-	public ModelAndView modelAndView() {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("show");
-		mav.addObject("message", "modelAndView 方法被调用");
-		return mav;
-	}
 
 	// 返回void和ModelMap的时候，逻辑视图名由请求处理方法对应的 URL 确定，如以下的方法：对应springmvc/modelMap.jsp这个视图
 	//在默认情况下，ModelMap 中的属性作用域是 request 级别，相当于HttpServletRequest中的request.setAttribute() 一样, 在 JSP 视图页面中通过 request.getAttribute(“attribute name”) 
@@ -111,7 +90,7 @@ public class UserController {
 		    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());  
 		    if (entry.getValue() instanceof User){
 		    	User tmp=(User)entry.getValue();
-		    	System.out.println(String.format("user.name=%s", tmp.getName()));
+		    	System.out.println(String.format("user.name=%s", tmp.getUserName()));
 		    }
 		}  
 		
@@ -139,19 +118,10 @@ public class UserController {
 			String argName=sessionArg.nextElement();
 			System.out.println(String.format("name=%s,value=%s",argName, session.getAttribute(argName)));
 		}
-		log.debug("使用ResponseBody时记录日志");
+		//logger.debug("使用ResponseBody时记录日志");
 		User user = new User();
-		user.setName("中文测试789");
+		user.setUserName("中文测试789");
 		modMap.put("user", user);//这个User会存入session中
-		return user;
-	}
-
-	@RequestMapping(value = "/showuser2.json", produces = "application/json;charset=UTF-8")
-	@ResponseBody
-	public User showUserJson2() {
-		log.debug("使用ResponseBody时记录日志");
-		User user = new User();
-		user.setName("中文测试123");
 		return user;
 	}
 	

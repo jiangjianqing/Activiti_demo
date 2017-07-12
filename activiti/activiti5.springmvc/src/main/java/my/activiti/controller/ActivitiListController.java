@@ -1,7 +1,5 @@
 package my.activiti.controller;
 
-import com.focusight.platform3.controller.UserController;
-
 import my.activiti.bean.SessionVar;
 
 import org.activiti.engine.FormService;
@@ -18,6 +16,7 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.task.Task;
 import org.apache.commons.io.FilenameUtils;
+import org.hibernate.validator.internal.util.privilegedactions.GetClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +42,8 @@ import java.util.zip.ZipInputStream;
 @Controller
 @RequestMapping("/workflow")
 public class ActivitiListController {
-	private static final Logger log = LoggerFactory
-			.getLogger(UserController.class);
+	//private static final Logger log = LoggerFactory
+			//.getLogger(getClass());
 
 	@Autowired
 	private ProcessEngine processEngine;
@@ -112,7 +111,7 @@ public class ActivitiListController {
 			}
 			deploymentBuilder.deploy();
 		}catch (Exception ex){
-			log.error("error on deploy process,because of file input stream");
+			//log.error("error on deploy process,because of file input stream");
 		}
 		return "redirect:/workflow/process-list";
 	}

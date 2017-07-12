@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.focusight.platform3.views.model.User;
+import common.model.User;
 import common.spring.utils.ValidateUtil;
 
 public class TestHibernateValidator {
@@ -19,7 +19,7 @@ public class TestHibernateValidator {
 	@Test
 	public void test() {
 		User user=new User();
-		user.setName("测试员");
+		user.setUserName("测试员");
 		user.setBirthday("1981-02-13");
 		user.setPassword("123");
 		String msg=ValidateUtil.validateModel(user);

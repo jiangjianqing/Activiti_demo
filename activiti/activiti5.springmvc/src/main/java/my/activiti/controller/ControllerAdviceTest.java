@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.NativeWebRequest;
 
-import com.focusight.platform3.views.model.User;
+import common.model.User;
 
 
 /**
@@ -26,7 +26,7 @@ public class ControllerAdviceTest {
     public User newUser() {  
         System.out.println("============应用到所有@RequestMapping注解方法，在其执行之前把返回值放入Model");  
         User user= new User();
-        user.setName("这是ControllerAdviceTest添加的User");
+        user.setUserName("这是ControllerAdviceTest添加的User");
         return user;
     }  
   
