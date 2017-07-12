@@ -33,9 +33,20 @@ public class IndexController extends AbstractController {
 	@RequestMapping(value="/",method=RequestMethod.GET/*, method = RequestMethod.POST*/)
     public ModelAndView getAll(HttpServletRequest request,HttpServletResponse response 
     		, RedirectAttributes redirectAttributes){
+		//特别注意：这里返回的是WEB-INFO/templates中定义的.html文件名称
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("logoutUrl", this.logoutUrl);
         return model;
     }
+	
+	//thymeleaf教程：
+		//http://www.cnblogs.com/nuoyiamy/p/5591559.html
+		
+		//注意:thymeleaf目前还无法与tiles3整合,可以使用layout-dialet实现同样的功能
+		//https://ultraq.github.io/thymeleaf-layout-dialect/Installation.html
+		
+		//http://blog.csdn.net/sun1021873926/article/details/61615219
+		//http://blog.csdn.net/mygzs/article/details/52668099
+		//https://github.com/thymeleaf/thymeleaf-extras-springsecurity
 
 }
