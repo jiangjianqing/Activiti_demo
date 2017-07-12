@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>common.config</groupId>
+		<artifactId>pom.activiti5</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../../common.config/pom.activiti5</relativePath>
+	</parent>
+	<groupId>prj.activiti.demo</groupId>
+	<artifactId>activiti5.springmvc</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.4.6.v20170531</version>
+				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<httpConnector>
+						<port>9090</port>
+					</httpConnector>
+					<webAppConfig>
+						<contextPath>/${project.artifactId}</contextPath>
+					</webAppConfig>
+				</configuration>
+				<!-- 这里适合8.1.16 版本 <configuration> <scanIntervalSecond>10</scanIntervalSecond> 
+					<webApp> <contextPath>/${project.artifactId}</contextPath> </webApp> <connectors> 
+					<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector"> 
+					<port>8787</port> <maxIdleTime>60000</maxIdleTime> </connector> </connectors> 
+					</configuration> -->
+			</plugin>
+			<!-- 20150818 非osgi项目不能设置这两项 <plugin> <groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-war-plugin</artifactId> <configuration> <archive> <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile> 
+				<addMavenDescriptor>false</addMavenDescriptor> </archive> </configuration> 
+				</plugin> -->
+		</plugins>
+	</build>
+</project>

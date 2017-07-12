@@ -2,13 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.focusight.platform3</groupId>
-		<artifactId>base_pom</artifactId>
+		<groupId>common.config</groupId>
+		<artifactId>pom.base</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../base_pom</relativePath>
+		<relativePath>../common.config/pom.base</relativePath>
 	</parent>
-	
-	<artifactId>saxon-demo</artifactId>
+	<groupId>prj.saxon.demo</groupId>
+	<artifactId>saxon.demo</artifactId>
 
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/net.sf.saxon/Saxon-HE -->

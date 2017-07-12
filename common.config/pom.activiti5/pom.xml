@@ -2,12 +2,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.focusight.platform3</groupId>
-		<artifactId>base_pom</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../base_pom</relativePath>
+		<groupId>common.config</groupId>
+		<artifactId>pom.spring</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+		<relativePath>../pom.spring</relativePath>
 	</parent>
-	<artifactId>activiti5_pom</artifactId>
+	<artifactId>pom.activiti5</artifactId>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -52,8 +52,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<modules>
-		<module>activiti5_test</module>
-		<module>activiti5_springmvc</module>
-	</modules>
 </project>

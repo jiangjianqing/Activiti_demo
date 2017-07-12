@@ -1,14 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
- <parent>
-    <groupId>com.focusight.platform3</groupId>
-    <artifactId>activiti5_pom</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-	<groupId>com.activiti5.demo</groupId>
-	<artifactId>activiti5_springmvc</artifactId>
+    <parent>
+		<groupId>common.config</groupId>
+		<artifactId>pom.base</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../pom.base</relativePath>
+	</parent>
+	<groupId>common.config</groupId>
+	<artifactId>pom.spring</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>pom</packaging>
 
 	<properties>
 		<springframework.version>4.3.9.RELEASE</springframework.version>
