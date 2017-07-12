@@ -1,4 +1,4 @@
-package common.spring.utils;
+package common.web.utils;
 
 import java.util.Iterator;
 import java.util.Set;

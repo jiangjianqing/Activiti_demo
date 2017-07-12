@@ -1,4 +1,4 @@
-package com.focusight.platform3.views.model;
+package common.model;
 
 public class Group implements org.activiti.engine.identity.Group {
 

@@ -1,4 +1,4 @@
-package common.spring.utils;
+package common.web.utils;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -9,6 +9,10 @@ import org.springframework.context.ApplicationContextAware;
  * 使用范例:
  * ApplicationContext cx=SpringContextHolder.getApplicationContext();
  * org.springframework.jdbc.core.JdbcTemplate jdbcTemplate=SpringContextHolder.getBean("jdbcTemplate");
+ * 
+ * 使用WebApplicationContextUtils也可以实现一样的效果
+ * ConfigService configService = WebApplicationContextUtils.getWebApplicationContext(sce.getServletContext()).getBean(ConfigService.class);
+ * 
  */
 public class SpringContextHolder implements ApplicationContextAware {
 	private static ApplicationContext applicationContext;
