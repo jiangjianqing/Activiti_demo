@@ -1,4 +1,4 @@
-package common.spring;
+package common.spring.utils;
 
 import java.lang.reflect.Method;
 import java.math.BigInteger;

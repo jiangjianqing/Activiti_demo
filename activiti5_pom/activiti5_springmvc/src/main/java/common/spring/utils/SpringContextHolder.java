@@ -1,4 +1,4 @@
-package common.spring;
+package common.spring.utils;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

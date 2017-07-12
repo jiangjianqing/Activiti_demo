@@ -23,6 +23,9 @@
 			<p th:if="${param.logout != null}">
 				You have been logged out.
 			</p> 
+			<p th:if="${param.invalidsession != null}">
+				Your session have been invalid.
+			</p> 
 			<p>
 				<label for="username">Username</label>
 				<input type="text" id="username" name="username"/>	

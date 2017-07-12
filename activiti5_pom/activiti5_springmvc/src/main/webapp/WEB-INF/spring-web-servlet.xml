@@ -15,12 +15,14 @@
 	http://www.springframework.org/schema/mvc  
 	http://www.springframework.org/schema/mvc/spring-mvc.xsd
 	">
-
+	<!-- 重要： 整个系统中只能设置一次 加载资源文件  其中包含变量信息，必须在Spring配置文件的最前面加载，即第一个加载-->
+	<context:property-placeholder location="classpath:system.properties" />
+   
 	<!-- 启用spring mvc 注解 -->
 	<context:annotation-config />
 	<!-- 开启Spring的Bean自动扫描机制来查找与管理Bean实例 -->
 	<context:component-scan
-		base-package="com.action,com.focusight.platform3.controller,my.activiti.controller" />
+		base-package="*.controller" />
 	<!-- 下面的例子使用context:include-filter加快扫描速度 <context:component-scan base-package="com.itxxz.*.web,com.itxxz.sys.*.web,com.jfok.server" 
 		use-default-filters="false"> <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" 
 		/> </context:component-scan> -->

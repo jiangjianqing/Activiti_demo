@@ -35,7 +35,7 @@
 
 				<!-- 退出 -->
 				<!-- 如果开启了csrf，则必须携带csrf ，否则无效 -->
-				<form action="${loginUrl}" th:attr="action=@{/auth/logout}" method="post"> 
+				<form action="${logoutUrl}" th:attr="action=@{${logoutUrl}}" method="post"> 
 					<input type="hidden"                        
 					name="${_csrf.parameterName}" th:attr="name=${_csrf.parameterName} , value=${_csrf.token}"
 					value="${_csrf.token}"/>  

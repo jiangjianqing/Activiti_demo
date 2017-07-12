@@ -1,4 +1,4 @@
-package com.action;
+package common.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,30 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import common.spring.AvoidDuplicateSubmission;
-
 @Controller
-@RequestMapping("/thymeleaf")
-public class ThymeleafController {
+@RequestMapping("/tiles")
+public class TilesController {
 
-	public ThymeleafController() {
+	public TilesController() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	@RequestMapping(value={"" , "/list"},method=RequestMethod.GET/*, method = RequestMethod.POST*/)
     public String getAll(Model model,HttpServletRequest request,HttpServletResponse response){
-		model.addAttribute("name", "中文测试  Dear");
+		model.addAttribute("name", "Dear");
 		//特别注意：这里返回的是tiles.xml中定义的definition.name
-        return "first-template";
+        return "myFirstTilesView";
     }
-	//教程：
-	//http://www.cnblogs.com/nuoyiamy/p/5591559.html
-	
-	//注意:thymeleaf目前还无法与tiles3整合,可以使用layout-dialet实现同样的功能
-	//https://ultraq.github.io/thymeleaf-layout-dialect/Installation.html
-	
-	//http://blog.csdn.net/sun1021873926/article/details/61615219
-	//http://blog.csdn.net/mygzs/article/details/52668099
-	//https://github.com/thymeleaf/thymeleaf-extras-springsecurity
 
 }

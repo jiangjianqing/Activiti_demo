@@ -12,7 +12,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.focusight.platform3.views.model.User;
-import common.spring.ValidateUtil;
+import common.spring.utils.ValidateUtil;
 
 public class TestHibernateValidator {
 

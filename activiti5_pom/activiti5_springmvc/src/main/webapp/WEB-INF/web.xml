@@ -64,14 +64,15 @@
 	<servlet>
 		<servlet-name>spring-web</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<!-- 20150821 deprecated 方便idea识别spring file分类  
-			加载springMVC的配置文件 
-			定义servlet.xml配置文件的位置和名称，默认为WEB-INF目录下，名称为[<servlet-name>]-servlet.xml，如spring-servlet.xml
+		<!-- 20170712
+		 DispatcherServlet加载的是mvc相关的上下文，ContextLoaderListener加载的是spring全局上下文,两者独立配置
+		两者关系参考该文 http://jinnianshilongnian.iteye.com/blog/1602617
+		定义servlet.xml配置文件的位置和名称，默认为WEB-INF目录下，名称为[<servlet-name>]-servlet.xml，如spring-servlet.xml
 		
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>
-				classpath:spring/SpringMVC-servlet.xml
+				classpath:spring/spring-web-servlet.xml
 			</param-value>
 		</init-param>
 		-->

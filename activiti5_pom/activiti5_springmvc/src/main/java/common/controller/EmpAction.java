@@ -1,4 +1,4 @@
-package com.action;
+package common.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import common.spring.AvoidDuplicateSubmission;
+import common.spring.utils.*;
 
 @Controller
 //@RequestMapping("/test/*")
@@ -20,23 +20,23 @@ public class EmpAction {
 	}
 	
 	@RequestMapping(value="add.do",params="p=getAll",method=RequestMethod.GET/*, method = RequestMethod.POST*/)
-	@AvoidDuplicateSubmission(needRemoveToken = true)
+	//@AvoidDuplicateSubmission(needRemoveToken = true)
     public String getAll(HttpServletRequest request,HttpServletResponse response){
         //List list = empService.getAllEmp();
         //request.setAttribute("list", list);
 		
-		ApplicationContext cx=common.spring.SpringContextHolder.getApplicationContext();
-		org.springframework.jdbc.core.JdbcTemplate jdbcTemplate=common.spring.SpringContextHolder.getBean("jdbcTemplate");
+		ApplicationContext cx=common.spring.utils.SpringContextHolder.getApplicationContext();
+		org.springframework.jdbc.core.JdbcTemplate jdbcTemplate=SpringContextHolder.getBean("jdbcTemplate");
         return "show";
     }
 	
 	@RequestMapping(value="add.ajax",params="p=getAll",method=RequestMethod.GET)
-	@AvoidDuplicateSubmission( needSaveToken = true)
+	//@AvoidDuplicateSubmission( needSaveToken = true)
     public String getAllTest(HttpServletRequest request,HttpServletResponse response){
         //List list = empService.getAllEmp();
         //request.setAttribute("list", list);
-		ApplicationContext cx=common.spring.SpringContextHolder.getApplicationContext();
-		org.springframework.jdbc.core.JdbcTemplate jdbcTemplate=common.spring.SpringContextHolder.getBean("jdbcTemplate");
+		ApplicationContext cx=SpringContextHolder.getApplicationContext();
+		org.springframework.jdbc.core.JdbcTemplate jdbcTemplate=SpringContextHolder.getBean("jdbcTemplate");
         return "showajax";
     }
 
