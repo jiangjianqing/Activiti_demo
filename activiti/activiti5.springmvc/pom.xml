@@ -14,6 +14,21 @@
 
 	<build>
 		<plugins>
+		<!-- 默认已经加入mybatis.generator 支持，除非切换数据库种类，否则不需要修改
+			<plugin>
+			
+				<groupId>org.mybatis.generator</groupId>  
+                <artifactId>mybatis-generator-maven-plugin</artifactId>  
+                <dependencies>  
+                    <dependency>  
+                        <groupId>mysql</groupId>  
+                        <artifactId>mysql-connector-java</artifactId>  
+                        <version>${mysql.connector.version}</version>  
+                    </dependency>  
+                </dependencies>  
+                
+			</plugin>
+			-->
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
