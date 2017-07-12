@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/auth")
-public class AuthController {
+public class AuthController extends AbstractController{
 
 	//重要：使用@Value注入配置文件中的内容
 	@Value("${security.loginProcessingUrl}")  
@@ -32,14 +32,6 @@ public class AuthController {
 
 	public AuthController() {
 		// TODO Auto-generated constructor stub
-	}
-	
-	private boolean isAuthenticated() {
-		SecurityContext securityContext = SecurityContextHolder.getContext();
-		Authentication authentication = securityContext.getAuthentication();
-		boolean isAuthenticated = !(authentication instanceof AnonymousAuthenticationToken)
-				&& authentication.isAuthenticated();
-		return isAuthenticated;
 	}
 	
 	@RequestMapping(value="/login",method=RequestMethod.GET/*, method = RequestMethod.POST*/)
@@ -56,12 +48,5 @@ public class AuthController {
 		}	
         return model;
     }
-	//教程：
-	//http://www.cnblogs.com/nuoyiamy/p/5591559.html
-	
-	//注意:thymeleaf目前还无法与tiles3整合,可以使用layout-dialet实现同样的功能
-	//https://ultraq.github.io/thymeleaf-layout-dialect/Installation.html
-	
-	//https://github.com/thymeleaf/thymeleaf-extras-springsecurity
 
 }

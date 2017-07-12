@@ -21,33 +21,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/")
-public class IndexController {
+public class IndexController extends AbstractController {
 	
 	@Value("${security.logoutUrl}")
 	private String logoutUrl;
 
 	public IndexController() {
 		// TODO Auto-generated constructor stub
-	}
-	
-	private UserDetails getUserDetails(){
-		UserDetails ret = null;
-		// check if user is login
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (!(auth instanceof AnonymousAuthenticationToken)) {
-			ret = (UserDetails) auth.getPrincipal();
-			
-		}
-		//model.addObject("username", userDetail.getUsername());
-		return ret;
-	}
-	
-	private boolean isAuthenticated() {
-		SecurityContext securityContext = SecurityContextHolder.getContext();
-		Authentication authentication = securityContext.getAuthentication();
-		boolean isAuthenticated = !(authentication instanceof AnonymousAuthenticationToken)
-				&& authentication.isAuthenticated();
-		return isAuthenticated;
 	}
 	
 	@RequestMapping(value="/",method=RequestMethod.GET/*, method = RequestMethod.POST*/)
