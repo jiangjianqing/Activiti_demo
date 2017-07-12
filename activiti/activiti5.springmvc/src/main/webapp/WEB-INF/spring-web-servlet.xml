@@ -102,8 +102,12 @@
 	<!-- 这个是使用文件上传功能时的必要配置，同时在pom.xml中需要引入commons-fileupload 组件 -->
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="defaultEncoding" value="UTF-8" />
-		<property name="maxUploadSize" value="1046666000" />
+		<!-- 默认编码 -->  
+        <property name="defaultEncoding" value="utf-8" />    
+        <!-- 文件大小最大值 -->  
+        <property name="maxUploadSize" value="10485760000" />    
+        <!-- 内存中的最大值 -->  
+        <property name="maxInMemorySize" value="40960" />  
 	</bean>
 
 	<!-- 重要：默认处理 -->
