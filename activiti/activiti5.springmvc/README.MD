@@ -18,3 +18,6 @@ servlet-api待升级到4.0
 
 需要注意的是监听器不受Spring 容器的管理,所以不能使用注解进行注入,
 同理,如果使用Spring Aop 也不能切入,这时可以考虑使用原生AspectJ代替Spring Aop
+
+可以将控制器写在别的jar中，但要注意 autodetect的问题：
+一定要给外部jar的Controller类设定@Controller("testdemo") 其中testdemo根据实际情况设置

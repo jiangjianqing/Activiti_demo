@@ -21,6 +21,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import common.web.utils.SpringContextHolder;
 
+/**
+ * 负责管理authentication的控制器
+ * @author jjq
+ *
+ */
+
 @Controller
 @RequestMapping("/auth")
 public class AuthController extends AbstractController{
