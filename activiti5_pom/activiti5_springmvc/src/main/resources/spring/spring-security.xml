@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>  
 <b:beans xmlns="http://www.springframework.org/schema/security"  
+		xmlns:context="http://www.springframework.org/schema/context"
 		xmlns:p="http://www.springframework.org/schema/p"
         xmlns:b="http://www.springframework.org/schema/beans" 
         xmlns:mvc="http://www.springframework.org/schema/mvc"    
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        					http://www.springframework.org/schema/mvc  	http://www.springframework.org/schema/mvc/spring-mvc.xsd  
-                            http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd">  
+        xsi:schemaLocation="
+        	http://www.springframework.org/schema/context	http://www.springframework.org/schema/context/spring-context.xsd
+        	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        	http://www.springframework.org/schema/mvc  	http://www.springframework.org/schema/mvc/spring-mvc.xsd  
+            http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd">  
+	
 	<!-- 重要：注意spring-security-x.x.xsd 的版本号 -->
 	<!-- 以下都是专用于security的配置 -->
 	
@@ -43,9 +47,9 @@
     	<!-- caution：测试、开发时才允许打开本设置，生产环境中必须关闭 -->
     	<intercept-url pattern="/rest/**" access="permitAll"/>
     	
-    	<intercept-url pattern="/auth/invalidsession" access="permitAll"/>  
+    	<intercept-url pattern="${security.invalidSessionUrl}" access="permitAll"/>  
     	<!-- 登录页,不需要拦截 -->  
-        <intercept-url pattern="/auth/login" access="permitAll"/>  
+        <intercept-url pattern="${security.loginPage}" access="permitAll"/>  
         <intercept-url pattern="/user/hello" access="hasRole('ROLE_ADMIN')"/>  
         
         <!-- 20160517 重要：security with default -->
@@ -62,8 +66,9 @@
             password-parameter:表示登录时密码使用的是哪个参数，即密码输入框的name
              -->
         <!--  20160517 默认的form-login无法支持用户名和密码之外的登录信息，customLoginFilter完成替换 -->
-        <form-login login-page="/auth/login" default-target-url="/"
-        	authentication-failure-url="/auth/login?error=true"
+        <form-login login-page="${security.loginPage}" default-target-url="${security.mainPage}"
+        	authentication-failure-url="${security.authenticationFailureUrl}"
+        	login-processing-url="${security.loginProcessingUrl}"
             username-parameter="username"
             password-parameter="password"/>
            
@@ -75,8 +80,8 @@
 			注销成功后转向:/auth/login -->
         <logout  delete-cookies="JSESSIONID"  
                 invalidate-session="true"   
-                logout-success-url="/auth/login?logout"   
-                logout-url="/auth/logout"/>  
+                logout-success-url="${security.logoutSuccessUrl}"   
+                logout-url="${security.logoutUrl}"/>  
             
         <!-- invalid-session-url是配置会话失效转向地址，可以在该地址中加入几秒后自动转入登录页面的功能；
         max-sessions是设置单个用户最大并行会话数；You can set the maximumSession property to -1 to allow unlimited sessions
@@ -84,7 +89,7 @@
         <!-- 2016-01-21 由于调试restful api需要，暂时屏蔽session-manage配置 -->
         <!-- 2017-07-11 如果不希望session失效后就进入invalid-session-url ，删除该配置属性即可 -->
 
-        <session-management session-authentication-strategy-ref="sas" invalid-session-url="/auth/invalidsession">  
+        <session-management session-authentication-strategy-ref="sas" invalid-session-url="${security.invalidSessionUrl}">  
             <!-- 重点：设置了custom-filter可能会导致下述简单配置失效，所以直接使用explicit setup ： session-authentication-strategy-ref
             	20160517 ：<concurrency-control>和session-authentication-strategy-ref两者不能同时使用，conflict！！！
             -->
@@ -127,7 +132,7 @@
     
     <b:bean id="loginEntryPoint"  class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
 		<!-- 默认登录页的url -->
-		<b:constructor-arg value="/auth/login" />
+		<b:constructor-arg value="${security.loginPage}" />
 	</b:bean>
     
     <!-- sessionManagementFilter 重要：

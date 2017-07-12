@@ -14,7 +14,9 @@
 	http://www.springframework.org/schema/tx
 	http://www.springframework.org/schema/tx/spring-tx.xsd
 	">
-
+	<!-- 重要： 整个系统中只能设置一次 加载资源文件  其中包含变量信息，必须在Spring配置文件的最前面加载，即第一个加载-->
+	<context:property-placeholder location="classpath:db.properties,classpath:system.properties" />
+   
 	<!-- 开启Spring的Bean自动扫描机制来查找与管理Bean实例 -->
 	<context:component-scan base-package="com.action,com.focusight.platform3.controller" />	     
       
