@@ -22,7 +22,7 @@
 	<context:annotation-config />
 	<!-- 开启Spring的Bean自动扫描机制来查找与管理Bean实例 -->
 	<context:component-scan
-		base-package="*.controller" />
+		base-package="*.**.controller" />
 	<!-- 下面的例子使用context:include-filter加快扫描速度 <context:component-scan base-package="com.itxxz.*.web,com.itxxz.sys.*.web,com.jfok.server" 
 		use-default-filters="false"> <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" 
 		/> </context:component-scan> -->

@@ -1,4 +1,4 @@
-package common.controller;
+package common.web.controller;
 
 import java.io.PrintWriter;
 import java.util.*;
