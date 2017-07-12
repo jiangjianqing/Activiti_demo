@@ -14,3 +14,7 @@ servlet-api待升级到4.0
 ##异常信息归属
 ###[WARNING] Error page loop /404.html
 是由于thymeleaf在处理th:src="@{/js/security/mainframe.js}"时，该文件不存在引起的
+
+
+需要注意的是监听器不受Spring 容器的管理,所以不能使用注解进行注入,
+同理,如果使用Spring Aop 也不能切入,这时可以考虑使用原生AspectJ代替Spring Aop
