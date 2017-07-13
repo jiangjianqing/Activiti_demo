@@ -16,6 +16,9 @@
 	">
 	<!-- activiti引擎配置 -->
 	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">  
+		<!-- 20170713 整合activiti-identity,使用创建view替代的方式 -->
+		<property name="dbIdentityUsed" value="false"/>  
+		
 		<!-- 配置数据源,和系统使用同一个数据源 -->  
 		<property name="dataSource" ref="dataSource" />  
 		<property name="transactionManager" ref="jdbcTransactionManager" />  
