@@ -96,6 +96,7 @@
 		<property name="packagesToScan">
 			<list>  
 				<value>common.db.model.*</value>  
+				<value>business.db.model.*</value>  
 			</list>  
 		</property>  
 		<!-- 注册Hibernate的ORM映射文件 -->
