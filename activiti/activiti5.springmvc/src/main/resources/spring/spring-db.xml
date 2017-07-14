@@ -91,6 +91,13 @@
 	<bean id="hibernateSessionFactory" name="hibernateSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<!-- 依赖注入上面定义的数据源dataSource -->
 		<property name="dataSource" ref="dataSource"/>
+		
+		<!-- 20170714 自动扫描jpa包 -->
+		<property name="packagesToScan">
+			<list>  
+				<value>common.db.model.*</value>  
+			</list>  
+		</property>  
 		<!-- 注册Hibernate的ORM映射文件 -->
 		<property name="annotatedClasses">
 			<list>
