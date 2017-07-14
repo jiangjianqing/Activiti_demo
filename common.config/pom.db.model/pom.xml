@@ -63,6 +63,13 @@
 			<version>5.0.3.Final</version>
 			<scope>${scope.type}</scope>
 		</dependency>
+		
+		<dependency>
+		    <groupId>org.mybatis</groupId>
+		    <artifactId>mybatis</artifactId>
+		    <version>${mybatis.version}</version>
+            <scope>${scope.type}</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -83,6 +90,7 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
+				<version>${maven.bundle.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
 					<manifestLocation>${manifest.location}</manifestLocation>
