@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="permission" transaction-type="JTA">
+		<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+
+        <jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=permission)</jta-data-source>
+        <non-jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=permission)</non-jta-data-source>
+	<!-- 2016-01-22 测试结果：使用feature openjpa2.4时与transaction发生冲突，NamespaceHandler无法找到，可以使用service:list NamespaceHandler 查看 -->
+		<properties>
+			<!-- 设定Connection模式，选项为：local, managed,默认为local -->
+            <property name="openjpa.ConnectionFactoryMode" value="managed"/>
+			<!--自动建表空间-->
+			<!-- 
+            <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)"/>
+             -->
+            <!--数据源-->
+            <!-- 
+            <property name="openjpa.ConnectionURL" value="jdbc:mysql://localhost:3306/db_test"/>
+            <property name="openjpa.ConnectionUserName" value="root"/>
+            <property name="openjpa.ConnectionPassword" value="****"/>
+            <property name="openjpa.ConnectionDriverName" value="com.mysql.jdbc.Driver"/>
+             -->
+            
+            <!--开启日志-->
+            <property name="openjpa.Log" value="DefaultLevel=WARN, Runtime=INFO, Tool=INFO, SQL=TRACE"/>
+            <!--<property name="openjpa.Log" value="none"/>-->
+            <!--动态运行时-->
+            <property name="openjpa.DynamicEnhancementAgent" value="false"/>
+            <property name="openjpa.RemoteCommitProvider" value="sjvm" />
+            <property name="openjpa.RuntimeUnenhancedClasses" value="supported"/>
+            <!-- 启用缓存，并且设置缓存的容量为5000，并且禁用软引用容量 -->
+            <property name="openjpa.DataCache" value="true(CacheSize=5000, SoftReferenceSize=100)" />
+            <!-- 启用查询结果缓存，缓存的容量为1000，并且软引用的容量为100 -->
+            <property name="openjpa.QueryCache" value="true(CacheSize=5000, SoftReferenceSize=100)" />
+            <!-- 缓存的数据存储类型 -->
+            <property name="openjpa.QueryCompilationCache" value="true" />
+
+			
+	    </properties>
+	</persistence-unit>
+</persistence>

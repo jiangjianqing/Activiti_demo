@@ -1,0 +1,10 @@
+20160126 重要:
+	BaseDaoImpl中的getEntityClass需要该类被继承之后才能有效
+	原因为泛型擦拭法使得BaseDaoImpl无法获取自己的Generic Type类型，一定要在父类后面带上泛型，否则该方法就会无效
+	
+20160127 重要：
+	ExtendJpaDao将基本方法都由protected改为public,方便jpa service使用
+	ExtendJpaDao、PaginationJpaDao中带Conditions、OrderBy参数的方法都有限制条件：1、针对某个class，2、Conditions只支持and，换句话说只支持最简单的需求
+	
+20160128 备注：
+	QueryCondition、QueryResult和QueryObject还没有使用上

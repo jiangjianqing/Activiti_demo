@@ -1,0 +1,118 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>common.config</groupId>
+		<artifactId>pom.db</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../pom.db</relativePath>
+	</parent>
+	<!-- 因为重复，所以屏蔽 <groupId>com.focusight.platform3</groupId> <version>0.0.1-SNAPSHOT</version> -->
+	<artifactId>pom.db.model</artifactId>
+
+	<packaging>pom</packaging>
+
+	<properties>
+		<hibernate.version>4.3.6.Final</hibernate.version>
+		<openjpa.version>2.4.0</openjpa.version><!--openjpa 2.4.0 只支持jpa2.0规范 -->
+	</properties>
+
+	<!-- 20170714 osgi使用 <packaging>bundle</packaging> -->
+	<dependencies>
+		<!-- 20150925 特别注意： 1、OpenJPA在2.4时只支持jpa 2.0规范（JSR-317 Java Persistence 
+			2.0） 2、Hibernate 4.3.6.Final已经支持jpa 2.1规范 3、选择OpenJPA还是Hibernate的同时也就确定了要支持的jpa规范版本 -->
+		<!-- 20160122 切换为openjpa2.4失败，原因可产看resource/backup/persistence-openjpa.xml中的描述 -->
+		<!-- <dependency> <groupId>org.apache.openjpa</groupId> <artifactId>openjpa</artifactId> 
+			<version>2.4.0</version> <scope>provided</scope> </dependency> -->
+		<!-- 20160129:如果想使用BaseEntityBean带来的便利，则引入，并且Entity都需要继承自BaseEntityBean -->
+		<dependency>
+			<groupId>common.lib</groupId>
+			<artifactId>common.db.base</artifactId>
+			<version>${project.version}</version>
+			<scope>${scope.type}</scope>
+		</dependency>
+		<!-- 外部库 -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.1.0.Final</version>
+			<scope>${scope.type}</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>1.0.0.Final</version>
+			<scope>${scope.type}</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${jackson.version}</version>
+			<scope>${scope.type}</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+			<version>${hibernate.version}</version>
+			<scope>${scope.type}</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<manifestLocation>${manifest.location}</manifestLocation>
+					<supportedProjectTypes>
+						<supportedProjectType>war</supportedProjectType>
+						<supportedProjectType>bundle</supportedProjectType>
+						<supportedProjectType>jar</supportedProjectType>
+					</supportedProjectTypes>
+					<instructions>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Meta-Persistence>META-INF/persistence.xml</Meta-Persistence>
+						<!-- 20160117 使用c3p0没有成功 -->
+						<!-- 20160122 openjpa 测试失败，hibernate和openjpa需要2选1 -->
+						<!-- 20160123 非常重要：如果出现hibernate.hbm2ddl.auto无效等情况，请查看这里的设置一定要正确 -->
+						<Import-Package>
+							!org.apache.openjpa.persistence,
+							!org.apache.openjpa.enhance,
+							!org.apache.openjpa.util,
+
+							org.hibernate.proxy,
+							javassist.util.proxy,
+							*
+						</Import-Package>
+						<Bundle-ClassPath>{maven-dependencies},.</Bundle-ClassPath>
+						<Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+						<Embed-Directory>lib</Embed-Directory>
+					</instructions>
+				</configuration>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>manifest</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestFile>${manifest.location}/MANIFEST.MF</manifestFile>
+						<addMavenDescriptor>false</addMavenDescriptor>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
