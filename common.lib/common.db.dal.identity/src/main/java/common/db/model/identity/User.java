@@ -103,14 +103,16 @@ public class User extends BaseEntityBean {
 	}
 
 	@Id
+	@Column(name="ID")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 
 	@NotEmpty(message="密码不能为空")
 	@Length(min=5, max=10, message="密码 （ ${validatedValue} ） 长度必须大于 {min} 小于 {max}")  //这里使用了el表达式，需要在pom中引用javax.el
-	@Column(name="password",nullable=false,length=255)
+	@Column(name="PASSWORD",nullable=false,length=255)
 	private String password;
 
+	@Column(name="SALT")
 	private String salt;
 
 	@NotNull(message="{user.name.null}")
@@ -121,13 +123,25 @@ public class User extends BaseEntityBean {
 	private String userName;
 	
 	//下面几项为spring-security需要的内容，默认值=true
-	private boolean enabled=true;  
-    private boolean accountNonExpired=true;  
+	@Column(name="ENABLED")
+	private boolean enabled=true;
+	
+	@Column(name="ACCOUNT_NON_EXPIRED")
+    private boolean accountNonExpired=true;
+    
+    @Column(name="CREDENTIALS_NON_EXPIRED")
     private boolean credentialsNonExpired=true;  
+    
+    @Column(name="ACCOUNT_NON_LOCKED")
     private boolean accountNonLocked=true;   
     
+    @Column(name="FIRST_NAME")
     private String firstName;
+    
+    @Column(name="LAST_NAME")
 	private String lastName;
+    
+	@Column(name="EMAIL")
 	private String email;
     
 	/*
