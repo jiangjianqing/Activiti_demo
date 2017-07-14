@@ -17,9 +17,13 @@
 	<!-- 重要： 整个系统中只能设置一次 加载资源文件  其中包含变量信息，必须在Spring配置文件的最前面加载，即第一个加载-->
 	<context:property-placeholder location="classpath:db.properties,classpath:system.properties" />
    
-	<!-- 开启Spring的Bean自动扫描机制来查找与管理Bean实例
-	<context:component-scan base-package="com.action,com.focusight.platform3.controller" />	     
-       -->
+	<!-- 开启Spring的Bean自动扫描机制来查找与管理Bean实例 ,需要注解才能生效
+	<context:component-scan base-package="common.db.service.*.impl" />	    
+	-->
+	<bean id="userDao" class="common.db.service.identity.impl.UserDaoImpl">
+		
+	</bean> 
+       
 	<!--  这里开始定义Spring bean例子  -->
 	
 	<!-- 用于持有ApplicationContext,可以使用SpringContextHolder.getBean('xxxx')的静态方法得到spring bean对象 -->

@@ -3,6 +3,10 @@ package common.web.controller;
 import java.io.PrintWriter;
 import java.util.*;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,6 +27,12 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import common.db.base.exception.DaoException;
+import common.db.base.exception.OutOfPageRangeException;
+import common.db.base.page.PageObject;
+import common.db.model.identity.User;
+import common.db.service.identity.UserDAO;
+import common.db.service.identity.impl.UserDaoImpl;
 import common.web.model.AuthenticationUser;
 
 /**
@@ -59,9 +69,34 @@ import common.web.model.AuthenticationUser;
 @SessionAttributes(types = {AuthenticationUser.class,/*String.class*/},value={"currentUser","session.message"})//将符合types或者vlaue的ModelMap对象 存入Session
 //放到Session属性列表中，以便这个属性可以跨请求访问
 public class UserController {
+	
+	@Resource
+	private UserDaoImpl userDao;
 	// private Map<String, Info> model = Collections.synchronizedMap(new
 	// HashMap<String, Info>());
+	
+	@PersistenceContext  
+	protected EntityManager em;
+	
+	@PostConstruct
+	private void init(){
+		//20170714 通过这里注入EntityManager，与osgi相似
+		userDao.setEntityManager(em);
+	}
 
+	@RequestMapping(value={"" , "/"},method=RequestMethod.GET)
+	@ResponseBody
+	public PageObject<User> getAll() throws OutOfPageRangeException, DaoException{
+		return userDao.getList(0);
+		//System.out.println(userDao);
+		/*if(result.hasErrors()) { //验证失败 
+			System.out.println("验证User出现错误");
+			System.out.println(result.toString());
+            return "error";  
+        }  */
+        //return "show";  //验证成功
+	}
+	
 	@RequestMapping(value="/",method=RequestMethod.POST)
 	public String addUser(@Valid common.web.model.AuthenticationUser user, BindingResult result /*其他参数必须在result后面*/){
 		if(result.hasErrors()) { //验证失败 
