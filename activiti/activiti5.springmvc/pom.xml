@@ -12,6 +12,14 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
+	<dependencies>
+		<dependency>
+			<groupId>common.lib</groupId>
+			<artifactId>common.db.model.identity</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
 	<build>
 		<plugins>
 		<!-- 默认已经加入mybatis.generator 支持，除非切换数据库种类，否则不需要修改

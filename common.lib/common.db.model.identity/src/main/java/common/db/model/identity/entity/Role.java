@@ -13,25 +13,25 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="sys_roles")
+@Table(name="COMMON_ID_ROLE")
 //@NamedQuery(name="SysRole.findAll", query="SELECT s FROM SysRole s")
 public class Role extends BaseEntityBean {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="ID")
+	//@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
-	private byte available;
-
-	private String description;
-
-	@Column(name="role",unique=true,nullable=false,length=60)
-	private String role;
+	@Column(name="NAME",unique=true,nullable=false,length=100)
+	private String name;
+	
+	@Column(name="TYPE")
+	private String type;
 
 	//bi-directional many-to-many association to SysUser
-	@ManyToMany(mappedBy="sysRoles",fetch=FetchType.EAGER)
-	private List<User> sysUsers;
+	@ManyToMany(mappedBy="roles",fetch=FetchType.EAGER)
+	private List<User> users;
 
 	public Role() {
 	}
@@ -44,36 +44,28 @@ public class Role extends BaseEntityBean {
 		this.id = id;
 	}
 
-	public byte getAvailable() {
-		return this.available;
+	public String getType() {
+		return this.type;
 	}
 
-	public void setAvailable(byte available) {
-		this.available = available;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	public String getDescription() {
-		return this.description;
+	public String getName() {
+		return this.name;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getRole() {
-		return this.role;
+	public List<User> getUsers() {
+		return this.users;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-	public List<User> getSysUsers() {
-		return this.sysUsers;
-	}
-
-	public void setSysUsers(List<User> sysUsers) {
-		this.sysUsers = sysUsers;
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
 	@Override

@@ -57,6 +57,12 @@
 			<version>${hibernate.version}</version>
 			<scope>${scope.type}</scope>
 		</dependency>
+        <dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>5.0.3.Final</version>
+			<scope>${scope.type}</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
