@@ -14,11 +14,11 @@ import common.db.base.jpa.JpaUtil;
 import common.db.base.jpa.PaginationJpaDao;
 import common.db.base.jpa.sample.SimpleJpaDaoImpl;
 import common.db.base.page.PageObject;
-import common.db.model.identity.entity.Role;
-import common.db.model.identity.entity.User;
-import common.db.service.identity.UserService;
+import common.db.model.identity.Role;
+import common.db.model.identity.User;
+import common.db.service.identity.UserDAO;
 
-public class UserDaoImpl extends SimpleJpaDaoImpl<User> implements UserService {
+public class UserDaoImpl extends SimpleJpaDaoImpl<User> implements UserDAO {
 
 	protected class GenericBaseDaoImpl extends BaseDaoImpl<User> {
 	};
@@ -28,8 +28,12 @@ public class UserDaoImpl extends SimpleJpaDaoImpl<User> implements UserService {
 	}
 
 	public User findByName(String userName) throws DaoException{
-		String jpql=String.format("select o from %s o where o.username=?",User.class.getSimpleName());
-		List<User> userList=paginationDao.queryForList(jpql,new Object[]{userName});
+		;
+		//String jpql=String.format("select o from %s o where o.username=?",User.class.getSimpleName());
+		//List<User> userList=paginationDao.queryForList(jpql,new Object[]{userName});
+		Map<String,Object> sMap = new HashMap<String, Object>();  
+		sMap.put("name", userName);  
+		List<User> userList=paginationDao.queryForList(baseDao.createNamedQuery("User.findByName"),sMap);
 		User ret=null;
 		if (userList.size()!=1){
 			if(userList.size()>1){

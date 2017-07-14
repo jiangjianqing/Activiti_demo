@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
  * org.activiti.engine.identity.User 中的id为字符串，与common.db.model.identity.entity.User冲突
  */
 
-public class AuthenticationUser extends common.db.model.identity.entity.User implements org.springframework.security.core.userdetails.UserDetails {
+public class AuthenticationUser extends common.db.model.identity.User implements org.springframework.security.core.userdetails.UserDetails {
 	
 	private Collection<? extends GrantedAuthority> authorities;
 	

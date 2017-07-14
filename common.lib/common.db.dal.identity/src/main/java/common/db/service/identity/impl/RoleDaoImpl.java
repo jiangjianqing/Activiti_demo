@@ -5,10 +5,10 @@ import common.db.base.exception.OutOfPageRangeException;
 import common.db.base.jpa.BaseDaoImpl;
 import common.db.base.jpa.sample.SimpleJpaDaoImpl;
 import common.db.base.page.PageObject;
-import common.db.model.identity.entity.Role;
-import common.db.service.identity.RoleService;
+import common.db.model.identity.Role;
+import common.db.service.identity.RoleDao;
 
-public class RoleDaoImpl extends SimpleJpaDaoImpl<Role> implements RoleService {
+public class RoleDaoImpl extends SimpleJpaDaoImpl<Role> implements RoleDao {
 
 		protected class GenericBaseDaoImpl extends BaseDaoImpl<Role> {
 		};

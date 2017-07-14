@@ -70,6 +70,15 @@
 		    <version>${mybatis.version}</version>
             <scope>${scope.type}</scope>
 		</dependency>
+		
+		<!-- 数据库驱动区域 -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.195</version>
+			<scope>test</scope>
+		</dependency>
+		
 	</dependencies>
 
 	<build>

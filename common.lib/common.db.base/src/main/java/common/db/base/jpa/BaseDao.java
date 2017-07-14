@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import common.db.base.exception.DaoException;
 
@@ -93,4 +95,10 @@ public interface BaseDao<T> {
      * @throws DaoException 
      */
     public void flush() throws DaoException;
+    
+    /**
+     * 创建命名查询
+     * @throws DaoException 
+     */
+    public Query createNamedQuery(String name) throws DaoException;
 }

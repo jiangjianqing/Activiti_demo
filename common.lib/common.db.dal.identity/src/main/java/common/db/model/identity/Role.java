@@ -1,4 +1,4 @@
-package common.db.model.identity.entity;
+package common.db.model.identity;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -20,7 +20,7 @@ public class Role extends BaseEntityBean {
 
 	@Id
 	@Column(name="ID")
-	//@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
 	@Column(name="NAME",unique=true,nullable=false,length=100)

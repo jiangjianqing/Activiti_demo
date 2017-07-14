@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.hibernate.Session;
 import org.hibernate.internal.SessionFactoryImpl;
@@ -369,5 +370,11 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         	throw new DaoException(ex.getClass().getSimpleName(),ex.getMessage());
         }  
     }
+
+	@Override
+	public Query createNamedQuery(String name) throws DaoException {
+		//放弃使用TypedQuery,因为使用Query更灵活
+		return em.createNamedQuery(name/*, getEntityClass()*/);
+	}
 
 }

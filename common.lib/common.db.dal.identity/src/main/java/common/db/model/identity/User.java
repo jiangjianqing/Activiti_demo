@@ -1,4 +1,4 @@
-package common.db.model.identity.entity;
+package common.db.model.identity;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -56,7 +56,11 @@ uniqueConstraints = @UniqueConstraint(
  */
 @Entity
 @Table(name="COMMON_ID_USER")
-//@NamedQuery(name="SysUser.findAll", query="SELECT s FROM SysUser s")
+@NamedQueries({
+    //@NamedQuery(name="findAll",query="SELECT u FROM User u"),
+    //@NamedQuery(name="findUserWithId",query="SELECT u FROM User u WHERE u.id = ?1"),
+    @NamedQuery(name="User.findByName",query="SELECT u FROM User u WHERE u.userName = :name")
+}) 
 //重要：不要在父类与子类同时使用JsonIgnoreProperties，会导致父类的设定失效
 //@JsonIgnoreProperties(value={"sysRoles"/*,"password","salt"*/})
 public class User extends BaseEntityBean {
@@ -90,10 +94,11 @@ public class User extends BaseEntityBean {
 	
 	@PostLoad
 	public void postLoad(){
-		if(this.roles!=null){
-			for (Role role : this.roles) {
-				roleIds.add(role.getId());
-			}
+		if (this.roles == null){
+			this.roles = new ArrayList<Role>();
+		}
+		for (Role role : this.roles) {
+			roleIds.add(role.getId());
 		}
 	}
 
@@ -255,6 +260,9 @@ public class User extends BaseEntityBean {
 	}
 
 	public List<Role> getRoles() {
+		if (this.roles == null){
+			this.roles = new ArrayList<Role>();
+		}
 		return this.roles;
 	}
 

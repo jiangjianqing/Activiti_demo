@@ -16,7 +16,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-public abstract class BaseJpaTestCase {
+public abstract class AbstractJpaTestCase {
 	protected static EntityManager em;
 	
 	//在这里声明需要使用的Dao
