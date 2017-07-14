@@ -11,16 +11,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import common.model.User;
+import common.web.model.AuthenticationUser;
 import common.web.utils.ValidateUtil;
 
 public class TestHibernateValidator {
 
 	@Test
 	public void test() {
-		User user=new User();
+		AuthenticationUser user=new AuthenticationUser();
 		user.setUserName("测试员");
-		user.setBirthday("1981-02-13");
+		//user.setBirthday("1981-02-13");
 		user.setPassword("123");
 		String msg=ValidateUtil.validateModel(user);
 		System.out.println("校验信息="+msg);

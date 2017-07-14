@@ -1,4 +1,4 @@
-package common.model;
+package common.web.model;
 
 import java.util.Collection;
 import java.util.Date;
@@ -10,7 +10,11 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.validation.constraints.*;
 
-public class User extends common.db.model.identity.entity.User implements org.activiti.engine.identity.User ,org.springframework.security.core.userdetails.UserDetails {
+/*
+ * org.activiti.engine.identity.User 中的id为字符串，与common.db.model.identity.entity.User冲突
+ */
+
+public class AuthenticationUser extends common.db.model.identity.entity.User implements org.springframework.security.core.userdetails.UserDetails {
 	
 	private Collection<? extends GrantedAuthority> authorities;
 	
@@ -25,22 +29,7 @@ public class User extends common.db.model.identity.entity.User implements org.ac
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
-	public String getId() {
-		return super.getId().toString();
-	}
-	@Override
-	public void setId(String id) {
-		
-		
-	}
-	@Override
-	public boolean isPictureSet() {
-		
-		return false;
+		return super.getUserName();
 	}
 	
 }

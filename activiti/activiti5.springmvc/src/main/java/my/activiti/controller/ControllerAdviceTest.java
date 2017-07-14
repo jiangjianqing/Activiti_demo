@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.NativeWebRequest;
 
-import common.model.User;
+import common.web.model.AuthenticationUser;
 
 
 /**
@@ -23,9 +23,9 @@ import common.model.User;
 public class ControllerAdviceTest {
 	//添加返回的对象到ModelMap中，value用来指定对象名称（没有value则会使用返回对象的小写名称，如下面返回User，则变量名=user），用到的场景非常少
 	@ModelAttribute(value="controllerAdviceUser")  
-    public User newUser() {  
+    public AuthenticationUser newUser() {  
         System.out.println("============应用到所有@RequestMapping注解方法，在其执行之前把返回值放入Model");  
-        User user= new User();
+        AuthenticationUser user= new AuthenticationUser();
         user.setUserName("这是ControllerAdviceTest添加的User");
         return user;
     }  

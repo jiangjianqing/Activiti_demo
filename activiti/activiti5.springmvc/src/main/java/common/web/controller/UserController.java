@@ -23,7 +23,7 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import common.model.User;
+import common.web.model.AuthenticationUser;
 
 /**
  * 如类级别的映射为 @RequestMapping(value="/narrow", produces="text/html")，
@@ -56,14 +56,14 @@ import common.model.User;
 @Scope("session")
 @Controller
 @RequestMapping("/rest/user")
-@SessionAttributes(types = {User.class,/*String.class*/},value={"currentUser","session.message"})//将符合types或者vlaue的ModelMap对象 存入Session
+@SessionAttributes(types = {AuthenticationUser.class,/*String.class*/},value={"currentUser","session.message"})//将符合types或者vlaue的ModelMap对象 存入Session
 //放到Session属性列表中，以便这个属性可以跨请求访问
 public class UserController {
 	// private Map<String, Info> model = Collections.synchronizedMap(new
 	// HashMap<String, Info>());
 
 	@RequestMapping(value="/",method=RequestMethod.POST)
-	public String addUser(@Valid User User, BindingResult result /*其他参数必须在result后面*/){
+	public String addUser(@Valid common.web.model.AuthenticationUser user, BindingResult result /*其他参数必须在result后面*/){
 		if(result.hasErrors()) { //验证失败 
 			System.out.println("验证User出现错误");
 			System.out.println(result.toString());
@@ -88,8 +88,8 @@ public class UserController {
 		System.out.println(String.format("modMap的长度=%d", modMap.size()));
 		for (Map.Entry<String, Object> entry : modMap.entrySet()) {  
 		    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());  
-		    if (entry.getValue() instanceof User){
-		    	User tmp=(User)entry.getValue();
+		    if (entry.getValue() instanceof AuthenticationUser){
+		    	AuthenticationUser tmp=(AuthenticationUser)entry.getValue();
 		    	System.out.println(String.format("user.name=%s", tmp.getUserName()));
 		    }
 		}  
@@ -107,7 +107,7 @@ public class UserController {
 
 	@RequestMapping(value = "showuserjson", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public User showUserJson(ModelMap modMap
+	public AuthenticationUser showUserJson(ModelMap modMap
 			,@ModelAttribute("session.message") String msg //使用 ModelAttribute读取参数，默认为requestScope，如果该参数不存在则会报错
 			,HttpSession session) {
 		//如果是第一次连接，则session.isNew()==true
@@ -119,7 +119,7 @@ public class UserController {
 			System.out.println(String.format("name=%s,value=%s",argName, session.getAttribute(argName)));
 		}
 		//logger.debug("使用ResponseBody时记录日志");
-		User user = new User();
+		AuthenticationUser user = new AuthenticationUser();
 		user.setUserName("中文测试789");
 		modMap.put("user", user);//这个User会存入session中
 		return user;
