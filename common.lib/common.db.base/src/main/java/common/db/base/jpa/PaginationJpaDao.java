@@ -1,6 +1,7 @@
 package common.db.base.jpa;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ public class PaginationJpaDao extends ExtendJpaDao {
 	 * @throws DaoException 
      * 
      */
-    public final <T>PageObject<T> queryForPaginationList(int currentPage, int pageSize, String queryForListHQL,Object queryParams) throws OutOfPageRangeException, DaoException {
+    public final <T>PageObject<T> queryForPaginationList(int currentPage, int pageSize, String queryForListHQL,Map<String, Object> queryParams) throws OutOfPageRangeException, DaoException {
         int dataCount = queryCount(queryForListHQL, queryParams);
         PageObject<T> pageObject = new PageObject<T>(dataCount, currentPage,pageSize);
         pageObject.setPageList(queryForList(queryForListHQL, queryParams, pageObject.getStartPoint(),pageObject.getPageSize()));
@@ -54,7 +55,7 @@ public class PaginationJpaDao extends ExtendJpaDao {
      * @throws OutOfPageRangeException 
      * @throws DaoException 
      */
-    public final<T>PageObject<T> queryForPaginationList(int currentPage,int pageSize,Class<T> clazz,LinkedHashMap<String,String>conditions,Object queryParams,LinkedHashMap<String,String> orderBy) throws OutOfPageRangeException, DaoException{
+    public final<T>PageObject<T> queryForPaginationList(int currentPage,int pageSize,Class<T> clazz,LinkedHashMap<String,String>conditions,Map<String, Object> queryParams,LinkedHashMap<String,String> orderBy) throws OutOfPageRangeException, DaoException{
         return queryForPaginationList(currentPage,clazz,null,conditions,queryParams,null);
     }
     /**
@@ -67,7 +68,7 @@ public class PaginationJpaDao extends ExtendJpaDao {
      * @throws OutOfPageRangeException 
      * @throws DaoException 
      */
-    public final<T>PageObject<T>queryForPaginationList(int currentPage,int pageSize,Class<T> clazz,LinkedHashMap<String,String>conditions,Object queryParams) throws OutOfPageRangeException, DaoException{
+    public final<T>PageObject<T>queryForPaginationList(int currentPage,int pageSize,Class<T> clazz,LinkedHashMap<String,String>conditions,Map<String, Object> queryParams) throws OutOfPageRangeException, DaoException{
             return queryForPaginationList(currentPage, pageSize,clazz,conditions,queryParams,null);
     }
  
@@ -104,7 +105,7 @@ public class PaginationJpaDao extends ExtendJpaDao {
      * @throws OutOfPageRangeException 
      * @throws DaoException 
      */
-    public final<T>PageObject<T>queryForPaginationList(int currentPage,Class<T> clazz,String[] fields,LinkedHashMap<String,String>conditions,Object queryParams) throws OutOfPageRangeException, DaoException{
+    public final<T>PageObject<T>queryForPaginationList(int currentPage,Class<T> clazz,String[] fields,LinkedHashMap<String,String>conditions,Map<String, Object> queryParams) throws OutOfPageRangeException, DaoException{
             return queryForPaginationList(currentPage,clazz,fields,conditions,queryParams,null);
     }
     /**
@@ -119,7 +120,7 @@ public class PaginationJpaDao extends ExtendJpaDao {
      * @throws DaoException 
      * 
      */
-    protected final <T>PageObject<T> queryForPaginationList(int currentPage,String queryForListHQL,Object queryParams) throws OutOfPageRangeException, DaoException {
+    protected final <T>PageObject<T> queryForPaginationList(int currentPage,String queryForListHQL,Map<String, Object> queryParams) throws OutOfPageRangeException, DaoException {
     	int dataCount = queryCount(queryForListHQL, queryParams);
         PageObject<T> pageObject = new PageObject<T>(dataCount, currentPage);
         pageObject.setPageList(queryForList(queryForListHQL, queryParams, pageObject.getStartPoint(),pageObject.getPageSize()));
@@ -149,7 +150,7 @@ public class PaginationJpaDao extends ExtendJpaDao {
      * @throws OutOfPageRangeException 
      * @throws DaoException 
      */
-    public final<T>PageObject<T> queryForPaginationList(int currentPage,Class<T> clazz,String[] fields,LinkedHashMap<String,String>conditions,Object queryParams,LinkedHashMap<String,String> orderBy) throws OutOfPageRangeException, DaoException{
+    public final<T>PageObject<T> queryForPaginationList(int currentPage,Class<T> clazz,String[] fields,LinkedHashMap<String,String>conditions,Map<String, Object> queryParams,LinkedHashMap<String,String> orderBy) throws OutOfPageRangeException, DaoException{
     	String queryHQL = getSimpleQueryString(clazz,fields,conditions,orderBy);   
         return this.queryForPaginationList(currentPage, queryHQL, queryParams);
     }

@@ -2,6 +2,7 @@ package common.db.base.jpa;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.EntityExistsException;
@@ -16,7 +17,11 @@ import common.db.base.DbUtil;
 import common.db.base.exception.DaoException;
 
 public abstract class ExtendJpaDao {
-	private static final Logger log = LoggerFactory.getLogger(ExtendJpaDao.class);
+	/*
+	 * 重要：调试日志记录，所有从本类继承的Controller都可以直接使用
+	 */
+	protected final Logger logger = LoggerFactory
+			.getLogger(getClass());
 
     private EntityManager em;
 
@@ -43,7 +48,7 @@ public abstract class ExtendJpaDao {
      * @param 预处理参数 <code>new Object{"张三",1} ; </code>
      * @throws DaoException 
      */
-    public final int executeUpdate(String updateHQL,Object queryParams) throws DaoException{
+    public final int executeUpdate(String updateHQL,Map<String, Object> queryParams) throws DaoException{
     	try{
     		Query query = getEntityManager().createQuery(updateHQL);
             JpaUtil.setQueryParams(query, queryParams);
@@ -93,7 +98,7 @@ public abstract class ExtendJpaDao {
      * @return
      * @throws DaoException 
      */
-    public final <T> List <T> queryForList(Class<T> clazz,String[] fields,String condition,Object queryParams,LinkedHashMap<String,String> orderBy) throws DaoException{
+    public final <T> List <T> queryForList(Class<T> clazz,String[] fields,String condition,Map<String, Object> queryParams,LinkedHashMap<String,String> orderBy) throws DaoException{
         String queryHQL=getQueryString(clazz,fields,condition,JpaUtil.buildOrderby(orderBy));
     	return this.queryForList(queryHQL, queryParams);
     }
@@ -104,7 +109,7 @@ public abstract class ExtendJpaDao {
      * @param queryParams   new Object[]{"%zhang%"}
      * @throws DaoException 
      */
-    public final <T> List <T> queryForList(Class<T> clazz,LinkedHashMap<String,String> conditions,Object queryParams) throws DaoException{
+    public final <T> List <T> queryForList(Class<T> clazz,LinkedHashMap<String,String> conditions,Map<String, Object> queryParams) throws DaoException{
             return this.queryForList(clazz,null, conditions, queryParams, null);
     }
     /**
@@ -115,7 +120,7 @@ public abstract class ExtendJpaDao {
      * @param order            put("id","asc")
      * @throws DaoException 
      */
-    public final <T> List <T> queryForList(Class<T> clazz,String[] fields,LinkedHashMap<String,String> conditions,Object queryParams,LinkedHashMap<String,String>orderBy) throws DaoException{
+    public final <T> List <T> queryForList(Class<T> clazz,String[] fields,LinkedHashMap<String,String> conditions,Map<String, Object> queryParams,LinkedHashMap<String,String>orderBy) throws DaoException{
     	String queryHQL = getSimpleQueryString(clazz,fields,conditions,orderBy);
         return queryForList(queryHQL,queryParams);
     }
@@ -143,7 +148,7 @@ public abstract class ExtendJpaDao {
      * @param parameterArray new Object[]{36}
      * @throws DaoException 
      */
-    public final <T> List <T>  queryForList(String queryHQL,Object queryParams) throws DaoException{
+    public final <T> List <T>  queryForList(String queryHQL,Map<String, Object> queryParams) throws DaoException{
             return this.queryForList(queryHQL, queryParams, -1, -1);
     }
     /**
@@ -160,7 +165,7 @@ public abstract class ExtendJpaDao {
      * @param parameterArray new Object[]{36}
      * @throws DaoException 
      */
-    public final int queryForInt(String queryIntHQL,Object queryParams) throws DaoException{
+    public final int queryForInt(String queryIntHQL,Map<String, Object> queryParams) throws DaoException{
     	try{
 	        Query query = getEntityManager().createQuery(queryIntHQL);
 	        JpaUtil.setQueryParams(query, queryParams);
@@ -180,7 +185,7 @@ public abstract class ExtendJpaDao {
      * @return
      * @throws DaoException 
      */
-    public final int queryCount(String queryForListHQL,Object queryParams) throws DaoException {
+    public final int queryCount(String queryForListHQL,Map<String, Object> queryParams) throws DaoException {
          
         StringBuilder countHQLBuilder = new StringBuilder(" select count(*) ");
         try {
@@ -202,7 +207,7 @@ public abstract class ExtendJpaDao {
      * @return
      * @throws DaoException 
      */
-    public final <T> int queryCount(Class<T> clazz,String condition,Object queryParams) throws DaoException {
+    public final <T> int queryCount(Class<T> clazz,String condition,Map<String, Object> queryParams) throws DaoException {
     	condition=DbUtil.toSqlWhere(condition);
         StringBuilder sqlBuilder = new StringBuilder("SELECT COUNT(");
         sqlBuilder.append(JpaUtil.getPkField(clazz)).append(") FROM ")
@@ -221,7 +226,7 @@ public abstract class ExtendJpaDao {
      * @return
      * @throws DaoException 
      */
-    public final List queryForList(String queryHQL,Object queryParams,int firstResult,int maxResult) throws DaoException{
+    public final List queryForList(String queryHQL,Map<String, Object> queryParams,int firstResult,int maxResult) throws DaoException{
     	try{
             Query query = getEntityManager().createQuery(queryHQL);
             JpaUtil.setQueryParams(query,queryParams);

@@ -210,8 +210,9 @@ public class JpaUtil {
      * @param queryParams
      *          查询参数
      */
-    public static Query setQueryParams(Query query, Object queryParams) {
+    public static Query setQueryParams(Query query, Map queryParams) {
         if (queryParams != null) {
+        	/*20170714 移除位置参数功能
             if (queryParams instanceof Object[]) {
                 Object[] params = (Object[]) queryParams;
                 if (params.length > 0) {
@@ -228,6 +229,12 @@ public class JpaUtil {
                 }
             }else{
             	throw new RuntimeException("无效的queryParams类型，只支持Object[]和map");
+            }*/
+        	
+            Iterator<String> it = queryParams.keySet().iterator();
+            while(it.hasNext()){
+                String key = it.next();
+                query.setParameter(key, queryParams.get(key));
             }
         }
         return query;
