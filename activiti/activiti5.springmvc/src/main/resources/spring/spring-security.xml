@@ -44,8 +44,8 @@
     <!-- 20170711 使用form-login 代替   entry-point-ref="loginEntryPoint" -->
     <http access-decision-manager-ref="webUrlAccessDecisionManager"   use-expressions="true" >  <!--  当访问被拒绝时，403.jsp  -->
     	
-    	<!-- caution：测试、开发时才允许打开本设置，生产环境中必须关闭 -->
-    	<intercept-url pattern="/rest/**" access="permitAll"/>
+    	<!-- caution：测试、开发时才允许打开匿名可访问，生产环境中必须关闭 -->
+    	<intercept-url pattern="/rest/**" access="isAnonymous()"/>
     	
     	<intercept-url pattern="${security.invalidSessionUrl}" access="permitAll"/>  
     	<!-- 登录页,不需要拦截 -->  
