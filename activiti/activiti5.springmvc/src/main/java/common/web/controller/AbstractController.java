@@ -10,7 +10,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import common.base.AbstractHelperClass;
+import common.web.utils.AbstractHelperClass;
 
 public abstract class AbstractController extends AbstractHelperClass {
 	

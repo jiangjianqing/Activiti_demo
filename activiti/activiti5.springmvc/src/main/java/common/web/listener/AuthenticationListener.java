@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import common.base.AbstractHelperClass;
+import common.web.utils.AbstractHelperClass;
 import common.web.utils.SessionHelper;
 
 /**

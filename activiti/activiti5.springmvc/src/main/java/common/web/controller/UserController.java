@@ -6,6 +6,7 @@ import java.util.*;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -91,9 +92,11 @@ public class UserController {
 	@RequestMapping(value={"" , "/"},method=RequestMethod.POST)
 	public String addUser(@Valid @RequestBody common.db.model.identity.User user, BindingResult result /*其他参数必须在result后面*/) throws DaoException{
 		if(result.hasErrors()) { //验证失败 
+			
 			System.out.println("验证User出现错误");
 			System.out.println(result.toString());
-            return "error";  
+			throw new EntityNotFoundException("验证User出现错误");
+            //return "error";  
         }else{
         	userDao.create(user);
         }
