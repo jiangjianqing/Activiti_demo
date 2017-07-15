@@ -1,7 +1,5 @@
 package my.activiti.controller;
 
-import my.activiti.bean.SessionVar;
-
 import org.activiti.engine.FormService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.ProcessEngine;
@@ -26,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import common.web.utils.SessionHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -143,7 +143,8 @@ public class ActivitiListController {
 	@RequestMapping(value="/start-process-instance/{processDefinitionId}")
 	public String startProcessInstance(@PathVariable String processDefinitionId,HttpSession session,HttpServletRequest request){
 		String url="";
-		Object obj=session.getAttribute(SessionVar.AUTHENTICATED_USER);
+		SessionHelper sessionHelper = new SessionHelper(session);
+		Object obj=sessionHelper.getAuthenticatedUser();
 		if(obj!=null){
 			User user=(User)obj;
 			//identityService.setAuthenticatedUserId(user.getId());//登录时已经执行过，20150905测试代码：有时StartUserID=null，导致任务无法继续处理
@@ -170,7 +171,8 @@ public class ActivitiListController {
 	 */
 	@RequestMapping(value="/claim-task/{taskId}")
 	public String claimTask(@PathVariable String taskId,HttpSession session){
-		Object obj=session.getAttribute(SessionVar.AUTHENTICATED_USER);
+		SessionHelper sessionHelper = new SessionHelper(session);
+		Object obj=sessionHelper.getAuthenticatedUser();
 		if(obj!=null){
 			User user=(User)obj;
 			taskService.claim(taskId, user.getId());

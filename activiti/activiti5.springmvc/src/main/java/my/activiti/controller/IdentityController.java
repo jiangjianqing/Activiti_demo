@@ -27,11 +27,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import my.activiti.bean.SessionVar;
+import common.web.utils.SessionHelper;
 
 @Controller
 @RequestMapping(value="identity")
-@SessionAttributes(value={SessionVar.AUTHENTICATED_USER})
+//@SessionAttributes(value={SessionVar.AUTHENTICATED_USER})
 public class IdentityController {
 
 	@Autowired
@@ -158,7 +158,8 @@ public class IdentityController {
 		ModelAndView mav=new ModelAndView("identity/user-list");
 		mav.addObject("userlist", list);
 		
-		Object obj=session.getAttribute(SessionVar.AUTHENTICATED_USER);
+		SessionHelper sessionHelper = new SessionHelper(session);
+		Object obj=sessionHelper.getAuthenticatedUser();
 		if(obj!=null){
 			User user=(User)obj;
 			//读取直接分配给当前用户或已经签收的任务
@@ -224,11 +225,11 @@ public class IdentityController {
 		User user=identityService.createUserQuery().userId(userId).singleResult();
 		if(user!=null){
 			identityService.setAuthenticatedUserId(userId);
-			modelMap.put(SessionVar.AUTHENTICATED_USER,user);
+			//modelMap.put(SessionVar.AUTHENTICATED_USER,user);
 			System.out.println(",该用户登录成功");
 		}else{
 			System.out.println(",该用户没有找到，登录失败");
-			modelMap.put(SessionVar.AUTHENTICATED_USER,null);
+			//modelMap.put(SessionVar.AUTHENTICATED_USER,null);
 			identityService.setAuthenticatedUserId(null);
 		}
 		

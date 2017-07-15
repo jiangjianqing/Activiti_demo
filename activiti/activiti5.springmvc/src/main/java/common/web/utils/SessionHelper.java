@@ -23,6 +23,11 @@ public class SessionHelper implements AutoCloseable {
 	public Object getSpringSecurityContext(){
 		return this.session.getAttribute(this.springSecurityContextName);
 	}
+	
+	
+	public Object getAuthenticatedUser(){
+		return null;
+	}
 
 	public boolean isLogin(){
 		return false;
