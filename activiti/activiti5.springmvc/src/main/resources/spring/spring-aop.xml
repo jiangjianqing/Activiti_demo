@@ -21,7 +21,7 @@
 	<aop:aspectj-autoproxy/>
 
 	<!-- 配置事务的传播特性  transaction-manager指定事务管理器为hibernateTransactionManager(也可以改用jdbcTransactionManager)-->
-	<tx:advice id="txAdvice" transaction-manager="hibernateTransactionManager">
+	<tx:advice id="txAdvice" transaction-manager="jdbcTransactionManager">
 		<tx:attributes>
 			<!-- 需要启动事务的业务逻辑，如果当前没有事务，则新建一个事务-->
 			<tx:method name="save*" propagation="REQUIRED" />
