@@ -38,14 +38,18 @@
    
     <!-- 验证码不校验 -->  
     <http pattern="/verify/**" security="none"/>  
+    
+    <!-- caution：测试、开发时才允许打开匿名可访问，生产环境中必须关闭 -->
+    <http pattern="/rest/**" security="none"/>  
 
 <!--20170711 spring-security4.2 移除该设置 access-denied-page="/auth/denied" -->
     <!-- auto-config="true" 不推荐使用，其会自动注册一些默认的过滤器 -->
     <!-- 20170711 使用form-login 代替   entry-point-ref="loginEntryPoint" -->
     <http access-decision-manager-ref="webUrlAccessDecisionManager"   use-expressions="true" >  <!--  当访问被拒绝时，403.jsp  -->
     	
-    	<!-- caution：测试、开发时才允许打开匿名可访问，生产环境中必须关闭 -->
-    	<intercept-url pattern="/rest/**" access="isAnonymous()"/>
+    	<!-- caution：测试、开发时才允许打开匿名可访问，生产环境中必须关闭
+    	<intercept-url pattern="/rest/**" access="permitAll"/>
+    	 -->
     	
     	<intercept-url pattern="${security.invalidSessionUrl}" access="permitAll"/>  
     	<!-- 登录页,不需要拦截 -->  

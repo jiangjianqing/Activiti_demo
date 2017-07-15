@@ -30,7 +30,7 @@
 	<tx:annotation-driven transaction-manager="jdbcTransactionManager"/>
    
 	<!-- 配置事务的传播特性  transaction-manager指定事务管理器为hibernateTransactionManager(也可以改用jdbcTransactionManager)-->
-	<tx:advice id="txAdvice" transaction-manager="jdbcTransactionManager">
+	<tx:advice id="txAdvice" transaction-manager="jpaTransactionManager">
 		<tx:attributes>
 			<!-- 需要启动事务的业务逻辑，如果当前没有事务，则新建一个事务-->
 			<tx:method name="save*" propagation="REQUIRED" />
@@ -39,13 +39,8 @@
 			<tx:method name="create*" propagation="REQUIRED"  rollback-for="DataAccessException"/>
             <tx:method name="add*" propagation="REQUIRED" />
             <tx:method name="insert*" propagation="REQUIRED" />
-			<!-- 所有不需要启动事务的业务逻辑-->
-			<tx:method name="get*" propagation="NOT_SUPPORTED" read-only="true" />
-            <tx:method name="find*" read-only="true" />
-            <tx:method name="select*" read-only="true" />
-            <tx:method name="list*" read-only="true" />
 			<!-- 设定其他方法不启用事务-->
-			<tx:method name="*"  propagation="REQUIRED"  />
+			<tx:method name="*"  read-only="true"/>
 		</tx:attributes>
 	</tx:advice>
 		
