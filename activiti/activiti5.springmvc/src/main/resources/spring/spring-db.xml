@@ -150,6 +150,7 @@
         <property name="jpaDialect" ref="jpaDialect" />  
         <property name="packagesToScan">
 			<list>  
+				<value>common.db.base.jpa.*</value>  
 				<value>common.db.model.*</value>  
 				<value>business.db.model.*</value>  
 			</list>  
@@ -168,12 +169,6 @@
             </props>  
         </property>  
     </bean>  
-    <!--2017-07-15 spring-data-jpa的配置，暂时不用，直接使用jpa的dao，但规则会参考
-	<jpa:repositories base-package="your dao package" 
-		repository-impl-postfix="Impl" 
-		entity-manager-factory-ref="entityManagerFactory" 
-		transaction-manager-ref="jpaTransactionManager" />
-		 -->
     
     <bean id="jpaPersistenceProvider" class="org.hibernate.ejb.HibernatePersistence" />
       
@@ -185,8 +180,14 @@
         <!-- <property name="showSql" value="true" /> -->
     </bean>  
           
-          
     <!-- 用于指定一些高级特性 -->  
     <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />  
 	
+	
+	<!--2017-07-15 spring-data-jpa的配置，暂时不用，直接使用jpa的dao，但规则会参考-->
+	<jpa:repositories base-package="your.dao.package" 
+		repository-impl-postfix="Impl" 
+		entity-manager-factory-ref="entityManagerFactory" 
+		transaction-manager-ref="jpaTransactionManager" />
+		 
 </beans>

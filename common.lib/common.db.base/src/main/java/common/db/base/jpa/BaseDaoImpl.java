@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
@@ -93,6 +94,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 	      */
 	}
 	
+	@PersistenceContext  
 	@Override
 	public void setEntityManager(EntityManager em) {
 		this.em = em;
