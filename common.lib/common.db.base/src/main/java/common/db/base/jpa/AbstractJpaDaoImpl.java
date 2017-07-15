@@ -25,29 +25,34 @@ import common.db.base.page.PageObject;
 
 public abstract class AbstractJpaDaoImpl<T> implements AbstractJpaDao<T> {
 	
-	protected final Logger logger = LoggerFactory
+	protected Logger logger = LoggerFactory
 			.getLogger(getClass());
 
 	protected BaseJpaDaoImpl<T> baseDao = new BaseJpaDaoImpl<T>();
 	protected PaginationJpaDaoImpl paginationDao = new PaginationJpaDaoImpl();
 	
-	protected Class<T> entityClass;
+	protected Class<T> entityClazz;
 	
-	protected final Class<T> getEntityClass(){
-		return entityClass;
+	protected Class<T> getEntityClazz(){
+		return entityClazz;
 	}
+		
+	/**
+	 * 2017.07.15非常重要：
+	 * 为了spring通过proxy的机制进行事务管理，这里的dao类方法都绝对不能使用final标注
+	 */
 
 	@PersistenceContext	/*20170715重要 ： 通过注解注入EntityManager*/  
-	public final void setEntityManager(EntityManager em){
+	public void setEntityManager(EntityManager em){
 		//取得T的类型变量
         ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
-		entityClass=(Class<T>) type.getActualTypeArguments()[0];
+        entityClazz=(Class<T>) type.getActualTypeArguments()[0];
 		
-		baseDao.setEntityManager(em , entityClass);
+		baseDao.setEntityManager(em , entityClazz);
 		paginationDao.SetEntityManager(em);
 	}
 
-	public final void create(T t) throws DaoException {
+	public void create(T t) throws DaoException {
 		baseDao.create(t);
 	}
 	
@@ -55,28 +60,28 @@ public abstract class AbstractJpaDaoImpl<T> implements AbstractJpaDao<T> {
 		return baseDao.merge(t);
 	}
 	
-	public final boolean delete(T t) throws DaoException, NoFieldChangedException{
+	public boolean delete(T t) throws DaoException, NoFieldChangedException{
 		return baseDao.remove(t);
 	}
 
-	public final T findByKey(Object key) throws DaoException {
+	public T findByKey(Object key) throws DaoException {
 		return baseDao.findByKey(key);
 	}
 
-	public final boolean deleteByKey(Object key) throws DaoException {
+	public boolean deleteByKey(Object key) throws DaoException {
 		return baseDao.removeByKey(key);
 	}
 	
-	public final List<T> getList() throws DaoException{
+	public List<T> getList() throws DaoException{
 		return baseDao.listAll();
 	}
 
-	public final PageObject<T> getList(int currPage) throws OutOfPageRangeException, DaoException {
-		return paginationDao.queryForPaginationList(currPage , getEntityClass());
+	public PageObject<T> getList(int currPage) throws OutOfPageRangeException, DaoException {
+		return paginationDao.queryForPaginationList(currPage , getEntityClazz());
 	}
 
-	public final PageObject<T> getList(int currPage, int pageSize) throws OutOfPageRangeException, DaoException{
-		return paginationDao.queryForPaginationList(currPage,pageSize , getEntityClass());
+	public PageObject<T> getList(int currPage, int pageSize) throws OutOfPageRangeException, DaoException{
+		return paginationDao.queryForPaginationList(currPage,pageSize , getEntityClazz());
 	}
 
 }
