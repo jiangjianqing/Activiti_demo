@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(value={"selected","attributeNames","tableName"})
 @MappedSuperclass
-public abstract class BaseEntityBean implements Serializable {
+public abstract class AbstractEntityBean implements Serializable {
 
 	private static final long serialVersionUID = 1962905939086138888L;
 	private transient EntityBeanUtil eoutil;
@@ -128,7 +128,7 @@ public abstract class BaseEntityBean implements Serializable {
 	 * @return 值不同的字段名
 	 */
 	@Transient
-	public List<String> getDifferentFields(BaseEntityBean anotherBean) {
+	public List<String> getDifferentFields(AbstractEntityBean anotherBean) {
 		return getBeanUtility().getDifferentFields(anotherBean);
 	}
 
@@ -153,11 +153,11 @@ public abstract class BaseEntityBean implements Serializable {
 		}
 
 		// 不是BaseEO，不必比较
-		if (!(obj instanceof BaseEntityBean)) {
+		if (!(obj instanceof AbstractEntityBean)) {
 			return false;
 		}
 
-		BaseEntityBean eo = (BaseEntityBean) obj;
+		AbstractEntityBean eo = (AbstractEntityBean) obj;
 
 		if (grabPrimaryKey() != null && eo.grabPrimaryKey() != null) {
 			if (grabPrimaryKey().equals(eo.grabPrimaryKey()))
@@ -177,7 +177,7 @@ public abstract class BaseEntityBean implements Serializable {
 	 * @param copyAttributes
 	 *            拷贝哪些字段
 	 */
-	public void copyAttributeValue(BaseEntityBean fromEO, String[] copyAttributes) {
+	public void copyAttributeValue(AbstractEntityBean fromEO, String[] copyAttributes) {
 		if (copyAttributes == null)
 			return;
 

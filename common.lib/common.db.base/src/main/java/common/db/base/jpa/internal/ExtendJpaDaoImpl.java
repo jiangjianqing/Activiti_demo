@@ -1,4 +1,4 @@
-package common.db.base.jpa;
+package common.db.base.jpa.internal;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -15,8 +15,9 @@ import org.slf4j.LoggerFactory;
 import common.db.base.DbUtil;
 import common.db.base.exception.DaoException;
 
-public abstract class ExtendJpaDao {
-	private static final Logger log = LoggerFactory.getLogger(ExtendJpaDao.class);
+public abstract class ExtendJpaDaoImpl {
+	protected final Logger logger = LoggerFactory
+			.getLogger(getClass());
 
     private EntityManager em;
 
@@ -135,29 +136,17 @@ public abstract class ExtendJpaDao {
     public final List queryForList(String queryHQL,Object queryParams,int firstResult,int maxResult) throws DaoException{
     	try{
             Query query = getEntityManager().createQuery(queryHQL);
-            return this.queryForList(query , queryParams , firstResult , maxResult);
-    	}
-    	catch(Exception ex){
-    		throw new DaoException("unknow DaoException:"+ex.getClass().getSimpleName(),ex.getMessage());
-    	}
-    }
-    
-    public final List queryForList(Query query,Object queryParams,int firstResult,int maxResult) throws DaoException{
-    	try{
             JpaUtil.setQueryParams(query,queryParams);
             if(firstResult>=0)
                 query.setFirstResult(firstResult);
             if(maxResult>0)
                 query.setMaxResults(maxResult);
             return query.getResultList();
+
     	}
     	catch(Exception ex){
     		throw new DaoException("unknow DaoException:"+ex.getClass().getSimpleName(),ex.getMessage());
     	}
-    }
-    
-    public final List queryForList(Query query,Object queryParams) throws DaoException{
-        return this.queryForList(query , queryParams , -1 , -1);
     }
 
     public final <T> String getQueryString(Class<T> clazz,String[] fields,String condition,String orderBy){

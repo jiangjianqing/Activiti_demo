@@ -1,4 +1,4 @@
-package common.db.base.jpa;
+package common.db.base.jpa.internal;
 
 import java.util.LinkedHashMap;
 
@@ -10,8 +10,7 @@ import common.db.base.exception.DaoException;
 import common.db.base.exception.OutOfPageRangeException;
 import common.db.base.page.PageObject;
 
-public class PaginationJpaDao extends ExtendJpaDao {
-	private static final Logger log = LoggerFactory.getLogger(PaginationJpaDao.class);
+public class PaginationJpaDaoImpl extends ExtendJpaDaoImpl {
 
     public final <T>PageObject<T> queryForPaginationList(int currentPage, int pageSize, String queryForListHQL,Object queryParams) throws OutOfPageRangeException, DaoException {
         int dataCount = queryCount(queryForListHQL, queryParams);

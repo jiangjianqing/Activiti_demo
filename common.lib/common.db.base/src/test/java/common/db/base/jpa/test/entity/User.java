@@ -7,11 +7,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import common.db.base.jpa.BaseEntityBean;
+import common.db.base.jpa.AbstractEntityBean;
 
 @Entity
 @Table(name="user")
-public class User extends BaseEntityBean {
+public class User extends AbstractEntityBean {
 
 	@Id  
 	@GeneratedValue(strategy = GenerationType.IDENTITY)  

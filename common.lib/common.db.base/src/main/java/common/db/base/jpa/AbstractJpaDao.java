@@ -1,4 +1,4 @@
-package common.db.base.jpa.sample;
+package common.db.base.jpa;
 
 
 import java.util.List;
@@ -10,7 +10,7 @@ import common.db.base.exception.NoFieldChangedException;
 import common.db.base.exception.OutOfPageRangeException;
 import common.db.base.page.PageObject;
 
-public interface SimpleJpaDao<T> {
+public interface AbstractJpaDao<T> {
 	void setEntityManager(EntityManager em);
 	void create(T t) throws DaoException;
 	T update(T t) throws DaoException,NoFieldChangedException;

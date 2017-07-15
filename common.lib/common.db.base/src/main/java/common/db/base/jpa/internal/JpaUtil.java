@@ -1,4 +1,4 @@
-package common.db.base.jpa;
+package common.db.base.jpa.internal;
 
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;

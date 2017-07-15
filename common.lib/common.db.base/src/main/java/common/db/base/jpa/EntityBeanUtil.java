@@ -52,21 +52,21 @@ public class EntityBeanUtil {
 	private HashMap<String, Method> hm_LazySeters;
 
 	/** 应用本工具类的实体对象 **/
-	private BaseEntityBean bean;
+	private AbstractEntityBean bean;
 
 	/** 应用本工具类的实体对象类型 **/
-	private Class<? extends BaseEntityBean> clazz;
+	private Class<? extends AbstractEntityBean> clazz;
 
 	private String beanDispName;
 
 	/** 存储字段对应中文名 **/
 	private HashMap<String, String> hm_DispNames;
 
-	public EntityBeanUtil(BaseEntityBean bean) {
+	public EntityBeanUtil(AbstractEntityBean bean) {
 		init(bean);
 	}
 
-	private void init(BaseEntityBean bean) {
+	private void init(AbstractEntityBean bean) {
 		// 当前bean与新传入的bean是同一个bean时不必进行初始化
 		if (this.bean == bean)
 			return;
@@ -111,8 +111,8 @@ public class EntityBeanUtil {
 			}
 		}
 		// 当前类不是 BaseEntityBean时，递归调用
-		if (!beanclass.equals(BaseEntityBean.class)) {
-			buildGetterANDSetters((Class<? extends BaseEntityBean>) beanclass.getSuperclass());
+		if (!beanclass.equals(AbstractEntityBean.class)) {
+			buildGetterANDSetters((Class<? extends AbstractEntityBean>) beanclass.getSuperclass());
 		}
 	}
 
@@ -152,7 +152,7 @@ public class EntityBeanUtil {
 		} catch (SecurityException e) {
 			return fieldName;
 		} catch (NoSuchFieldException e) {
-			if (clz.getSuperclass().equals(BaseEntityBean.class))
+			if (clz.getSuperclass().equals(AbstractEntityBean.class))
 				return getFieldDisplayName(clz.getSuperclass(), fieldName);
 			else
 				return fieldName;
@@ -290,7 +290,7 @@ public class EntityBeanUtil {
 		String tablename = null;
 		if (table == null) {
 			Class clazzp = clazz.getSuperclass();
-			while (!clazzp.equals(BaseEntityBean.class)) {
+			while (!clazzp.equals(AbstractEntityBean.class)) {
 				table = (Table) clazzp.getAnnotation(javax.persistence.Table.class);
 				if (table != null) {
 					tablename = table.name();
@@ -345,8 +345,8 @@ public class EntityBeanUtil {
 				obj_value = getAttributeValue(fieldname);
 				if (obj_value instanceof Date) {
 					obj_value = DateUtil.formatDate((Date) obj_value, null);
-				} else if (obj_value instanceof BaseEntityBean) {
-					obj_value = ((BaseEntityBean) obj_value).grabPrimaryKey();
+				} else if (obj_value instanceof AbstractEntityBean) {
+					obj_value = ((AbstractEntityBean) obj_value).grabPrimaryKey();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -368,7 +368,7 @@ public class EntityBeanUtil {
 			return false;
 
 		// 不是BaseEO，不必比较
-		if (!(obj instanceof BaseEntityBean)) {
+		if (!(obj instanceof AbstractEntityBean)) {
 			return false;
 		}
 
@@ -396,7 +396,7 @@ public class EntityBeanUtil {
 	 *            将要比较的对象
 	 * @return 值不同的字段名
 	 */
-	public List<String> getDifferentFields(BaseEntityBean anotherBean) {
+	public List<String> getDifferentFields(AbstractEntityBean anotherBean) {
 		// 类型不同不必进行比较
 		if (!clazz.equals(anotherBean.getClass())) {
 			throw new ClassCastException(anotherBean.getClass().getName() + "Cann't Cast to " + clazz.getName());
@@ -435,8 +435,8 @@ public class EntityBeanUtil {
 			if (current_value == null && obj_value == null) {
 				return true;
 			} else if (current_value != null && obj_value != null) {
-				if (current_value instanceof BaseEntityBean && obj_value instanceof BaseEntityBean) {// 避免递归比较,内部字段如果是baseeo子类则只比较pk
-					return ((BaseEntityBean) current_value).equalsPK(obj_value);
+				if (current_value instanceof AbstractEntityBean && obj_value instanceof AbstractEntityBean) {// 避免递归比较,内部字段如果是baseeo子类则只比较pk
+					return ((AbstractEntityBean) current_value).equalsPK(obj_value);
 				}
 				if (current_value instanceof Date && obj_value instanceof Date) { // 日期类型比较特殊处理
 					return DateUtil.equalsDate((Date) current_value, (Date) obj_value);

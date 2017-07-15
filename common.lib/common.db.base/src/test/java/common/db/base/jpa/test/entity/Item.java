@@ -7,11 +7,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import common.db.base.jpa.BaseEntityBean;
+import common.db.base.jpa.AbstractEntityBean;
 
 @Entity
 @Table(name="item")
-public class Item extends BaseEntityBean {
+public class Item extends AbstractEntityBean {
 
 	private int id;
 	private String name;

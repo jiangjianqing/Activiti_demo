@@ -1,4 +1,4 @@
-package common.db.base.jpa;
+package common.db.base.jpa.internal;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -18,7 +18,7 @@ import org.hibernate.internal.SessionFactoryImpl;
 
 import common.db.base.exception.DaoException;
 
-public class BaseDaoImpl<T> implements BaseDao<T> {
+public class BaseJpaDaoImpl<T> {
 
 	/*
 	 * JPA一些注意事项：
@@ -94,8 +94,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 	      */
 	}
 	
-	@PersistenceContext  
-	@Override
 	public void setEntityManager(EntityManager em) {
 		this.em = em;
 		//取得T的类型变量
@@ -103,12 +101,15 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 		this.entityClazz=(Class<T>) type.getActualTypeArguments()[0];
 	}
 	
-	@Override
+	public void setEntityManager(EntityManager em , Class<T> clazz) {
+		this.em = em;
+		this.entityClazz = clazz;
+	}
+	
 	public EntityManager getEntityManager(){
 		return this.em;
 	}
 
-	@Override
 	public int removeAll() throws DaoException {
 		try {
 			Query query = em.createQuery("delete from "+getEntityClass().getName());
@@ -118,7 +119,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 		}
 	}
 
-	@Override
 	public List<T> listAll() throws DaoException {		
 		try {
 			Query query = em.createQuery(" from "+getEntityClass().getName());
@@ -128,7 +128,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 		}
 	}
 	
-	@Override
 	public T findByKey(Object key) throws DaoException{
 		try {
 			return  (T) em.find(getEntityClass(), key);
@@ -136,17 +135,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 			throw new DaoException(ex.getClass().getSimpleName(),ex.getMessage());
 		}
 	}
-	
-	@Override
-	public Object findByKey(Class<?> clazz,Object key) throws DaoException{
-		try {
-			return  em.find(clazz, key);
-		} catch (Exception ex) {
-			throw new DaoException(ex.getClass().getSimpleName(),ex.getMessage());
-		}
-	}
 
-	@Override
 	public void create(T object) throws DaoException {
 		try {
 			em.persist(object);
@@ -155,7 +144,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 		}
 	}
 
-	@Override
 	public T update(T object) throws DaoException {
 		try {
 			return em.merge(object);
@@ -164,7 +152,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 		}
 	}
 
-	@Override
 	public boolean removeByKey(Object key) throws DaoException {
 		T t=findByKey(key);
 		if(t!=null){
@@ -177,7 +164,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
      * 不需确定新建实体是否已经存在
 	 * @throws DaoException 
      */
-    @Override
     public T merge(T t) throws DaoException {
         try {
             t = em.contains(t) ? t : em.merge(t);
@@ -191,7 +177,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
      * 可确定为新建实体
      * @throws DaoException 
      */
-    @Override
     public T persist(T t) throws DaoException {
         try {
         	em.persist(t);
@@ -205,7 +190,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
      * 可确定为新建实体 成功返回true 失败返回false
      * @throws DaoException 
      */
-    @Override
     public void persist(Collection<T> ts) throws DaoException {
     	for (T t : ts) {
         	persist(t);
@@ -216,7 +200,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
      * 若数据库中已有此记录，置为托管状态
      * @throws DaoException 
      */
-    @Override
     public Collection<T> merge(Collection<T> ts) throws DaoException {
         Collection<T> collection = new HashSet<T>();
         for (T t : ts) {
@@ -229,7 +212,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
      * 删除
      * @throws DaoException 
      */
-    @Override
     public boolean remove(T t) throws  DaoException {
         try {
             if (em.contains(t)) {
@@ -249,34 +231,9 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
      * 批量删除 传入集合
      * @throws DaoException 
      */
-    @Override
     public void remove(Collection<T> ts) throws DaoException {
     	for (T t : ts) {
             remove(t);
-        }
-    }
- 
-    /**
-     * 删除
-     * @throws DaoException 
-     */
-    @Override
-    public void remove(Class<T> clazz, Object id) throws DaoException {
-        try {
-        	em.remove(em.find(clazz, id));
-        } catch (Exception ex) {
-        	throw new DaoException(ex.getClass().getSimpleName(),ex.getMessage());
-        }
-    }
- 
-    /**
-     * 删除
-     * @throws DaoException 
-     */
-    @Override
-    public void remove(Class<T> clazz, Collection<Object> ids) throws DaoException {
-        for (Object id : ids) {
-            remove(clazz, id);
         }
     }
  
@@ -289,7 +246,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
      * @return
      * @throws DaoException 
      */
-    protected T refresh(Class<T> clazz, T t) throws  DaoException {
+    protected T refresh(T t) throws  DaoException {
         Object id = em.getEntityManagerFactory()
                 .getPersistenceUnitUtil().getIdentifier(t);
         try{
@@ -300,7 +257,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
             	em.refresh(t);
                 return t;
             } else {
-                return em.find(clazz, id);
+                return em.find(this.getEntityClass(), id);
             }
         } catch (Exception ex) {
         	throw new DaoException(ex.getClass().getSimpleName(),ex.getMessage());
@@ -312,7 +269,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
      * 清除一级缓存
      * @throws DaoException 
      */
-    @Override
     public void clear() throws DaoException {
     	try{
     		em.clear();
@@ -326,7 +282,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
      * 将对象置为游离状态
      * @throws DaoException 
      */
-    @Override
     public void detach(T t) throws DaoException {
     	try{
     		em.detach(t);
@@ -339,7 +294,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
      * 将对象置为游离状态
      * @throws DaoException 
      */
-    @Override
     public void detach(Collection<T> ts) throws DaoException {
         for (T t : ts) {
             detach(t);
@@ -350,7 +304,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
      * 判断实体是否处于托管状态
      * @throws DaoException 
      */
-    @Override
     public boolean isManaged(T t) throws DaoException {
     	try{
     		return em.contains(t);
@@ -364,7 +317,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
      * 同步jpa容器和数据库
      * @throws DaoException 
      */
-    @Override
     public void flush() throws DaoException {    	
     	try{
     		em.flush();
@@ -373,7 +325,12 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         }  
     }
 
-	@Override
+    /**
+     * 支持命名查询
+     * @param name
+     * @return
+     * @throws DaoException
+     */
 	public Query createNamedQuery(String name) throws DaoException {
 		//放弃使用TypedQuery,因为使用Query更灵活
 		return em.createNamedQuery(name/*, getEntityClass()*/);
