@@ -14,8 +14,12 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import org.activiti.engine.IdentityService;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import common.web.utils.AbstractHelperClass;
 import common.web.utils.SessionHelper;
+import common.web.utils.SpringContextHolder;
 
 /**
  * 记录用户的登录和注销
@@ -24,7 +28,10 @@ import common.web.utils.SessionHelper;
  */
 @WebListener
 public class AuthenticationListener extends AbstractHelperClass implements HttpSessionListener, HttpSessionAttributeListener,ServletRequestListener {
-    //private MemberLoginLogService memberLoginLogService;
+    
+	
+	
+	//private MemberLoginLogService memberLoginLogService;
     //private MemberInformationService memberInformationService;
     private HttpServletRequest request;
     //private OperateLogService operateLogService;
@@ -110,6 +117,13 @@ public class AuthenticationListener extends AbstractHelperClass implements HttpS
         try(SessionHelper sessionHelper = new SessionHelper(session)){
         	if(event.getName() == sessionHelper.getSpringSecurityContextName()
             		&& sessionHelper.getSpringSecurityContext() != null){
+        		/**
+        		 * 注意：Listener由web-container创建,不能使用spring 注入
+        		 */
+        		IdentityService identityService = SpringContextHolder.getBean("identityService");
+        		logger.warn("获取IdentityService,这里需要完成activiti的登陆");
+        		System.out.println(identityService);
+        		//identityService.setAuthenticatedUserId(userId);
             	logger.warn("用户登录");
             }
         	

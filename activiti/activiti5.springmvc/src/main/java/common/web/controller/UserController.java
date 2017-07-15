@@ -89,6 +89,9 @@ public class UserController {
         //return "show";  //验证成功
 	}
 	
+	//public ResponseEntity<String> createMembership(@RequestParam String userId
+	//		,@RequestParam(required=false) String[] groupIds){
+	
 	@RequestMapping(value={"" , "/"},method=RequestMethod.POST)
 	public String addUser(@Valid @RequestBody common.db.model.identity.User user, BindingResult result /*其他参数必须在result后面*/) throws DaoException{
 		if(result.hasErrors()) { //验证失败 

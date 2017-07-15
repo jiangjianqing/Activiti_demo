@@ -1,6 +1,7 @@
 package my.activiti.controller;
 
 import org.activiti.engine.FormService;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RepositoryService;
@@ -8,6 +9,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.DeploymentBuilder;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -19,8 +21,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,12 +60,48 @@ public class ActivitiListController {
 	private IdentityService identityService;
 	@Autowired
 	private TaskService taskService;
+	@Autowired
+	private HistoryService historyService;
 	
 	@RequestMapping(value = "/process-list")
 	public ModelAndView getProcessList(){
 		ModelAndView mav=new ModelAndView("workflow/process-list");
 		List<ProcessDefinition> processDefinitionList=repositoryService.createProcessDefinitionQuery().list();
 		mav.addObject("processDefinitionList", processDefinitionList);
+		return mav;
+	}
+	
+	/**
+	 * 获取用户列表
+	 * @return
+	 */
+	@RequestMapping(value={"user","user/list"},method=RequestMethod.GET)
+	public ModelAndView getUserList(HttpSession session,ModelMap modelMap){
+		List<User> list=identityService.createUserQuery().list();
+		ModelAndView mav=new ModelAndView("identity/user-list");
+		mav.addObject("userlist", list);
+		
+		SessionHelper sessionHelper = new SessionHelper(session);
+		Object obj=sessionHelper.getAuthenticatedUser();
+		if(obj!=null){
+			User user=(User)obj;
+			//读取直接分配给当前用户或已经签收的任务
+			List<Task> doingTasks=taskService.createTaskQuery().taskAssignee(user.getId()).list();
+			//等待签收的任务
+			List<Task> wattingClaimTasks=taskService.createTaskQuery().taskCandidateUser(user.getId()).list();
+			//合并两种任务
+			List<Task> allTasks=new ArrayList<Task>();
+			allTasks.addAll(doingTasks);
+			allTasks.addAll(wattingClaimTasks);
+			//activiti5.16以后提供的方法，一步就可以获取上述两种任务
+			//List<Task> allTasks=taskService.createTaskQuery().taskCandidateOrAssigned(user.getId()).list();
+			mav.addObject("taskList",allTasks);
+			
+			List<HistoricProcessInstance> hisProcessInstanceList=historyService.createHistoricProcessInstanceQuery()
+					/*.finished().involvedUser(user.getId())*/.list();
+			mav.addObject("historicProcessInstanceList",hisProcessInstanceList);
+		}
+		
 		return mav;
 	}
 
