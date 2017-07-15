@@ -88,6 +88,10 @@ public abstract class ExtendJpaDaoImpl {
     public final <T> List<T> queryForList(Class<T>clazz,LinkedHashMap<String,String>orderBy) throws DaoException{
         return this.queryForList(clazz,null, "", null, orderBy);
     }
+    
+    public final <T> List<T> queryForList(Query query,Object queryParams) throws DaoException{
+        return this.queryForList(query, queryParams, -1, -1);
+    }
 
     public final <T> List <T>  queryForList(String queryHQL,Object queryParams) throws DaoException{
             return this.queryForList(queryHQL, queryParams, -1, -1);
@@ -136,6 +140,21 @@ public abstract class ExtendJpaDaoImpl {
     public final List queryForList(String queryHQL,Object queryParams,int firstResult,int maxResult) throws DaoException{
     	try{
             Query query = getEntityManager().createQuery(queryHQL);
+            JpaUtil.setQueryParams(query,queryParams);
+            if(firstResult>=0)
+                query.setFirstResult(firstResult);
+            if(maxResult>0)
+                query.setMaxResults(maxResult);
+            return query.getResultList();
+
+    	}
+    	catch(Exception ex){
+    		throw new DaoException("unknow DaoException:"+ex.getClass().getSimpleName(),ex.getMessage());
+    	}
+    }
+    
+    public final List queryForList(Query query,Object queryParams,int firstResult,int maxResult) throws DaoException{
+    	try{
             JpaUtil.setQueryParams(query,queryParams);
             if(firstResult>=0)
                 query.setFirstResult(firstResult);

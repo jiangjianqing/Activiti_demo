@@ -16,7 +16,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import common.db.base.jpa.BaseEntityBean;
+import common.db.base.jpa.AbstractEntityBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +63,7 @@ uniqueConstraints = @UniqueConstraint(
 }) 
 //重要：不要在父类与子类同时使用JsonIgnoreProperties，会导致父类的设定失效
 //@JsonIgnoreProperties(value={"sysRoles"/*,"password","salt"*/})
-public class User extends BaseEntityBean {
+public class User extends AbstractEntityBean {
 	private static final long serialVersionUID = 1L;
 	
 	//自定义生成clob类型字段的sql语句。

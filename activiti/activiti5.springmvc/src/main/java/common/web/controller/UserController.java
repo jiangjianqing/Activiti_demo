@@ -31,8 +31,8 @@ import common.db.base.exception.DaoException;
 import common.db.base.exception.OutOfPageRangeException;
 import common.db.base.page.PageObject;
 import common.db.model.identity.User;
-import common.db.service.identity.UserDAO;
-import common.db.service.identity.impl.UserDaoImpl;
+import common.db.repository.jpa.identity.UserDAO;
+import common.db.repository.jpa.identity.impl.UserDaoImpl;
 import common.web.model.AuthenticationUser;
 
 /**

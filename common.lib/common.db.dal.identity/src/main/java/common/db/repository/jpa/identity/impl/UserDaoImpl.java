@@ -1,4 +1,4 @@
-package common.db.service.identity.impl;
+package common.db.repository.jpa.identity.impl;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -8,19 +8,19 @@ import java.util.Map;
 import common.db.base.exception.DaoException;
 import common.db.base.exception.NoFieldChangedException;
 import common.db.base.exception.OutOfPageRangeException;
-import common.db.base.jpa.BaseDaoImpl;
 import common.db.base.jpa.EntityBeanUtil;
-import common.db.base.jpa.JpaUtil;
-import common.db.base.jpa.PaginationJpaDao;
-import common.db.base.jpa.sample.SimpleJpaDaoImpl;
+import common.db.base.jpa.AbstractJpaDaoImpl;
+import common.db.base.jpa.internal.BaseJpaDaoImpl;
+import common.db.base.jpa.internal.JpaUtil;
+import common.db.base.jpa.internal.PaginationJpaDaoImpl;
 import common.db.base.page.PageObject;
 import common.db.model.identity.Role;
 import common.db.model.identity.User;
-import common.db.service.identity.UserDAO;
+import common.db.repository.jpa.identity.UserDAO;
 
-public class UserDaoImpl extends SimpleJpaDaoImpl<User> implements UserDAO {
+public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDAO {
 
-	protected class GenericBaseDaoImpl extends BaseDaoImpl<User> {
+	protected class GenericBaseDaoImpl extends BaseJpaDaoImpl<User> {
 	};
 
 	public UserDaoImpl(){
@@ -44,14 +44,6 @@ public class UserDaoImpl extends SimpleJpaDaoImpl<User> implements UserDAO {
 			ret=userList.get(0);
 		}
 		return ret;
-	}
-
-	public PageObject<User> getList(int currPage) throws OutOfPageRangeException, DaoException {
-		return paginationDao.queryForPaginationList(currPage, User.class);
-	}
-
-	public PageObject<User> getList(int currPage, int pageSize) throws OutOfPageRangeException, DaoException {
-		return paginationDao.queryForPaginationList(currPage, pageSize, User.class);
 	}
 
 	private <T> boolean isArrayEqual(List<T> list,List<T> list2){
@@ -80,8 +72,7 @@ public class UserDaoImpl extends SimpleJpaDaoImpl<User> implements UserDAO {
 		return ret;
 	}
 
-	@Override
-	public User update(User user) throws DaoException, NoFieldChangedException {
+	public User update(User user) throws NoFieldChangedException, DaoException {
 		User ret=baseDao.findByKey(user.getId());
 		if(ret==null){
 			return null;

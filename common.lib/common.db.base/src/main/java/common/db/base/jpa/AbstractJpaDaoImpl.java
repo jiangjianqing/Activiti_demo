@@ -51,7 +51,7 @@ public abstract class AbstractJpaDaoImpl<T> implements AbstractJpaDao<T> {
 		baseDao.create(t);
 	}
 	
-	public final T update(T t) throws DaoException, NoFieldChangedException{
+	public T update(T t) throws DaoException, NoFieldChangedException{
 		return baseDao.merge(t);
 	}
 	

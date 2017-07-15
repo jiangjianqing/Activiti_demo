@@ -3,7 +3,7 @@ package common.db.model.identity;
 import java.io.Serializable;
 import javax.persistence.*;
 
-import common.db.base.jpa.BaseEntityBean;
+import common.db.base.jpa.AbstractEntityBean;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 @Table(name="COMMON_ID_ROLE")
 //@NamedQuery(name="SysRole.findAll", query="SELECT s FROM SysRole s")
-public class Role extends BaseEntityBean {
+public class Role extends AbstractEntityBean {
 	private static final long serialVersionUID = 1L;
 
 	@Id

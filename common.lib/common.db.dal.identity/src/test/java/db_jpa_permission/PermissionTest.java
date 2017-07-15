@@ -32,10 +32,10 @@ import common.db.base.exception.OutOfPageRangeException;
 import common.db.base.page.PageObject;
 import common.db.model.identity.Role;
 import common.db.model.identity.User;
-import common.db.service.identity.RoleDao;
-import common.db.service.identity.UserDAO;
-import common.db.service.identity.impl.RoleDaoImpl;
-import common.db.service.identity.impl.UserDaoImpl;
+import common.db.repository.jpa.identity.RoleDao;
+import common.db.repository.jpa.identity.UserDAO;
+import common.db.repository.jpa.identity.impl.RoleDaoImpl;
+import common.db.repository.jpa.identity.impl.UserDaoImpl;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PermissionTest  extends AbstractJpaTestCase {
