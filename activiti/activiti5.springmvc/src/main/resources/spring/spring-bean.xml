@@ -20,6 +20,12 @@
 	<!-- 开启Spring的Bean自动扫描机制来查找与管理Bean实例 ,需要注解才能生效
 	<context:component-scan base-package="common.db.service.*.impl" />	    
 	-->
+	<context:component-scan base-package="com.itxxz" use-default-filters="false">  
+    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />  
+    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />  
+    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />  
+    </context:component-scan>  
+    
 	<bean id="userDao" class="common.db.service.identity.impl.UserDaoImpl">
 		
 	</bean> 

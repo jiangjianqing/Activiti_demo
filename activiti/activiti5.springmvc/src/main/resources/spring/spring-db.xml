@@ -5,6 +5,7 @@
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans     
 	http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -17,18 +18,7 @@
 	http://www.springframework.org/schema/jee       
 	http://www.springframework.org/schema/jee/spring-jee.xsd
 	">
-	
-	<!-- 开启Spring的Annotation注解处理器 -->
-	<context:annotation-config />
-    <context:component-scan base-package="com.itxxz" use-default-filters="false">  
-    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />  
-    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />  
-    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />  
-    </context:component-scan>  
     
-	<!-- 开启基于@AspectJ切面的注解处理器 -->
-	<aop:aspectj-autoproxy/>
-	
 	<!-- jndi数据源 -->  
 	<!--  
 	<jee:jndi-lookup id="jndiDataSource" jndi-name="java:comp/env/jdbc/datasource" /> 
@@ -90,18 +80,10 @@
         </property>
 	</bean>
      	
-	<!-- 注册一个JDBC数据源事务管理器 -->
-	<bean id="jdbcTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource"/>
-	</bean>
 	<!-- 注册一个JdbcTemplate实例名称为jdbcTemplate -->
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<constructor-arg ref="dataSource"/>
 	</bean>
-	
-	<!-- 基于@Transactional注解方式的事务管理(也可以改用jdbcTransactionManager)  根据需要选择-->
-	<!-- 20150818,测试activiti时改用jdbc,因为使用mybatis访问数据库 -->
-	<tx:annotation-driven transaction-manager="jdbcTransactionManager"/>
 	
 	<!-- 配置事务异常封装 -->
 	<bean id="persistenceExceptionTranslationPostProcessor"  	class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
@@ -161,8 +143,8 @@
     <bean id="entityManagerFactory"  
         class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">  
         <property name="dataSource" ref="dataSource" />  
-        <property name="persistenceProvider" ref="persistenceProvider" />  
-        <property name="jpaVendorAdapter" ref="jpaVendorAdapter" />  
+        <property name="persistenceProvider" ref="jpaPersistenceProvider"/>
+        <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>   
         <property name="jpaDialect" ref="jpaDialect" />  
         <property name="packagesToScan">
 			<list>  
@@ -184,18 +166,21 @@
             </props>  
         </property>  
     </bean>  
-      
-      
-    <!-- 用于指定持久化实现厂商类 -->  
-    <bean id="persistenceProvider" class="org.hibernate.ejb.HibernatePersistence" />  
-      
+    <!-- dao -->
+
+    
+    <bean id="jpaPersistenceProvider" class="org.hibernate.ejb.HibernatePersistence" />
       
     <!-- 用于设置JPA实现厂商的特定属性 -->  
-    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>  
+    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+   		<property name="generateDdl" value="false" />
+        <property name="database" value="MYSQL" />
+        <property name="databasePlatform" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+        <!-- <property name="showSql" value="true" /> -->
+    </bean>  
           
           
     <!-- 用于指定一些高级特性 -->  
     <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />  
-   
 	
 </beans>
