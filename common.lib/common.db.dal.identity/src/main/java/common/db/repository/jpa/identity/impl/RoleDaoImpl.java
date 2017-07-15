@@ -12,14 +12,6 @@ import common.db.repository.jpa.identity.RoleDao;
 
 public class RoleDaoImpl extends AbstractJpaDaoImpl<Role> implements RoleDao {
 
-		protected class GenericBaseDaoImpl extends BaseJpaDaoImpl<Role> {
-		};
-
-		public RoleDaoImpl(){
-			baseDao=new GenericBaseDaoImpl();
-		}
-
-
 
 }
 

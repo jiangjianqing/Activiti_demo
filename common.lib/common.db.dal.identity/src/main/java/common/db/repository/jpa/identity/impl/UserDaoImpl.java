@@ -20,13 +20,6 @@ import common.db.repository.jpa.identity.UserDAO;
 
 public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDAO {
 
-	protected class GenericBaseDaoImpl extends BaseJpaDaoImpl<User> {
-	};
-
-	public UserDaoImpl(){
-		baseDao=new GenericBaseDaoImpl();
-	}
-
 	public User findByName(String userName) throws DaoException{
 		;
 		//String jpql=String.format("select o from %s o where o.username=?",User.class.getSimpleName());
