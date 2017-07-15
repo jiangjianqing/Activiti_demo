@@ -67,7 +67,7 @@ public abstract class AbstractJpaDaoImpl<T> implements AbstractJpaDao<T> {
 		return baseDao.removeByKey(key);
 	}
 	
-	public final List<T> getAll() throws DaoException{
+	public final List<T> getList() throws DaoException{
 		return baseDao.listAll();
 	}
 
