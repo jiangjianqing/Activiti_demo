@@ -78,7 +78,7 @@ public class UserController {
 	@RequestMapping(value={"" , "/"},method=RequestMethod.GET)
 	@ResponseBody
 	public PageObject<User> getAll() throws OutOfPageRangeException, DaoException{
-		return userDao.getList(0);
+		return userDao.getList(1);
 		//System.out.println(userDao);
 		/*if(result.hasErrors()) { //验证失败 
 			System.out.println("验证User出现错误");

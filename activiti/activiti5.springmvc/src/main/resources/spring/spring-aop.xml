@@ -18,13 +18,22 @@
 	<!-- 开启Spring的Annotation注解处理器 -->
 	<context:annotation-config />
 	<!-- 开启基于@AspectJ切面的注解处理器 -->
-	<aop:aspectj-autoproxy/>
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
 
 	
 	<!-- 使用AOP技术实现事务管理，指定哪些类的哪些方法参与事务管理 （txAdvice是在spring-hibernate中定义的一个tx:advice 用于确定哪些事务需要处理）-->
 	<aop:config proxy-target-class="true"><!-- 加上proxy-target-class="true" 是为了解决spring 事务异常 Proxy12的错误 -->
 		<!--定义一个事务切入点，拦截指定包中的指定方法-->
-		<aop:pointcut id="txPointcut" expression="execution(* prj.ouroa..*.*(..))" />
+		<aop:pointcut id="txPointcut" expression="execution(* *.db.repository..impl.*(..))" />
+		<!-- 引用txAdvice事务通知-->
+		<aop:advisor pointcut-ref="txPointcut" advice-ref="txAdvice" />
+
+	</aop:config>
+	
+	<!-- 2017.07.15 Dao的Parent类也需要加入事务才能正常运行 -->
+	<aop:config proxy-target-class="true">
+		<!--定义一个事务切入点，拦截指定包中的指定方法-->
+		<aop:pointcut id="txPointcut" expression="execution(* common.db.base.jpa.AbstractJpaDaoImpl.*(..))" />
 		<!-- 引用txAdvice事务通知-->
 		<aop:advisor pointcut-ref="txPointcut" advice-ref="txAdvice" />
 	</aop:config>
