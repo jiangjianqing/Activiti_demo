@@ -75,15 +75,6 @@ public class UserController {
 	// private Map<String, Info> model = Collections.synchronizedMap(new
 	// HashMap<String, Info>());
 	
-	@PersistenceContext  
-	protected EntityManager em;
-	
-	@PostConstruct
-	private void init(){
-		//20170714 通过这里注入EntityManager，与osgi相似
-		userDao.setEntityManager(em);
-	}
-
 	@RequestMapping(value={"" , "/"},method=RequestMethod.GET)
 	@ResponseBody
 	public PageObject<User> getAll() throws OutOfPageRangeException, DaoException{

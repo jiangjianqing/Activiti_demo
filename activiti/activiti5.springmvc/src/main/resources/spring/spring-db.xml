@@ -5,7 +5,6 @@
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:jee="http://www.springframework.org/schema/jee"
-	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans     
 	http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -17,8 +16,6 @@
 	http://www.springframework.org/schema/tx/spring-tx.xsd
 	http://www.springframework.org/schema/jee       
 	http://www.springframework.org/schema/jee/spring-jee.xsd
-	http://www.springframework.org/schema/data/jpa 
-	http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
 	">
     
 	<!-- jndi数据源 -->  
@@ -184,10 +181,11 @@
     <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />  
 	
 	
-	<!--2017-07-15 spring-data-jpa的配置，暂时不用，直接使用jpa的dao，但规则会参考-->
+	<!--2017-07-15 spring-data-jpa的配置项，直接使用jpa的dao，但规则会参考
+	http://www.cnblogs.com/dreamroute/p/5173896.html
 	<jpa:repositories base-package="your.dao.package" 
 		repository-impl-postfix="Impl" 
 		entity-manager-factory-ref="entityManagerFactory" 
 		transaction-manager-ref="jpaTransactionManager" />
-		 
+		 -->
 </beans>
