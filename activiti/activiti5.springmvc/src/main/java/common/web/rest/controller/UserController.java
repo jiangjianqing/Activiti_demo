@@ -1,4 +1,4 @@
-package common.web.controller;
+package common.web.rest.controller;
 
 import java.io.PrintWriter;
 import java.util.*;
@@ -66,7 +66,7 @@ import common.web.model.AuthenticationUser;
  */
 @Scope("session")
 @Controller
-@RequestMapping("/rest/user")
+@RequestMapping("/rest/identity/user")
 @SessionAttributes(types = {AuthenticationUser.class,/*String.class*/},value={"currentUser","session.message"})//将符合types或者vlaue的ModelMap对象 存入Session
 //放到Session属性列表中，以便这个属性可以跨请求访问
 public class UserController {
