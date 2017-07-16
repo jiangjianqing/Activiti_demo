@@ -1,4 +1,4 @@
-package common.web.controller;
+package common.web.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,8 +9,6 @@ import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import common.web.utils.AbstractHelperClass;
 
 public abstract class AbstractController extends AbstractHelperClass {
 	

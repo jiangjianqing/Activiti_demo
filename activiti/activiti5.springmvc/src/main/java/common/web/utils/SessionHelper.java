@@ -16,8 +16,8 @@ public class SessionHelper implements AutoCloseable {
 		this.session = session;
 	}
 	
-	public String getSpringSecurityContextName(){
-		return this.springSecurityContextName;
+	public String getAuthenticationAttributeName(){
+		return springSecurityContextName;
 	}
 	
 	public Object getSpringSecurityContext(){
@@ -29,8 +29,8 @@ public class SessionHelper implements AutoCloseable {
 		return null;
 	}
 
-	public boolean isLogin(){
-		return false;
+	public boolean isLogined(){
+		return getSpringSecurityContext()!=null;
 	}
 
 	@Override

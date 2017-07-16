@@ -1,4 +1,4 @@
-package common.web.controller;
+package common.web.view.controller;
 
 import javax.persistence.EntityNotFoundException;
 

@@ -1,4 +1,4 @@
-package common.web.listener;
+package common.web.j2ee.listener;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -27,7 +27,7 @@ import common.web.utils.SpringContextHolder;
  *
  */
 @WebListener
-public class AuthenticationListener extends AbstractHelperClass implements HttpSessionListener, HttpSessionAttributeListener,ServletRequestListener {
+public class AuthenticationSessionListener extends AbstractHelperClass implements HttpSessionListener, HttpSessionAttributeListener,ServletRequestListener {
     
 	
 	
@@ -71,7 +71,7 @@ public class AuthenticationListener extends AbstractHelperClass implements HttpS
         
         try(SessionHelper sessionHelper = new SessionHelper(session)){
         	
-        	if(sessionHelper.getSpringSecurityContext() != null){
+        	if(sessionHelper.isLogined()==true){
             	logger.warn("用户注销");
             }
         	
@@ -115,8 +115,8 @@ public class AuthenticationListener extends AbstractHelperClass implements HttpS
         HttpSession session = event.getSession();
         
         try(SessionHelper sessionHelper = new SessionHelper(session)){
-        	if(event.getName() == sessionHelper.getSpringSecurityContextName()
-            		&& sessionHelper.getSpringSecurityContext() != null){
+        	if(event.getName() == sessionHelper.getAuthenticationAttributeName()
+            		&& sessionHelper.isLogined()){
         		/**
         		 * 注意：Listener由web-container创建,不能使用spring 注入
         		 */

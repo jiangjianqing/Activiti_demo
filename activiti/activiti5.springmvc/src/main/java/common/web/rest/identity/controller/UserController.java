@@ -1,4 +1,4 @@
-package common.web.rest.controller;
+package common.web.rest.identity.controller;
 
 import java.io.PrintWriter;
 import java.util.*;

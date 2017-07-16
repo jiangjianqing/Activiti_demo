@@ -1,4 +1,4 @@
-package common.web.controller;
+package common.web.view.controller;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
