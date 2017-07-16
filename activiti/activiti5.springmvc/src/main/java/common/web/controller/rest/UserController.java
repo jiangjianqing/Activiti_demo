@@ -34,6 +34,7 @@ import common.db.base.page.PageObject;
 import common.db.model.identity.User;
 import common.db.repository.jpa.identity.UserDAO;
 import common.db.repository.jpa.identity.impl.UserDaoImpl;
+import common.security.CustomUserDetailsService;
 import common.web.model.AuthenticationUser;
 
 /**
@@ -82,6 +83,9 @@ import common.web.model.AuthenticationUser;
 public class UserController {
 	
 	@Resource
+	private CustomUserDetailsService userDetailsService;
+	
+	@Resource
 	private UserDaoImpl userDao;
 	// private Map<String, Info> model = Collections.synchronizedMap(new
 	// HashMap<String, Info>());
@@ -111,6 +115,7 @@ public class UserController {
 			throw new EntityNotFoundException("验证User出现错误");
             //return "error";  
         }else{
+        	userDetailsService.encodeNewUserPassword(user);
         	userDao.create(user);
         }
         return "show";  //验证成功
