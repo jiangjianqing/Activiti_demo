@@ -81,10 +81,8 @@ public class ActivitiListController {
 		ModelAndView mav=new ModelAndView("identity/user-list");
 		mav.addObject("userlist", list);
 		
-		SessionHelper sessionHelper = new SessionHelper(session);
-		Object obj=sessionHelper.getAuthenticatedUser();
-		if(obj!=null){
-			User user=(User)obj;
+		if(SessionHelper.isAuthenticated()){
+			User user=(User)SessionHelper.getAuthenticatedUser();
 			//读取直接分配给当前用户或已经签收的任务
 			List<Task> doingTasks=taskService.createTaskQuery().taskAssignee(user.getId()).list();
 			//等待签收的任务
@@ -184,10 +182,9 @@ public class ActivitiListController {
 	@RequestMapping(value="/start-process-instance/{processDefinitionId}")
 	public String startProcessInstance(@PathVariable String processDefinitionId,HttpSession session,HttpServletRequest request){
 		String url="";
-		SessionHelper sessionHelper = new SessionHelper(session);
-		Object obj=sessionHelper.getAuthenticatedUser();
-		if(obj!=null){
-			User user=(User)obj;
+
+		if(SessionHelper.isAuthenticated()){
+			User user=(User)SessionHelper.getAuthenticatedUser();
 			//identityService.setAuthenticatedUserId(user.getId());//登录时已经执行过，20150905测试代码：有时StartUserID=null，导致任务无法继续处理
 			System.out.println("注意观察StartUserID=空的情况，会导致任务无法处理");
 			StartFormData formData=formService.getStartFormData(processDefinitionId);
@@ -212,10 +209,8 @@ public class ActivitiListController {
 	 */
 	@RequestMapping(value="/claim-task/{taskId}")
 	public String claimTask(@PathVariable String taskId,HttpSession session){
-		SessionHelper sessionHelper = new SessionHelper(session);
-		Object obj=sessionHelper.getAuthenticatedUser();
-		if(obj!=null){
-			User user=(User)obj;
+		if(SessionHelper.isAuthenticated()){
+			User user=(User)SessionHelper.getAuthenticatedUser();
 			taskService.claim(taskId, user.getId());
 		}else{
 			System.out.println("claimTask异常，当前没有登录用户");

@@ -1,11 +1,9 @@
 package common.web.j2ee.listener;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.servlet.ServletRequestEvent;
-import javax.servlet.ServletRequestListener;
+
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,12 +12,11 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import org.activiti.engine.IdentityService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import common.web.utils.AbstractHelperClass;
 import common.web.utils.SessionHelper;
 import common.web.utils.SpringContextHolder;
+import common.web.utils.SystemIntegrationHelper;
 
 /**
  * 记录用户的登录和注销
@@ -27,15 +24,17 @@ import common.web.utils.SpringContextHolder;
  *
  */
 @WebListener
-public class AuthenticationSessionListener extends AbstractHelperClass implements HttpSessionListener, HttpSessionAttributeListener,ServletRequestListener {
+public class AuthenticationSessionListener extends AbstractHelperClass implements HttpSessionListener, HttpSessionAttributeListener {
     
-	
+	/**
+	 * 特别注意：Listener由web-container创建,不能使用spring 注入bean ，需要SpringContextHolder的支持
+	 */
 	
 	//private MemberLoginLogService memberLoginLogService;
     //private MemberInformationService memberInformationService;
-    private HttpServletRequest request;
+    //private HttpServletRequest request;
     //private OperateLogService operateLogService;
-    public static final String SESSION_ATTRIBUTE_MEMBERLOGINRECORD = "memberLoginRecord";
+    //public static final String SESSION_ATTRIBUTE_MEMBERLOGINRECORD = "memberLoginRecord";
     //创建固定大小的线程池
     ExecutorService executorService = Executors.newFixedThreadPool(20);
     @Override
@@ -68,17 +67,9 @@ public class AuthenticationSessionListener extends AbstractHelperClass implement
         
         // 记录用户登出时间(以最后一次访问SESSION为准)
         HttpSession session = event.getSession();
-        
-        try(SessionHelper sessionHelper = new SessionHelper(session)){
-        	
-        	if(sessionHelper.isLogined()==true){
-            	logger.warn("用户注销");
-            }
-        	
-        	
-        } catch (IOException e) {
-			e.printStackTrace();
-		}
+        if(SessionHelper.isAuthenticated()==true){
+        	logger.debug("用户注销");
+        }
         /*
         if (!ValidateUtil.isEmpty(session.getAttribute(WebSessionListener.SPRING_SECURITY_CONTEXT))) {
             MemberLoginLogDto memberLoginRecordDto = (MemberLoginLogDto) session.getAttribute(WebSessionListener.SESSION_ATTRIBUTE_MEMBERLOGINRECORD);
@@ -114,23 +105,13 @@ public class AuthenticationSessionListener extends AbstractHelperClass implement
         //记录用户实际登录时间非访问时间
         HttpSession session = event.getSession();
         
-        try(SessionHelper sessionHelper = new SessionHelper(session)){
-        	if(event.getName() == sessionHelper.getAuthenticationAttributeName()
-            		&& sessionHelper.isLogined()){
-        		/**
-        		 * 注意：Listener由web-container创建,不能使用spring 注入
-        		 */
-        		IdentityService identityService = SpringContextHolder.getBean("identityService");
-        		logger.warn("SessionListener:获取IdentityService,这里需要完成activiti的登陆");
-        		System.out.println(identityService);
-        		//identityService.setAuthenticatedUserId(userId);
-            	logger.warn("用户登录");
-            }
-        	
-        	
-        } catch (IOException e) {
-			e.printStackTrace();
-		}
+        if(event.getName() == SessionHelper.getAuthenticationAttributeName()
+        		&& SessionHelper.isAuthenticated()){
+    		
+    		SystemIntegrationHelper.whenAuthenticated();
+        	logger.debug("用户登录");
+        }
+    	
         
         /*
         MemberLoginLogDto memberLoginRecordDto = (MemberLoginLogDto) session.getAttribute(WebSessionListener.SESSION_ATTRIBUTE_MEMBERLOGINRECORD);
@@ -178,35 +159,5 @@ public class AuthenticationSessionListener extends AbstractHelperClass implement
         return memberLoginLogDto;
     }
 */
-    
-    @Override
-    public void requestDestroyed(ServletRequestEvent event) {
-        
-    }
-
-    @Override
-    public void requestInitialized(ServletRequestEvent event) {
-        request = (HttpServletRequest)event.getServletRequest();
-        HttpSession session=request.getSession();
-        
-        try(SessionHelper sessionHelper = new SessionHelper(session)){
-        	if(sessionHelper.isLogined()){
-        		/**
-        		 * 注意：Listener由web-container创建,不能使用spring 注入
-        		 */
-        		IdentityService identityService = SpringContextHolder.getBean("identityService");
-        		logger.warn("RequestListener:获取IdentityService,这里需要完成activiti的登陆");
-        		System.out.println(identityService);
-        		//identityService.setAuthenticatedUserId(userId);
-            }
-        	
-        	
-        } catch (IOException e) {
-			e.printStackTrace();
-		}
-        //一个系统中,每个用户都是拥有这自己的权限,不停的权限,看见的内容是不一样的,
-        //在Activiti中,IdentityService中提供了SetAuthenticatedUserId方法用于将用户ID设置到当前的线程中,
-        //最终调用ThreadLocal的set方法.具体的代码如下
-    }
-    
+      
 }
