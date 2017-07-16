@@ -24,7 +24,7 @@ import common.db.base.exception.DaoException;
 import common.db.model.identity.Role;
 import common.db.model.identity.User;
 import common.db.repository.jpa.identity.impl.UserDaoImpl;
-import common.web.exception.PasswardInvalidException;
+import common.security.exception.PasswardInvalidException;
 import common.web.utils.AbstractHelperClass;
 
 /**
