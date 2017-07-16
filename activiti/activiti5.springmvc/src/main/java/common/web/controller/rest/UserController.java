@@ -1,4 +1,4 @@
-package common.web.rest.controller;
+package common.web.controller.rest;
 
 import java.io.PrintWriter;
 import java.util.*;

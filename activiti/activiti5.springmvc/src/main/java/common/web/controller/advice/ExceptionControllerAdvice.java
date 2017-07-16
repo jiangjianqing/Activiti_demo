@@ -1,4 +1,4 @@
-package common.web.view.controller;
+package common.web.controller.advice;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -21,7 +21,7 @@ import common.web.utils.AbstractHelperClass;
 import common.web.utils.SystemIntegrationHelper;
 
 @ControllerAdvice //(basePackages = "com.github") //basePackages用于指定对哪些包里的Controller起作用。
-public class WebControllerAdvice extends AbstractHelperClass {
+public class ExceptionControllerAdvice extends AbstractHelperClass {
 
 	//用于自动绑定前台请求参数到Model中。
     @InitBinder  
@@ -33,25 +33,6 @@ public class WebControllerAdvice extends AbstractHelperClass {
     	//System.out.println("============应用到所有@RequestMapping注解方法，在其执行之前初始化数据绑定器"); 
     }
     
-    /**
-     * 利用ModelAtribute的特性完成SystemIntegration whenRequest的动作，这样性能比较高
-     * 原因是利用RequestListener时出现了4次调用，影响性能,可能是使用了模板后的后遗症
-     */
-  	@ModelAttribute  
-    public void onRequest() {  
-          SystemIntegrationHelper.whenServletRequest();
-
-    }
-    
-  //添加返回的对象到ModelMap中，value用来指定对象名称（没有value则会使用返回对象的小写名称，如下面返回User，则变量名=user），用到的场景非常少
-  	@ModelAttribute(value="controllerAdviceUser")  
-    public AuthenticationUser newUser() {  
-          System.out.println("=======@ControllerAdvice.@ModelAttribute=====应用到所有@RequestMapping注解方法，在其执行之前把返回值放入Model");  
-          AuthenticationUser user= new AuthenticationUser();
-          user.setUserName("这是ControllerAdviceTest添加的User");
-          return user;
-      }  
-
     /**
      * 使用jpa中的异常对象进行数据反馈
      * @param ex
