@@ -64,7 +64,7 @@ public class PermissionTest  extends AbstractJpaTestCase {
 	{
 		PageObject<User> page=userService.getList(1);
 		System.out.println("测试用户新增");
-		User newUser=userService.findByKey(1);
+		User newUser=userService.findByKey(new Long(1));
 
 		newUser=new User();
 		newUser.setUserName(newUserName);
@@ -97,7 +97,7 @@ public class PermissionTest  extends AbstractJpaTestCase {
 		
 		System.out.println("用户拥有的角色数量:"+newUser.getRoles().size());
 		
-		Role newRole=roleService.findByKey(1);
+		Role newRole=roleService.findByKey(new Long(1));
 		
 		System.out.println("newUser="+newUser);
 		if (newUser.getRoles() == null){

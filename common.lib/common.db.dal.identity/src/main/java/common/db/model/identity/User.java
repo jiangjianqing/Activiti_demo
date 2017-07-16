@@ -105,7 +105,7 @@ public class User extends AbstractEntityBean {
 	@Id
 	@Column(name="ID")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 
 	@NotEmpty(message="密码不能为空")
 	@Length(min=5, max=10, message="密码 （ ${validatedValue} ） 长度必须大于 {min} 小于 {max}")  //这里使用了el表达式，需要在pom中引用javax.el
@@ -196,24 +196,24 @@ public class User extends AbstractEntityBean {
 	private List<Role> roles;
 	
 	@Transient
-	private List<Integer> roleIds=new ArrayList<Integer>();
+	private List<Long> roleIds=new ArrayList<Long>();
 
-	public List<Integer> getRoleIds() {
+	public List<Long> getRoleIds() {
 		return roleIds;
 	}
 
-	public void setRoleIds(List<Integer> roleIds) {
+	public void setRoleIds(List<Long> roleIds) {
 		this.roleIds = roleIds;
 	}
 
 	public User() {
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

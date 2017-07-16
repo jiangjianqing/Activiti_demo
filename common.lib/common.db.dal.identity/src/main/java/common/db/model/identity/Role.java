@@ -21,7 +21,7 @@ public class Role extends AbstractEntityBean {
 	@Id
 	@Column(name="ID")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 
 	@Column(name="NAME",unique=true,nullable=false,length=100)
 	private String name;
@@ -36,11 +36,11 @@ public class Role extends AbstractEntityBean {
 	public Role() {
 	}
 
-	public int getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
