@@ -121,7 +121,7 @@ public class AuthenticationSessionListener extends AbstractHelperClass implement
         		 * 注意：Listener由web-container创建,不能使用spring 注入
         		 */
         		IdentityService identityService = SpringContextHolder.getBean("identityService");
-        		logger.warn("获取IdentityService,这里需要完成activiti的登陆");
+        		logger.warn("SessionListener:获取IdentityService,这里需要完成activiti的登陆");
         		System.out.println(identityService);
         		//identityService.setAuthenticatedUserId(userId);
             	logger.warn("用户登录");
@@ -187,6 +187,26 @@ public class AuthenticationSessionListener extends AbstractHelperClass implement
     @Override
     public void requestInitialized(ServletRequestEvent event) {
         request = (HttpServletRequest)event.getServletRequest();
+        HttpSession session=request.getSession();
+        
+        try(SessionHelper sessionHelper = new SessionHelper(session)){
+        	if(sessionHelper.isLogined()){
+        		/**
+        		 * 注意：Listener由web-container创建,不能使用spring 注入
+        		 */
+        		IdentityService identityService = SpringContextHolder.getBean("identityService");
+        		logger.warn("RequestListener:获取IdentityService,这里需要完成activiti的登陆");
+        		System.out.println(identityService);
+        		//identityService.setAuthenticatedUserId(userId);
+            }
+        	
+        	
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
+        //一个系统中,每个用户都是拥有这自己的权限,不停的权限,看见的内容是不一样的,
+        //在Activiti中,IdentityService中提供了SetAuthenticatedUserId方法用于将用户ID设置到当前的线程中,
+        //最终调用ThreadLocal的set方法.具体的代码如下
     }
     
 }

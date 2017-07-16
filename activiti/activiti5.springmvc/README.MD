@@ -22,6 +22,29 @@ servlet-api待升级到4.0
 可以将控制器写在别的jar中，但要注意 autodetect的问题：
 一定要给外部jar的Controller类设定@Controller("testdemo") 其中testdemo根据实际情况设置
 
+ *重要：
+ *
+ *spring MVC Controller默认是单例的，单例的原因有二：
+1、为了性能。
+2、不需要多例。
+ *
+ *Controller最佳实践：
+1、不要在controller中定义成员变量。
+2、万一必须要定义一个非静态成员变量时候，则通过注解@Scope("prototype")，将其设置为多例模式。
+
+
+
+	加入RequestContextListener后 能够支持 在非controller中注入Session和Request:
+	@Autowired  
+    private HttpSession session;  
+      
+    @Autowired  
+    private HttpServletRequest request;  
+    
+    可以使用代码的方式获取reuqest对像
+    HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+
+
 //--------------------------------------------------
 mybatis generator一些小技巧：
 特别注意：mybatis-generator 仅适合在建表完成后使用一次!!

@@ -46,6 +46,21 @@
 	<listener>
 		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
 	</listener>
+	
+	<!-- 
+	加入该listener 能够支持 在非controller中注入Session和Request:
+	@Autowired  
+    private HttpSession session;  
+      
+    @Autowired  
+    private HttpServletRequest request;  
+    
+    可以使用代码的方式获取reuqest对像
+    HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+	 -->
+	<listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+ 	</listener>
   
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>

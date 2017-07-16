@@ -1,4 +1,4 @@
-package common.web.rest.identity.controller;
+package common.web.rest.controller;
 
 import java.io.PrintWriter;
 import java.util.*;
@@ -63,9 +63,19 @@ import common.web.model.AuthenticationUser;
 
  * @author cz_jjq
  *
+ *
+ *重要：
+ *
+ *spring MVC Controller默认是单例的，单例的原因有二：
+1、为了性能。
+2、不需要多例。
+ *
+ *Controller最佳实践：
+1、不要在controller中定义成员变量。
+2、万一必须要定义一个非静态成员变量时候，则通过注解@Scope("prototype")，将其设置为多例模式。
  */
-@Scope("session")
-@Controller
+
+@Controller	
 @RequestMapping("/rest/identity/user")
 @SessionAttributes(types = {AuthenticationUser.class,/*String.class*/},value={"currentUser","session.message"})//将符合types或者vlaue的ModelMap对象 存入Session
 //放到Session属性列表中，以便这个属性可以跨请求访问
