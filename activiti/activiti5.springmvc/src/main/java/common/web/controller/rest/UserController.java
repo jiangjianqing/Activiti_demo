@@ -34,8 +34,8 @@ import common.db.base.page.PageObject;
 import common.db.model.identity.User;
 import common.db.repository.jpa.identity.UserDAO;
 import common.db.repository.jpa.identity.impl.UserDaoImpl;
+import common.security.AuthenticationUser;
 import common.security.CustomUserDetailsService;
-import common.web.model.AuthenticationUser;
 
 /**
  * 如类级别的映射为 @RequestMapping(value="/narrow", produces="text/html")，

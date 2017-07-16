@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import common.web.model.AuthenticationUser;
+import common.security.AuthenticationUser;
 import common.web.utils.ValidateUtil;
 
 public class TestHibernateValidator {

@@ -19,18 +19,20 @@
 	
 	<bean name="customAuthenticationProvider" class="common.security.CustomAuthenticationProvider">
 		<property name="userDetailsService" ref="userDetailsService"/>
-    	<property name="passwordEncoder" ref="passwordEncoder"/>
     </bean> 	
     
     <bean name="userDetailsService" class="common.security.CustomUserDetailsService">  
     	<property name="passwordEncoder" ref="passwordEncoder"/>
     </bean>  
     
-    <!-- 对密码进行MD5编码 -->  
-    <bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/> 
-    <!-- 用于替代上面的passwordEncoder -->
-    <bean id="newPasswordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder"/>
-    <bean id="newPasswordEncoder22" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+    <!-- 对密码进行MD5编码 --> 
+    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
 		<constructor-arg name="strength" value="9" />
 	</bean>
+    <bean id="testPasswordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder"/>
+    
+     <!-- 已被上面的PasswordEncoder 替代
+    <bean id="oldPasswordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/> 
+     -->
+    
 </beans>  

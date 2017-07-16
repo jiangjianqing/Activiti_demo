@@ -15,8 +15,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import common.db.base.exception.DaoException;
 import common.db.base.exception.NoFieldChangedException;
 import common.db.base.exception.OutOfPageRangeException;
+import common.security.AuthenticationUser;
 import common.web.exception.BindingResultErrorException;
-import common.web.model.AuthenticationUser;
 import common.web.utils.AbstractHelperClass;
 import common.web.utils.SystemIntegrationHelper;
 

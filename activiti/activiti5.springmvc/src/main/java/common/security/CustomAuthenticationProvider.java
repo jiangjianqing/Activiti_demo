@@ -1,31 +1,34 @@
 package common.security;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.annotation.Resource;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+
+/**
+ * 如果要对当前的用户登陆信息做更多验证，只需要在这里增加内容，比如回答问题等等
+ * @author jjq
+ *
+ */
 public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
-	private UserDetailsService userDetailsService;
+	@Resource
+	private CustomUserDetailsService userDetailsService;
 
-	private PasswordEncoder passwordEncoder;
+	public CustomUserDetailsService getUserDetailsService() {
+		return userDetailsService;
+	}
 
-	private org.springframework.security.crypto.password.PasswordEncoder newPasswordEncoder;
+	public void setUserDetailsService(CustomUserDetailsService userDetailsService) {
+		this.userDetailsService = userDetailsService;
+	}
 
+	/**
+	 * 能够对除用户名密码以外的登录信息做验证的方法
+	 */
 	@Override
 	protected void additionalAuthenticationChecks(UserDetails userDetails,
 			UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
@@ -45,7 +48,8 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 			throws AuthenticationException {
 
 		UserDetails user=userDetailsService.loadUserByUsername(username);
-		boolean validPassword=passwordEncoder.isPasswordValid(user.getPassword(), authentication.getCredentials().toString(), user.getUsername());
+		
+		boolean validPassword=userDetailsService.isPasswordMatch(authentication.getCredentials().toString(), user);
 		if (!validPassword){
 			throw new BadCredentialsException(messages.getMessage(
                     "AbstractUserDetailsAuthenticationProvider.badCredentials", "CustomAuthenticationProvider Bad credentials"));
@@ -54,20 +58,5 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 
 	}
 
-	public UserDetailsService getUserDetailsService() {
-		return userDetailsService;
-	}
-
-	public void setUserDetailsService(UserDetailsService userDetailsService) {
-		this.userDetailsService = userDetailsService;
-	}
-
-	public PasswordEncoder getPasswordEncoder() {
-		return passwordEncoder;
-	}
-
-	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-		this.passwordEncoder = passwordEncoder;
-	}
 }
 

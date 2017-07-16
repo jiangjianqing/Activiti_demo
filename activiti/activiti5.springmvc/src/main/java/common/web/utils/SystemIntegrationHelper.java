@@ -8,8 +8,9 @@ import org.mvel2.ast.NewObjectNode.NewObjectArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import common.security.AuthenticationUser;
 import common.web.utils.*;
-import common.web.model.AuthenticationUser;
 
 public class SystemIntegrationHelper extends AbstractHelperClass {
 

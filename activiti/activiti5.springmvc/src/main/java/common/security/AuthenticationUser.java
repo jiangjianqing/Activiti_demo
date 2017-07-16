@@ -1,4 +1,4 @@
-package common.web.model;
+package common.security;
 
 import java.util.Collection;
 import java.util.Date;

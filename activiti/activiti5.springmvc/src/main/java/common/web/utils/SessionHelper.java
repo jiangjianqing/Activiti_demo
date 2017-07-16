@@ -13,7 +13,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import common.web.model.AuthenticationUser;
+import common.security.AuthenticationUser;
 
 public class SessionHelper extends AbstractHelperClass {
 	
