@@ -2,6 +2,7 @@ package common.db.model.identity;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
+import java.sql.Timestamp;
 
 import javax.annotation.PreDestroy;
 import javax.persistence.*;
@@ -9,6 +10,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -19,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import common.db.base.jpa.AbstractEntityBean;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,6 +59,8 @@ uniqueConstraints = @UniqueConstraint(
   //上述为组合字段唯一限制的范例
  */
 @Entity
+@DynamicInsert //设置为true,表示insert对象的时候,生成动态的insert语句,如果这个字段的值是null就不会加入到insert语句当中.默认false。
+@DynamicUpdate //设置为true,表示update对象的时候,生成动态的update语句,如果这个字段的值是null就不会被加入到update语句中,默认false。
 @Table(name="COMMON_ID_USER")
 @NamedQueries({
     //@NamedQuery(name="findAll",query="SELECT u FROM User u"),
@@ -84,7 +90,9 @@ public class User extends AbstractEntityBean {
 	void prePersist(){}
 	
 	@PreUpdate
-    void preUpdate() { }
+    void preUpdate() {
+		createTime=null;//确保create不会被更新
+	}
 	
 	@PreRemove
 	void preRemove() { }
@@ -124,16 +132,16 @@ public class User extends AbstractEntityBean {
 	
 	//下面几项为spring-security需要的内容，默认值=true
 	@Column(name="ENABLED")
-	private boolean enabled=true;
+	private boolean enabled;
 	
 	@Column(name="ACCOUNT_NON_EXPIRED")
-    private boolean accountNonExpired=true;
+    private boolean accountNonExpired;
     
     @Column(name="CREDENTIALS_NON_EXPIRED")
-    private boolean credentialsNonExpired=true;  
+    private boolean credentialsNonExpired;  
     
     @Column(name="ACCOUNT_NON_LOCKED")
-    private boolean accountNonLocked=true;   
+    private boolean accountNonLocked;   
     
     @Column(name="FIRST_NAME")
     private String firstName;
@@ -143,6 +151,28 @@ public class User extends AbstractEntityBean {
     
 	@Column(name="EMAIL")
 	private String email;
+	
+	@Temporal(TemporalType.TIMESTAMP)//利用@Temporal则可以获取自己想要的格式类型
+	@Column(name="CREATE_TIME" , updatable=false
+		,columnDefinition="TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"
+	)
+	private Date createTime;
+	
+	/**
+	 * 最后一次更新的时间，不包括对lastSuccessLoginTime的修改
+	 */
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="UPDATE_TIME" 
+		//,columnDefinition="TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"//H2不支持 ON UPDATE CURRENT_TIMESTAMP
+		,nullable=true
+	)
+	private Date updateTime;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="LAST_SUCCESS_LOGIN_TIME"
+			,nullable=true
+	)
+	private Date lastSuccessLoginTime;
     
 	/*
     @Column(length=8192)
@@ -156,6 +186,14 @@ public class User extends AbstractEntityBean {
 		this.extendInfo = extendInfo;
 	}
 	*/
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 
 	public String getFirstName() {
 		return firstName;
