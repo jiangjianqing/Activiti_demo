@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name="COMMON_ID_ROLE")
 //@NamedQuery(name="SysRole.findAll", query="SELECT s FROM SysRole s")
-public class Role {
+public class Role implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id

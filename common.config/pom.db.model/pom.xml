@@ -64,13 +64,6 @@
 			<scope>${scope.type}</scope>
 		</dependency>
 		
-		<dependency>
-		    <groupId>org.mybatis</groupId>
-		    <artifactId>mybatis</artifactId>
-		    <version>${mybatis.version}</version>
-            <scope>${scope.type}</scope>
-		</dependency>
-		
 		<!-- 数据库驱动区域 -->
 		<dependency>
 			<groupId>com.h2database</groupId>

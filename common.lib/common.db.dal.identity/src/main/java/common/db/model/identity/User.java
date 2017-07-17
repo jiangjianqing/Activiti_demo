@@ -67,7 +67,7 @@ uniqueConstraints = @UniqueConstraint(
 }) 
 //重要：不要在父类与子类同时使用JsonIgnoreProperties，会导致父类的设定失效
 //@JsonIgnoreProperties(value={"sysRoles"/*,"password","salt"*/})
-public class User {
+public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	//自定义生成clob类型字段的sql语句。
