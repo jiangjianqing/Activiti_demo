@@ -55,5 +55,17 @@
 				th:src="@{/js/security/mainframe.js}"></script>
  -->
 	</div>
+	
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+		function showConsoleInfo() {
+			var list=/*[[${param}]]*/;
+			var message=/*[[${session.SPRING_SECURITY_LAST_EXCEPTION}]]*/;
+			console.log(list);
+			console.log(message);
+		}
+						
+	/*]]>*/
+	</script>
 </body>
 </html>
