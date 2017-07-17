@@ -1,4 +1,4 @@
-package common.db.base.jpa.test.entity;
+package common.db.base.jpa.test.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

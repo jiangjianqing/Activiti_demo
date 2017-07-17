@@ -19,11 +19,12 @@ import org.junit.BeforeClass;
 public abstract class AbstractJpaTestCase {
 	protected static EntityManager em;
 	
-	//在这里声明需要使用的Dao
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("test_jpa_persistence_unit",
+	/**
+	 * 必须在子类的@BeforeClass中调用该方法,初始化JPA环境
+	 * @param persistenceUnitName
+	 */
+	protected static void setPersistenceUnitName(String persistenceUnitName){
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName,
 				System.getProperties());
 		em = emf.createEntityManager();
 
@@ -44,7 +45,8 @@ public abstract class AbstractJpaTestCase {
 		}
 		System.out.println("**************getConnection**********");
 		System.out.println(cnn);
-	}
+	};
+
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {

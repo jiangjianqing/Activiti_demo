@@ -2,18 +2,25 @@ package common.db.base.jpa.test;
 
 import static org.junit.Assert.*;
 
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import common.db.base.jpa.test.entity.Item;
-import common.db.base.jpa.test.entity.User;
+import common.db.base.jpa.test.model.Item;
+import common.db.base.jpa.test.model.User;
 
 /**
  * 当前尚未解决添加Boolean字段导致出错的问题
  * @author jjq
  *
  */
-public class TestBaseEntityBean {
+public class JpaTest {
+	
+	@BeforeClass
+	public static void initServices() {
+		//setPersistenceUnitName("jpa_test");
+		
+	}
 	
 	@Test
 	public void testUser() throws CloneNotSupportedException{
