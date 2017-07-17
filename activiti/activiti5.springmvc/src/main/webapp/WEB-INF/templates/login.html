@@ -58,13 +58,19 @@
 	
 	<script th:inline="javascript">
 	/*<![CDATA[*/
+		window.onLoad
 		function showConsoleInfo() {
+			console.log("这里是测试thymeleaf 脚本功能");
 			var list=/*[[${param}]]*/;
 			var message=/*[[${session.SPRING_SECURITY_LAST_EXCEPTION}]]*/;
+			console.log("param = ");
 			console.log(list);
+			console.log("last_exception = ");
 			console.log(message);
 		}
-						
+		window.onload=function(){
+			showConsoleInfo()
+		}
 	/*]]>*/
 	</script>
 </body>
