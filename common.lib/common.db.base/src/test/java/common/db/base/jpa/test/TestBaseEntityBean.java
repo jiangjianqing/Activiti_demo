@@ -8,6 +8,11 @@ import org.junit.Test;
 import common.db.base.jpa.test.entity.Item;
 import common.db.base.jpa.test.entity.User;
 
+/**
+ * 当前尚未解决添加Boolean字段导致出错的问题
+ * @author jjq
+ *
+ */
 public class TestBaseEntityBean {
 	
 	@Test
@@ -16,7 +21,7 @@ public class TestBaseEntityBean {
 		System.out.print(t1.getTableName());
 		assertTrue(t1.getTableName().equals("user"));
 		
-		t1.setId(2);
+		t1.setId(new Long(2));
 		t1.setName("蒋建清");
 		
 		//复制后应该判定为相等
@@ -36,7 +41,7 @@ public class TestBaseEntityBean {
 		assertTrue(t2.getDifferentFields(t1).size()==1);
 		assertTrue(t2.getDifferentFields(t1).indexOf("name")==0);
 		
-		t2.setId(123);
+		t2.setId(new Long(123));
 		assertTrue(t2.getDifferentFields(t1).size()==2);
 		assertTrue(t2.getDifferentFields(t1).indexOf("id")==1);
 		assertFalse(t1.equalsPK(t2));

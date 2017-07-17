@@ -7,7 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import common.db.base.jpa.AbstractEntityBean;
+import common.db.base.jpa.deprecated.AbstractEntityBean;
+
 
 @Entity
 @Table(name="user")
@@ -16,15 +17,15 @@ public class User extends AbstractEntityBean {
 	@Id  
 	@GeneratedValue(strategy = GenerationType.IDENTITY)  
     @Column(name = "id", unique = true, nullable = false)  
-	private int id;
+	private Long id;
 	
 	@Column(unique = false, length=32)
 	private String name;
 	
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

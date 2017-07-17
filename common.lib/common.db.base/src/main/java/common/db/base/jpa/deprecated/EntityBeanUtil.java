@@ -1,4 +1,4 @@
-package common.db.base.jpa;
+package common.db.base.jpa.deprecated;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;

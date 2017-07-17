@@ -1,4 +1,4 @@
-package common.db.base.jpa;
+package common.db.base.jpa.deprecated;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(value={"selected","attributeNames","tableName"})
 @MappedSuperclass
+@Deprecated() //严重问题：继承该类后，设置Boolean类型字段会导致处理失败
 public abstract class AbstractEntityBean implements Serializable {
 
 	private static final long serialVersionUID = 1962905939086138888L;

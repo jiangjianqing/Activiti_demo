@@ -130,6 +130,8 @@ public class BaseJpaDaoImpl<T> {
 	
 	public T findByKey(Object key) throws DaoException{
 		try {
+			System.out.println("findByKey.key=");
+			System.out.println(key);
 			return  (T) em.find(getEntityClass(), key);
 		} catch (Exception ex) {
 			throw new DaoException(ex.getClass().getSimpleName(),ex.getMessage());
