@@ -4,9 +4,15 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
 "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-	<!-- <classPathEntry location="E:\repo\mysql\mysql-connector-java\5.1.26\mysql-connector-java-5.1.26.jar" 
-		/> -->
+<!-- 在MBG工作的时候，需要额外加载的依赖包
+     location属性指明加载jar/zip包的全路径
+<classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip" />
+  -->
+  
+  <!-- 配置细节参考 http://www.jianshu.com/p/e09d2370b796 -->
 		
+	<!-- 如果使用了mybatis-generator-maven-plugin，那么在pom.xml中定义的properties都可以直接在generatorConfig.xml中使用 -->
+	
 	<properties resource="db.properties"/>
 	
 	<context id="generatorTables" targetRuntime="MyBatis3">
@@ -46,13 +52,13 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
 
 		<!-- javaModelGenerator是模型的生成信息，这里将指定这些Java model类的生成路径； -->
 		<javaModelGenerator targetPackage="${model.packageName}"
-			targetProject="src/main/java">
+			targetProject="故意使无效——Model按照JPA规则编写">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
 
 		<!-- sqlMapGenerator是mybatis 的sqlMapper XML文件的生成信息，包括生成路径等； 先生成xml，在生成java -->
-		<sqlMapGenerator targetPackage="org.study.dao"
+		<sqlMapGenerator targetPackage="${model.packageName}"
 			targetProject="src/main/resources">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
@@ -76,9 +82,9 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         	selectByExampleQueryId="false"/>
         
         <table tableName="COMMON_ID_USER" domainObjectName="User" 
-        	enableCountByExample="true" enableUpdateByExample="true" 
-        	enableDeleteByExample="true" enableSelectByExample="true" 
-        	selectByExampleQueryId="true"/>
+        	enableCountByExample="false" enableUpdateByExample="false" 
+        	enableDeleteByExample="false" enableSelectByExample="false" 
+        	selectByExampleQueryId="false"/>
 		<!-- <table tableName="app_bind_status" domainObjectName="AppBindStatus" 
 			enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
 			enableSelectByExample="false" selectByExampleQueryId="false"></table> -->
