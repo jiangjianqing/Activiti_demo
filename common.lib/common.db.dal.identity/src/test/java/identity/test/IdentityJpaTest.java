@@ -25,10 +25,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-
-import common.db.base.exception.DaoException;
-import common.db.base.exception.NoFieldChangedException;
-import common.db.base.exception.OutOfPageRangeException;
+import common.db.base.exception.*;
 import common.db.base.page.PageObject;
 import common.db.model.identity.Role;
 import common.db.model.identity.User;
@@ -42,13 +39,14 @@ public class IdentityJpaTest  extends AbstractJpaTestCase {
 	
 	protected static UserDAO userDao;
 	protected static RoleDao roleService;
-
+	
 	private static String newUserName="测试人员123456";
 	private static String newRoleName="经理";
 	private static String newPermissionName="user:delete";
 	
 	@BeforeClass
 	public static void initServices() {
+		setPersistenceUnitName("identity");
 		
 		userDao=new UserDaoImpl();
 		userDao.setEntityManager(em);
