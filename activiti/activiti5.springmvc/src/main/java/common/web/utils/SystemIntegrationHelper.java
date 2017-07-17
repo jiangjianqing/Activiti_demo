@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import common.security.AuthenticationUser;
+import common.service.utils.AbstractHelperClass;
+import common.service.utils.SpringContextHolder;
 import common.web.utils.*;
 
 public class SystemIntegrationHelper extends AbstractHelperClass {

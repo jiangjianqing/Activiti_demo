@@ -37,7 +37,7 @@
 	<!--  这里开始定义Spring bean例子  -->
 	
 	<!-- 用于持有ApplicationContext,可以使用SpringContextHolder.getBean('xxxx')的静态方法得到spring bean对象 -->
-	<bean class="common.web.utils.SpringContextHolder" lazy-init="false" /> 
+	<bean class="common.service.utils.SpringContextHolder" lazy-init="false" /> 
 	
 	<!-- 使用GenericHibernateDao的范例
 	<bean id="userdao" class="com.test.DAO.Impl.UserDAOImpl">

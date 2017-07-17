@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import common.web.utils.AbstractController;
+import common.service.utils.AbstractController;
 
 @Controller
 @RequestMapping("/")

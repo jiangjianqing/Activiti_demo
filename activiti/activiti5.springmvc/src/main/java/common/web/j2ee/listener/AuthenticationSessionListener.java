@@ -12,10 +12,8 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-
-import common.web.utils.AbstractHelperClass;
+import common.service.utils.AbstractHelperClass;
 import common.web.utils.SessionHelper;
-import common.web.utils.SpringContextHolder;
 import common.web.utils.SystemIntegrationHelper;
 
 /**

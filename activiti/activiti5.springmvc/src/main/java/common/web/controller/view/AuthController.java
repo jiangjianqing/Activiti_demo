@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import common.web.utils.AbstractController;
-import common.web.utils.SpringContextHolder;
+import common.service.utils.AbstractController;
+
 
 /**
  * 负责管理authentication的控制器

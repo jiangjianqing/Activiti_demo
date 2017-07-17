@@ -18,6 +18,16 @@
 			<artifactId>common.db.dal.identity</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>common.lib</groupId>
+			<artifactId>common.service.utils</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>common.lib</groupId>
+			<artifactId>common.security</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import common.security.AuthenticationUser;
+import common.service.utils.AbstractHelperClass;
 
 public class SessionHelper extends AbstractHelperClass {
 	

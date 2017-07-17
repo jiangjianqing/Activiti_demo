@@ -16,8 +16,8 @@ import common.db.base.exception.DaoException;
 import common.db.base.exception.NoFieldChangedException;
 import common.db.base.exception.OutOfPageRangeException;
 import common.security.AuthenticationUser;
-import common.web.exception.BindingResultErrorException;
-import common.web.utils.AbstractHelperClass;
+import common.service.exception.BindingResultErrorException;
+import common.service.utils.AbstractHelperClass;
 import common.web.utils.SystemIntegrationHelper;
 
 @ControllerAdvice //(basePackages = "com.github") //basePackages用于指定对哪些包里的Controller起作用。
