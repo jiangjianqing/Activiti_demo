@@ -153,7 +153,7 @@ public class User extends AbstractEntityBean {
 	private String email;
 	
 	@Temporal(TemporalType.TIMESTAMP)//利用@Temporal则可以获取自己想要的格式类型
-	@Column(name="CREATE_TIME" , updatable=false
+	@Column(name="CREATE_TIME" , updatable=false //createTime不许更新
 		,columnDefinition="TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"
 	)
 	private Date createTime;
