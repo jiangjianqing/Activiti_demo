@@ -86,7 +86,7 @@ public class UserController {
 	private CustomUserDetailsService userDetailsService;
 	
 	@Resource
-	private UserDaoImpl userDao;
+	private UserDAO userDao;
 	// private Map<String, Info> model = Collections.synchronizedMap(new
 	// HashMap<String, Info>());
 	
