@@ -58,36 +58,28 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
 		</javaModelGenerator>
 
 		<!-- sqlMapGenerator是mybatis 的sqlMapper XML文件的生成信息，包括生成路径等； 先生成xml，在生成java -->
-		<sqlMapGenerator targetPackage="${model.packageName}"
+		<sqlMapGenerator targetPackage="mybatis-mappers"
 			targetProject="src/main/resources">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
 
 		<!-- javaClientGenerator是应用接口的生成信息； -->
 		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="org.study.dao" targetProject="src/main/java">
+			targetPackage="${client.packageName}" targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
 		<!-- table是用户指定的被生成相关信息的表，它必须在指定的jdbc连接中已经被建立。?是否可以多个 -->
-
-		<table tableName="cust_info" domainObjectName="CustInfo"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false"></table>
-			<!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->    
-        <table tableName="user_info_t" domainObjectName="User" 
+      
+        <table tableName="COMMON_ID_ROLE" domainObjectName="Role" mapperName="RoleDao"
         	enableCountByExample="false" enableUpdateByExample="false" 
         	enableDeleteByExample="false" enableSelectByExample="false" 
         	selectByExampleQueryId="false"/>
-        
-        <table tableName="COMMON_ID_USER" domainObjectName="User" 
+		
+		<table tableName="COMMON_ID_USER" domainObjectName="User" mapperName="UserDao"
         	enableCountByExample="false" enableUpdateByExample="false" 
         	enableDeleteByExample="false" enableSelectByExample="false" 
         	selectByExampleQueryId="false"/>
-		<!-- <table tableName="app_bind_status" domainObjectName="AppBindStatus" 
-			enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
-			enableSelectByExample="false" selectByExampleQueryId="false"></table> -->
 
 	</context>
 </generatorConfiguration>
