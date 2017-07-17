@@ -1,4 +1,4 @@
-package db_jpa_permission;
+package identity.test;
 
 import static org.junit.Assert.*;
 
@@ -38,9 +38,9 @@ import common.db.repository.jpa.identity.impl.RoleDaoImpl;
 import common.db.repository.jpa.identity.impl.UserDaoImpl;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class PermissionTest  extends AbstractJpaTestCase {
+public class IdentityJpaTest  extends AbstractJpaTestCase {
 	
-	protected static UserDAO userService;
+	protected static UserDAO userDao;
 	protected static RoleDao roleService;
 
 	private static String newUserName="测试人员123456";
@@ -50,34 +50,33 @@ public class PermissionTest  extends AbstractJpaTestCase {
 	@BeforeClass
 	public static void initServices() {
 		
-		userService=new UserDaoImpl();
-		userService.setEntityManager(em);
+		userDao=new UserDaoImpl();
+		userDao.setEntityManager(em);
 
 		roleService=new RoleDaoImpl();
 		roleService.setEntityManager(em);
 	}
 	
 	
-
 	@Test
 	public void A1_testSysUserAdd() throws DaoException, OutOfPageRangeException
 	{
-		PageObject<User> page=userService.getList(1);
+		PageObject<User> page=userDao.getList(1);
 		System.out.println("测试用户新增");
-		User newUser=userService.findByKey(new Long(1));
+		User newUser=userDao.findByKey(new Long(1));
 
 		newUser=new User();
 		newUser.setUserName(newUserName);
 
 		newUser.setPassword("123456");
 		newUser.setSalt("tt");
-		userService.create(newUser);
+		userDao.create(newUser);
 		System.out.println("newUser.id="+newUser.getId());
 
-		newUser=userService.findByName(newUserName);
+		newUser=userDao.findByUserName(newUserName);
 		assertTrue(newUser!=null);
 	}
-
+	
 	@Test
 	public void A1_testSysRoleAdd() throws DaoException
 	{
@@ -93,7 +92,8 @@ public class PermissionTest  extends AbstractJpaTestCase {
 	{
 
 		System.out.println("测试用户和角色关联");
-		User newUser=userService.findByName(newUserName);
+
+		User newUser=userDao.findByUserName(newUserName);
 		
 		System.out.println("用户拥有的角色数量:"+newUser.getRoles().size());
 		
@@ -106,11 +106,11 @@ public class PermissionTest  extends AbstractJpaTestCase {
 		newUser.getRoles().add(newRole);
 
 	}
-
+	
 	@Test
 	public void A3_testRolePermissionAssociate() throws DaoException {
 		
-		User newUser=userService.findByName(newUserName);		
+		User newUser=userDao.findByUserName(newUserName);		
 		System.out.println("用户拥有的角色数量:"+newUser.getRoles().size());
 		assertTrue(newUser.getRoles().size() == 1);
 	}

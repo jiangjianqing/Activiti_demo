@@ -7,20 +7,15 @@ import java.util.Map;
 
 import common.db.base.exception.DaoException;
 import common.db.base.exception.NoFieldChangedException;
-import common.db.base.exception.OutOfPageRangeException;
-import common.db.base.jpa.EntityBeanUtil;
 import common.db.base.jpa.AbstractJpaDaoImpl;
-import common.db.base.jpa.internal.BaseJpaDaoImpl;
 import common.db.base.jpa.internal.JpaUtil;
-import common.db.base.jpa.internal.PaginationJpaDaoImpl;
-import common.db.base.page.PageObject;
 import common.db.model.identity.Role;
 import common.db.model.identity.User;
 import common.db.repository.jpa.identity.UserDAO;
 
 public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDAO {
 
-	public User findByName(String userName) throws DaoException{
+	public User findByUserName(String userName) throws DaoException{
 		;
 		//String jpql=String.format("select o from %s o where o.username=?",User.class.getSimpleName());
 		//List<User> userList=paginationDao.queryForList(jpql,new Object[]{userName});
@@ -64,13 +59,13 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDAO {
 		}
 		return ret;
 	}
-
+/*
 	public User update(User user) throws NoFieldChangedException, DaoException {
 		User ret=baseDao.findByKey(user.getId());
 		if(ret==null){
 			return null;
 		}
-		List<String> diffFields=ret.getDifferentFields(user);
+		List<String> diffFields=null;//ret.getDifferentFields(user);
 		diffFields.remove("password");
 		diffFields.remove("username");
 		boolean testResult=isArrayEqual(ret.getRoles().toArray(),user.getRoles().toArray());
@@ -79,7 +74,7 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDAO {
 			if(diffFields.size()>0){
 				String[] array=new String[diffFields.size()];
 				diffFields.toArray(array);
-				ret.copyAttributeValue(user, array);
+				//ret.copyAttributeValue(user, array);
 			}			
 
 			if(!testResult){
@@ -103,6 +98,6 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDAO {
 		}
 		return ret;
 	}
-
+*/
 }
 

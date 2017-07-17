@@ -19,14 +19,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import common.db.base.jpa.AbstractEntityBean;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
- *  @AssertTrue //用于boolean字段，该字段只能为true  
+ *  @AssertTrue //用于Boolean字段，该字段只能为true  
     @AssertFalse//该字段的值只能为false  
     @CreditCardNumber//对信用卡号进行一个大致的验证  
     @DecimalMax//只能小于或等于该值  
@@ -69,7 +67,7 @@ uniqueConstraints = @UniqueConstraint(
 }) 
 //重要：不要在父类与子类同时使用JsonIgnoreProperties，会导致父类的设定失效
 //@JsonIgnoreProperties(value={"sysRoles"/*,"password","salt"*/})
-public class User extends AbstractEntityBean {
+public class User {
 	private static final long serialVersionUID = 1L;
 	
 	//自定义生成clob类型字段的sql语句。
@@ -131,17 +129,17 @@ public class User extends AbstractEntityBean {
 	private String userName;
 	
 	//下面几项为spring-security需要的内容，默认值=true
-	@Column(name="ENABLED")
-	private boolean enabled;
+	@Column(name="ENABLED" , columnDefinition = "boolean NOT NULL DEFAULT TRUE")
+	private Boolean enabled;
 	
-	@Column(name="ACCOUNT_NON_EXPIRED")
-    private boolean accountNonExpired;
+	@Column(name="ACCOUNT_NON_EXPIRED" , columnDefinition = "boolean NOT NULL DEFAULT TRUE")
+    private Boolean accountNonExpired;
     
-    @Column(name="CREDENTIALS_NON_EXPIRED")
-    private boolean credentialsNonExpired;  
+    @Column(name="CREDENTIALS_NON_EXPIRED" , columnDefinition = "boolean NOT NULL DEFAULT TRUE")
+    private Boolean credentialsNonExpired;  
     
-    @Column(name="ACCOUNT_NON_LOCKED")
-    private boolean accountNonLocked;   
+    @Column(name="ACCOUNT_NON_LOCKED" , columnDefinition = "boolean NOT NULL DEFAULT TRUE")
+    private Boolean accountNonLocked;   
     
     @Column(name="FIRST_NAME")
     private String firstName;
@@ -275,35 +273,35 @@ public class User extends AbstractEntityBean {
 		return this.userName;
 	}
 
-	public boolean isEnabled() {
+	public Boolean isEnabled() {
 		return enabled;
 	}
 
-	public void setEnabled(boolean enabled) {
+	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
 	}
 
-	public boolean isAccountNonExpired() {
+	public Boolean isAccountNonExpired() {
 		return accountNonExpired;
 	}
 
-	public void setAccountNonExpired(boolean accountNonExpired) {
+	public void setAccountNonExpired(Boolean accountNonExpired) {
 		this.accountNonExpired = accountNonExpired;
 	}
 
-	public boolean isCredentialsNonExpired() {
+	public Boolean isCredentialsNonExpired() {
 		return credentialsNonExpired;
 	}
 
-	public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+	public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
 		this.credentialsNonExpired = credentialsNonExpired;
 	}
 
-	public boolean isAccountNonLocked() {
+	public Boolean isAccountNonLocked() {
 		return accountNonLocked;
 	}
 
-	public void setAccountNonLocked(boolean accountNonLocked) {
+	public void setAccountNonLocked(Boolean accountNonLocked) {
 		this.accountNonLocked = accountNonLocked;
 	}
 
@@ -322,9 +320,15 @@ public class User extends AbstractEntityBean {
 		this.roles = roles;
 	}
 
-	@Override
 	public Object grabPrimaryKey() {
 		return id;
 	}
+	
+	@Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (userName != null ? userName.hashCode() : 0);
+        return result;
+    }
 
 }

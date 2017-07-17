@@ -1,4 +1,4 @@
-package db_jpa_permission;
+package identity.test;
 
 import static org.junit.Assert.fail;
 

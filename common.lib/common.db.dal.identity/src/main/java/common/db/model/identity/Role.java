@@ -3,8 +3,6 @@ package common.db.model.identity;
 import java.io.Serializable;
 import javax.persistence.*;
 
-import common.db.base.jpa.AbstractEntityBean;
-
 import java.util.List;
 
 
@@ -15,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name="COMMON_ID_ROLE")
 //@NamedQuery(name="SysRole.findAll", query="SELECT s FROM SysRole s")
-public class Role extends AbstractEntityBean {
+public class Role {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -66,11 +64,6 @@ public class Role extends AbstractEntityBean {
 
 	public void setUsers(List<User> users) {
 		this.users = users;
-	}
-
-	@Override
-	public Object grabPrimaryKey() {
-		return id;
 	}
 
 }
