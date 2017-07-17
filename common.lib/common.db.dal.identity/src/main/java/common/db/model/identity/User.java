@@ -273,7 +273,7 @@ public class User implements Serializable{
 		return this.userName;
 	}
 
-	public Boolean isEnabled() {
+	public Boolean getEnabled() {
 		return enabled;
 	}
 
@@ -281,7 +281,7 @@ public class User implements Serializable{
 		this.enabled = enabled;
 	}
 
-	public Boolean isAccountNonExpired() {
+	public Boolean getAccountNonExpired() {
 		return accountNonExpired;
 	}
 
@@ -289,7 +289,7 @@ public class User implements Serializable{
 		this.accountNonExpired = accountNonExpired;
 	}
 
-	public Boolean isCredentialsNonExpired() {
+	public Boolean getCredentialsNonExpired() {
 		return credentialsNonExpired;
 	}
 
@@ -297,7 +297,7 @@ public class User implements Serializable{
 		this.credentialsNonExpired = credentialsNonExpired;
 	}
 
-	public Boolean isAccountNonLocked() {
+	public Boolean getAccountNonLocked() {
 		return accountNonLocked;
 	}
 
