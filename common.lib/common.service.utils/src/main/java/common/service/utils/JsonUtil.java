@@ -1,4 +1,4 @@
-package common.web.utils;
+package common.service.utils;
 
 import java.io.IOException;
 import java.io.StringWriter;

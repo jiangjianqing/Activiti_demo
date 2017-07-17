@@ -1,4 +1,4 @@
-package common.web.exception;
+package common.service.exception;
 
 import org.springframework.validation.BindingResult;
 

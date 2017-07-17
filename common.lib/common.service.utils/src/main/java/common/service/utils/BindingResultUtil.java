@@ -1,4 +1,4 @@
-package common.web.utils;
+package common.service.utils;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
-import common.web.exception.BindingResultErrorException;
+import common.service.exception.BindingResultErrorException;
 
 public class BindingResultUtil {
 	private static final Logger log = LoggerFactory.getLogger(BindingResultUtil.class);

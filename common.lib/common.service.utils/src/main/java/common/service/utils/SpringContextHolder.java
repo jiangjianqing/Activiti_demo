@@ -1,4 +1,4 @@
-package common.web.utils;
+package common.service.utils;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
