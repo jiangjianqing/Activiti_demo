@@ -30,7 +30,6 @@ public class AuthenticationUser extends common.db.model.identity.User implements
 	}
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
 		return super.getUserName();
 	}
 	
@@ -49,6 +48,22 @@ public class AuthenticationUser extends common.db.model.identity.User implements
 			crc32.update(userDetails.getUsername().getBytes());
 			this.setId(crc32.getValue());
 		}
+	}
+	@Override
+	public boolean isAccountNonExpired() {
+		return getAccountNonExpired();
+	}
+	@Override
+	public boolean isAccountNonLocked() {
+		return getAccountNonLocked();
+	}
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return getCredentialsNonExpired();
+	}
+	@Override
+	public boolean isEnabled() {
+		return getEnabled();
 	}
 	
 }

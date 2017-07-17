@@ -100,7 +100,7 @@ public class CustomUserDetailsService extends AbstractHelperClass implements Use
 	 */
 	public UserDetails loadUserByUsername(String username,String password) throws UsernameNotFoundException, DaoException, PasswardInvalidException, IllegalAccessException, InvocationTargetException {
 
-		User user=userDao.findByName(username);
+		User user=userDao.findByUserName(username);
 		if(user==null)
         	throw new UsernameNotFoundException(messages.getMessage("JdbcDaoImpl.notFound", new Object[]{username}, "Username {0} not found"));    
 
