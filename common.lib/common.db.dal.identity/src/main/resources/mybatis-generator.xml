@@ -6,9 +6,13 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
 <generatorConfiguration>
 	<!-- <classPathEntry location="E:\repo\mysql\mysql-connector-java\5.1.26\mysql-connector-java-5.1.26.jar" 
 		/> -->
+		
 	<properties resource="db.properties"/>
 	
 	<context id="generatorTables" targetRuntime="MyBatis3">
+		
+		<property name="mergeable" value="false"/>
+		
 		<plugin type="org.mybatis.generator.plugins.MapperConfigPlugin">
 			<property name="fileName" value="mybatis-config.xml" />
 			<property name="targetPackage" value="/" />
@@ -41,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
 		</javaTypeResolver>
 
 		<!-- javaModelGenerator是模型的生成信息，这里将指定这些Java model类的生成路径； -->
-		<javaModelGenerator targetPackage="org.study.model"
+		<javaModelGenerator targetPackage="${model.packageName}"
 			targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
