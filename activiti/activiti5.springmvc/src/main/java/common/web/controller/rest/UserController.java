@@ -1,5 +1,7 @@
 package common.web.controller.rest;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
@@ -70,11 +72,21 @@ public class UserController extends AbstractRestController{
 	private UserDAO userDao;
 	// private Map<String, Info> model = Collections.synchronizedMap(new
 	// HashMap<String, Info>());
+	/**
+	 * 调试方法，用于观察所有数据
+	 * @return
+	 * @throws DaoException
+	 */
+	@RequestMapping(value="all",method=RequestMethod.GET)
+	@ResponseBody
+	public List<User> getAll() throws DaoException{
+		return userDao.getList();
+	}
 	
 	@RequestMapping(value={"" , "/"},method=RequestMethod.GET)
 	@ResponseBody
-	public PageObject<User> getPageList(@RequestParam(defaultValue="1" , name = "${naming.requestParam.page}") int page) throws OutOfPageRangeException, DaoException{
-		return userDao.getList(page);
+	public WrappedResponseBody getPageList(@RequestParam(defaultValue="1" , name = "${naming.requestParam.page}") int page) throws OutOfPageRangeException, DaoException{
+		return new WrappedResponseBody(userDao.getPageList(page));
 	}
 	
 	//public ResponseEntity<String> createMembership(@RequestParam String userId
@@ -84,16 +96,7 @@ public class UserController extends AbstractRestController{
 	@ResponseBody
 	public WrappedResponseBody create(@Valid @RequestBody User user, BindingResult result /*其他参数必须在result后面*/) throws DaoException{
 		BindingResultHelper.checkValidateResult(result);
-		/*
-		if(result.hasErrors()) { //验证失败 
-			System.out.println("验证User出现错误");
-			System.out.println(result);
-			throw new EntityNotFoundException("验证User出现错误");
-            //return "error";  
-        }else{
-        	
-        }*/
-		userDetailsService.encodeNewUserPassword(user);
+		userDetailsService.encodeNewUserPassword(user);//对密码进行加密处理
     	userDao.create(user);
         return new WrappedResponseBody(user);  //验证成功
 	}

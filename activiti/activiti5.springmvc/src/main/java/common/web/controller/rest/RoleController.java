@@ -1,45 +1,19 @@
 package common.web.controller.rest;
 
-import java.io.PrintWriter;
-import java.util.*;
-
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.json.JSONObject;
-import org.springframework.context.annotation.Scope;
-//import org.json.JSONObject;
-import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.ServletRequestBindingException;
-import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
 import common.db.base.exception.DaoException;
 import common.db.base.exception.OutOfPageRangeException;
-import common.db.base.page.PageObject;
 import common.db.model.identity.Role;
-import common.db.model.identity.User;
 import common.db.repository.jpa.identity.RoleDao;
-import common.db.repository.jpa.identity.UserDAO;
-import common.db.repository.jpa.identity.impl.RoleDaoImpl;
-import common.db.repository.jpa.identity.impl.UserDaoImpl;
-import common.security.AuthenticationUser;
-import common.security.CustomUserDetailsService;
+import common.service.utils.BindingResultHelper;
 import common.web.controller.AbstractRestController;
+import common.web.model.WrappedResponseBody;
 
 @Controller	
 @RequestMapping("/rest/identity/role")
@@ -51,13 +25,60 @@ public class RoleController extends AbstractRestController {
 	// private Map<String, Info> model = Collections.synchronizedMap(new
 	// HashMap<String, Info>());
 	
+	
+	
+	
+	//----------------------以下内容为6个方法：一个调试方法、一个分页方法和4个标准的crud方法，标配-----------------------------------
+	/**
+	 * 调试方法，用于观察所有数据
+	 * @return
+	 * @throws DaoException
+	 */
+	@RequestMapping(value="all",method=RequestMethod.GET)
+	@ResponseBody
+	public WrappedResponseBody getAll() throws OutOfPageRangeException, DaoException{
+		return new WrappedResponseBody(roleDao.getList());
+	}
+	
 	@RequestMapping(value={"" , "/"},method=RequestMethod.GET)
 	@ResponseBody
-	public PageObject<Role> getAll() throws OutOfPageRangeException, DaoException{
-		return roleDao.getList(1);
-	}
-
+	public WrappedResponseBody getPageList(@RequestParam(defaultValue="1" , name = "${naming.requestParam.page}") int page) throws OutOfPageRangeException, DaoException{
+		return new WrappedResponseBody(roleDao.getPageList(page));
+	}	
 	
+	@RequestMapping(value={"" , "/"},method=RequestMethod.POST)
+	@ResponseBody
+	public WrappedResponseBody create(@Valid @RequestBody Role role , BindingResult result) throws DaoException{
+		BindingResultHelper.checkValidateResult(result);
+		roleDao.create(role);
+		return new WrappedResponseBody(role); 
+	}
+	
+	@RequestMapping(value={"/{id}"},method={RequestMethod.GET})
+	@ResponseBody
+	public WrappedResponseBody findById(@PathVariable Long id) throws DaoException, EntityNotFoundException{
+		Role role=roleDao.findByKey(id);
+		if(role == null){
+			throw new EntityNotFoundException(id.toString());
+		}
+		return new WrappedResponseBody(role);
+	}
+	
+	@RequestMapping(value={"/{id}"},method={RequestMethod.PUT})
+	@ResponseBody
+	public WrappedResponseBody update(@PathVariable Long id,@Valid @RequestBody Role role , BindingResult result) throws DaoException{
+		BindingResultHelper.checkValidateResult(result);
+		role.setId(id);
+		return new WrappedResponseBody(roleDao.update(role));
+	}
+	
+	
+	@RequestMapping(value={"/{id}"},method={RequestMethod.DELETE})
+	@ResponseBody
+	public WrappedResponseBody  delete(@PathVariable Long id) throws DaoException{
+		roleDao.deleteByKey(id);
+		return new WrappedResponseBody("");
+	}
 	
 
 }
