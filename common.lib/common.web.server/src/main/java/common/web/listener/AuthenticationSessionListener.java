@@ -1,4 +1,4 @@
-package common.web.j2ee.listener;
+package common.web.listener;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -69,8 +69,10 @@ public class AuthenticationSessionListener extends AbstractHelperClass implement
         // 记录用户登出时间(以最后一次访问SESSION为准)
         HttpSession session = event.getSession();
         if(SessionHelper.isAuthenticated()==true){
-        	SystemIntegrator integrationHelper = SpringContextHolder.getBean(prj.web.utils.Constants.SystemIntegrationHelper);
-        	integrationHelper.onLogoff();
+        	SystemIntegrator systemIntegrator = SpringContextHolder.getBean(SystemIntegrator.class);
+        	if (systemIntegrator != null){
+        		systemIntegrator.onLogoff();
+        	}
         	logger.debug("用户注销成功:"+SessionHelper.getAuthenticatedUser().getUsername());
         }
         /*
@@ -110,8 +112,13 @@ public class AuthenticationSessionListener extends AbstractHelperClass implement
         
         if(event.getName() == SessionHelper.getAuthenticationAttributeName()
         		&& SessionHelper.isAuthenticated()){
-        	SystemIntegrator integrationHelper = SpringContextHolder.getBean(prj.web.utils.Constants.SystemIntegrationHelper);
-        	integrationHelper.onLogin();
+        	SystemIntegrator systemIntegrator = SpringContextHolder.getBean(SystemIntegrator.class);
+        	if (systemIntegrator != null){
+        		systemIntegrator.onLogin();
+        	}else{
+        		logger.debug("没有找到SystemIntegrator接口的实现类，如果需要与其他系统集成，请提供该类");
+        	}
+        	
         	logger.debug("用户登录成功:"+SessionHelper.getAuthenticatedUser().getUsername());
         }
     	

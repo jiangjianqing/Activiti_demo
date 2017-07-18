@@ -1,4 +1,4 @@
-package prj.web.controller.advice;
+package common.web.controller.advice;
 
 import javax.annotation.Resource;
 
@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import common.service.utils.AbstractHelperClass;
-import prj.web.utils.SystemIntegratorImpl;
+import common.web.utils.SystemIntegrator;
 
 @ControllerAdvice //(basePackages = "com.github") //basePackages用于指定对哪些包里的Controller起作用。
 public class IntegrationControllerAdvice extends AbstractHelperClass {
 
 	@Resource
-	private SystemIntegratorImpl systemIntegrator;
+	private SystemIntegrator systemIntegrator;
 	
 	//用于自动绑定前台请求参数到Model中。
     @InitBinder  
