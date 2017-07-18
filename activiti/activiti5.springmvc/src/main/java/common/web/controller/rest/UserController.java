@@ -1,45 +1,19 @@
 package common.web.controller.rest;
 
-import java.io.PrintWriter;
-import java.util.*;
-
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Scope;
-//import org.json.JSONObject;
-import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.BindingResultUtils;
-import org.springframework.web.bind.ServletRequestBindingException;
-import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
 import common.db.base.exception.DaoException;
 import common.db.base.exception.OutOfPageRangeException;
 import common.db.base.page.PageObject;
 import common.db.model.identity.User;
 import common.db.repository.jpa.identity.UserDAO;
-import common.db.repository.jpa.identity.impl.UserDaoImpl;
 import common.security.AuthenticationUser;
 import common.security.CustomUserDetailsService;
-import common.service.exception.BindingResultErrorException;
-import common.service.utils.AbstractHelperClass;
 import common.service.utils.BindingResultHelper;
 import common.web.controller.AbstractRestController;
 import common.web.model.WrappedResponseBody;
@@ -99,17 +73,8 @@ public class UserController extends AbstractRestController{
 	
 	@RequestMapping(value={"" , "/"},method=RequestMethod.GET)
 	@ResponseBody
-	public PageObject<User> getAll(@RequestParam(defaultValue="1" , name = "${naming.requestParam.page}") int page) throws OutOfPageRangeException, DaoException{
-		
-		logger.debug("getAll.page = " + page);
+	public PageObject<User> getPageList(@RequestParam(defaultValue="1" , name = "${naming.requestParam.page}") int page) throws OutOfPageRangeException, DaoException{
 		return userDao.getList(page);
-		//System.out.println(userDao);
-		/*if(result.hasErrors()) { //验证失败 
-			System.out.println("验证User出现错误");
-			System.out.println(result.toString());
-            return "error";  
-        }  */
-        //return "show";  //验证成功
 	}
 	
 	//public ResponseEntity<String> createMembership(@RequestParam String userId
@@ -117,7 +82,7 @@ public class UserController extends AbstractRestController{
 	
 	@RequestMapping(value={"" , "/"},method=RequestMethod.POST)
 	@ResponseBody
-	public WrappedResponseBody addUser(@Valid @RequestBody common.db.model.identity.User user, BindingResult result /*其他参数必须在result后面*/) throws DaoException, BindingResultErrorException{
+	public WrappedResponseBody create(@Valid @RequestBody User user, BindingResult result /*其他参数必须在result后面*/) throws DaoException{
 		BindingResultHelper.checkValidateResult(result);
 		/*
 		if(result.hasErrors()) { //验证失败 
@@ -133,6 +98,29 @@ public class UserController extends AbstractRestController{
         return new WrappedResponseBody(user);  //验证成功
 	}
 	
+	@RequestMapping(value={"/{id}"},method={RequestMethod.GET})
+	@ResponseBody
+	public WrappedResponseBody findById(@PathVariable Long id) throws DaoException, EntityNotFoundException{
+		User user=userDao.findByKey(id);
+		if(user==null){
+			throw new EntityNotFoundException(id.toString());
+		}
+		return new WrappedResponseBody(user);
+	}
 	
+	@RequestMapping(value={"/{id}"},method={RequestMethod.PUT})
+	@ResponseBody
+	public WrappedResponseBody update(@PathVariable Long id,@Valid @RequestBody User user,BindingResult result ) throws DaoException{
+		BindingResultHelper.checkValidateResult(result);
+		user.setId(id);
+		return new WrappedResponseBody(userDao.update(user));
+	}
+	
+	@RequestMapping(value={"/{id}"},method={RequestMethod.DELETE})
+	@ResponseBody
+	public WrappedResponseBody  delete(@PathVariable Long id) throws DaoException{
+		userDao.deleteByKey(id);
+		return new WrappedResponseBody("");
+	}
 
 }

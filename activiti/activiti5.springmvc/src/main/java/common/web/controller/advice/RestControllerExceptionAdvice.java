@@ -2,22 +2,13 @@ package common.web.controller.advice;
 
 import javax.persistence.EntityNotFoundException;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.NativeWebRequest;
 
-import common.db.base.exception.DaoException;
-import common.db.base.exception.NoFieldChangedException;
-import common.db.base.exception.OutOfPageRangeException;
-import common.security.AuthenticationUser;
-import common.service.exception.BindingResultErrorException;
 import common.service.utils.AbstractHelperClass;
 import common.web.controller.AbstractRestController;
 import common.web.model.WrappedResponseBody;
@@ -36,7 +27,10 @@ import common.web.model.WrappedResponseBody;
 @ControllerAdvice(assignableTypes = {AbstractRestController.class})
 public class RestControllerExceptionAdvice extends AbstractHelperClass {
 
-	//用于自动绑定前台请求参数到Model中。
+	/**
+	 * 用于自动绑定前台请求参数到Model中。
+	 * @param binder
+	 */
     @InitBinder  
     public void initBinder(WebDataBinder binder) {  
     	
@@ -54,15 +48,26 @@ public class RestControllerExceptionAdvice extends AbstractHelperClass {
      * //可以把异常处理器应用到所有控制器，而不是@Controller注解的单个控制器【这个非常重要】
      */
     @ExceptionHandler(EntityNotFoundException.class)  
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)  
+    //@ResponseStatus(value = HttpStatus.NOT_FOUND)  
     @ResponseBody  //重要：如果不使用@ResponseBody标注，返回一个逻辑视图名  
-	public String processEntityNotFoundException(NativeWebRequest request, EntityNotFoundException ex){
-		//System.out.println("===========应用到所有@RequestMapping注解的方法，在其抛出UnauthenticatedException异常时执行");  
-    	//return "viewName"; 
-    	
-    	return ex.getMessage();
+	public WrappedResponseBody processEntityNotFoundException(NativeWebRequest request, EntityNotFoundException ex){
+    	return new WrappedResponseBody(ex);
+	}
+    
+    /**
+     * 重要利用处理优先级机制，其他@ExceptionHandler不处理的异常将由这里处理
+     * @param request
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(Exception.class)  
+    @ResponseBody  //重要：如果不使用@ResponseBody标注，返回一个逻辑视图名  
+	public WrappedResponseBody processEntityNotFoundException(NativeWebRequest request, Exception ex){
+    	logger.debug("processed by  @ExceptionHandler(Exception.class)  ");
+    	return new WrappedResponseBody(ex);
 	}
 
+    /*
     @ExceptionHandler(OutOfPageRangeException.class)  
     @ResponseStatus(value = HttpStatus.REQUESTED_RANGE_NOT_SATISFIABLE)  
     @ResponseBody
@@ -100,5 +105,6 @@ public class RestControllerExceptionAdvice extends AbstractHelperClass {
     	String ret="";
     	return ret;
     }
+    */
 }
 
