@@ -1,7 +1,10 @@
 package common.service.utils;
 
+import java.util.Map;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
  * 以静态变量保存Spring ApplicationContext, 可在任何代码任何地方任何时候中取出ApplicaitonContext.
@@ -47,7 +50,7 @@ public class SpringContextHolder implements ApplicationContextAware {
 	@SuppressWarnings("unchecked")
 	public static <T> T getBean(Class<T> clazz) {
 		checkApplicationContext();
-		return (T) applicationContext.getBeansOfType(clazz);
+		return applicationContext.getBean(clazz);
 	}
 
 	/**
