@@ -24,9 +24,6 @@ import common.db.base.page.PageObject;
 
 public abstract class AbstractJpaDaoImpl<T> implements AbstractJpaDao<T> {
 	
-	protected Logger logger = LoggerFactory
-			.getLogger(getClass());
-
 	protected BaseJpaDaoImpl<T> baseDao = new BaseJpaDaoImpl<T>();
 	protected PaginationJpaDaoImpl paginationDao = new PaginationJpaDaoImpl();
 	
@@ -75,11 +72,11 @@ public abstract class AbstractJpaDaoImpl<T> implements AbstractJpaDao<T> {
 		return baseDao.listAll();
 	}
 
-	public PageObject<T> getList(int currPage) throws OutOfPageRangeException, DaoException {
+	public PageObject<T> getPageList(int currPage) throws OutOfPageRangeException, DaoException {
 		return paginationDao.queryForPaginationList(currPage , getEntityClazz());
 	}
 
-	public PageObject<T> getList(int currPage, int pageSize) throws OutOfPageRangeException, DaoException{
+	public PageObject<T> getPageList(int currPage, int pageSize) throws OutOfPageRangeException, DaoException{
 		return paginationDao.queryForPaginationList(currPage,pageSize , getEntityClazz());
 	}
 
