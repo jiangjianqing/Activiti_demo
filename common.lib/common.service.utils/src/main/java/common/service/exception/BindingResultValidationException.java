@@ -1,13 +1,15 @@
 package common.service.exception;
 
+import javax.validation.ValidationException;
+
 import org.springframework.validation.BindingResult;
 
-public class BindingResultErrorException extends Exception {
+public class BindingResultValidationException extends ValidationException {
 
 	private static final long serialVersionUID = 1L;
 	private String message="";
 
-	public BindingResultErrorException(String message){
+	public BindingResultValidationException(String message){
 		this.message=message;
 	}
 
