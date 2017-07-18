@@ -59,7 +59,7 @@ public class IdentityJpaTest  extends AbstractJpaTestCase {
 	@Test
 	public void A1_testSysUserAdd() throws DaoException, OutOfPageRangeException
 	{
-		PageObject<User> page=userDao.getList(1);
+		PageObject<User> page=userDao.getPageList(1);
 		System.out.println("测试用户新增");
 		User newUser=userDao.findByKey(new Long(1));
 
@@ -86,7 +86,7 @@ public class IdentityJpaTest  extends AbstractJpaTestCase {
 	}
 
 	@Test
-	public void A2_testUserRoleAssociate() throws DaoException, NoFieldChangedException, CloneNotSupportedException
+	public void A2_testUserRoleAssociate() throws DaoException, CloneNotSupportedException
 	{
 
 		System.out.println("测试用户和角色关联");

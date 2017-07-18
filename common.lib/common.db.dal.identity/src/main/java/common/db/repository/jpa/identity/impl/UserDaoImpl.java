@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import common.db.base.exception.DaoException;
-import common.db.base.exception.NoFieldChangedException;
 import common.db.base.jpa.AbstractJpaDaoImpl;
 import common.db.base.jpa.internal.JpaUtil;
 import common.db.model.identity.Role;
