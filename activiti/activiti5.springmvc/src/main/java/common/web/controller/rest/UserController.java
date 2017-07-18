@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 //import org.json.JSONObject;
 import org.springframework.http.*;
@@ -94,8 +95,10 @@ public class UserController extends AbstractHelperClass{
 	
 	@RequestMapping(value={"" , "/"},method=RequestMethod.GET)
 	@ResponseBody
-	public PageObject<User> getAll() throws OutOfPageRangeException, DaoException{
-		return userDao.getList(1);
+	public PageObject<User> getAll(@RequestParam(defaultValue="1" , name = "${naming.requestParam.page}") int page) throws OutOfPageRangeException, DaoException{
+		
+		logger.debug("getAll.page = " + page);
+		return userDao.getList(page);
 		//System.out.println(userDao);
 		/*if(result.hasErrors()) { //验证失败 
 			System.out.println("验证User出现错误");
