@@ -25,10 +25,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import common.security.AuthenticationUser;
+import common.web.controller.AbstractViewController;
 
 @Controller
 @RequestMapping("/tiles")
-public class TilesController {
+public class TilesController extends AbstractViewController{
 
 	public TilesController() {
 		// TODO Auto-generated constructor stub

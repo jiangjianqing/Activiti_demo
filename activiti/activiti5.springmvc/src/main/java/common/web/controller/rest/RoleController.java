@@ -39,11 +39,12 @@ import common.db.repository.jpa.identity.impl.RoleDaoImpl;
 import common.db.repository.jpa.identity.impl.UserDaoImpl;
 import common.security.AuthenticationUser;
 import common.security.CustomUserDetailsService;
+import common.web.controller.AbstractRestController;
 
 @Controller	
 @RequestMapping("/rest/identity/role")
 //放到Session属性列表中，以便这个属性可以跨请求访问
-public class RoleController {
+public class RoleController extends AbstractRestController {
 	
 	@Resource
 	private RoleDao roleDao;

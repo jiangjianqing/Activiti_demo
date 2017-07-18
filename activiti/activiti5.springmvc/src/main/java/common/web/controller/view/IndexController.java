@@ -20,10 +20,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import common.service.utils.AbstractHelperClass;
+import common.web.controller.AbstractViewController;
 
 @Controller
 @RequestMapping("/")
-public class IndexController extends AbstractHelperClass {
+public class IndexController extends AbstractViewController {
 	
 	@Value("${security.logoutUrl}")
 	private String logoutUrl;

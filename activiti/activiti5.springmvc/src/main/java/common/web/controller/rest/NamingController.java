@@ -43,6 +43,7 @@ import common.db.repository.jpa.identity.impl.UserDaoImpl;
 import common.security.AuthenticationUser;
 import common.security.CustomUserDetailsService;
 import common.service.utils.SpringContextHolder;
+import common.web.controller.AbstractRestController;
 import common.web.model.RequestParamNaming;
 import common.web.model.WrappedResponseBody;
 
@@ -54,7 +55,7 @@ import common.web.model.WrappedResponseBody;
 @Controller	
 @RequestMapping("/rest/common/naming")
 //放到Session属性列表中，以便这个属性可以跨请求访问
-public class NamingController {
+public class NamingController  extends AbstractRestController {
 	
 	private AllNamings allNamings;
 	

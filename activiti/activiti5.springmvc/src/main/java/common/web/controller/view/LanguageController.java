@@ -19,9 +19,11 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.support.RequestContext;
 
+import common.web.controller.AbstractViewController;
+
 @Controller
 @RequestMapping(value = "/language")
-public class LanguageController extends common.service.utils.AbstractHelperClass {
+public class LanguageController extends AbstractViewController {
 
 	/**
 	 * 注意在spring-i18n.xml中，session与cookie的LocaleResolver都是同一个命名，当心冲突

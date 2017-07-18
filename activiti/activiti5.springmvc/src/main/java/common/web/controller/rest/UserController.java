@@ -24,6 +24,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.BindingResultUtils;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,10 @@ import common.db.repository.jpa.identity.UserDAO;
 import common.db.repository.jpa.identity.impl.UserDaoImpl;
 import common.security.AuthenticationUser;
 import common.security.CustomUserDetailsService;
+import common.service.exception.BindingResultErrorException;
 import common.service.utils.AbstractHelperClass;
+import common.service.utils.BindingResultHelper;
+import common.web.controller.AbstractRestController;
 import common.web.model.WrappedResponseBody;
 
 /**
@@ -83,7 +87,7 @@ import common.web.model.WrappedResponseBody;
 @RequestMapping("/rest/identity/user")
 @SessionAttributes(types = {AuthenticationUser.class,/*String.class*/},value={"currentUser","session.message"})//将符合types或者vlaue的ModelMap对象 存入Session
 //放到Session属性列表中，以便这个属性可以跨请求访问
-public class UserController extends AbstractHelperClass{
+public class UserController extends AbstractRestController{
 	
 	@Resource
 	private CustomUserDetailsService userDetailsService;
@@ -113,17 +117,19 @@ public class UserController extends AbstractHelperClass{
 	
 	@RequestMapping(value={"" , "/"},method=RequestMethod.POST)
 	@ResponseBody
-	public WrappedResponseBody addUser(@Valid @RequestBody common.db.model.identity.User user, BindingResult result /*其他参数必须在result后面*/) throws DaoException{
+	public WrappedResponseBody addUser(@Valid @RequestBody common.db.model.identity.User user, BindingResult result /*其他参数必须在result后面*/) throws DaoException, BindingResultErrorException{
+		BindingResultHelper.checkValidateResult(result);
+		/*
 		if(result.hasErrors()) { //验证失败 
-			
 			System.out.println("验证User出现错误");
-			System.out.println(result.toString());
+			System.out.println(result);
 			throw new EntityNotFoundException("验证User出现错误");
             //return "error";  
         }else{
-        	userDetailsService.encodeNewUserPassword(user);
-        	userDao.create(user);
-        }
+        	
+        }*/
+		userDetailsService.encodeNewUserPassword(user);
+    	userDao.create(user);
         return new WrappedResponseBody(user);  //验证成功
 	}
 	
