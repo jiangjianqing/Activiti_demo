@@ -28,6 +28,11 @@
 			<artifactId>common.security</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>common.lib</groupId>
+			<artifactId>common.web.server</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>
