@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import common.service.utils.AbstractHelperClass;
 
-public abstract class AbstractSecurityController extends AbstractHelperClass {
+public abstract class AbstractSecurityViewController extends AbstractViewController {
 	
 	protected UserDetails getCurrentUserDetails(){
 		UserDetails ret = null;
