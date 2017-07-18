@@ -69,7 +69,9 @@ public class AuthenticationSessionListener extends AbstractHelperClass implement
         // 记录用户登出时间(以最后一次访问SESSION为准)
         HttpSession session = event.getSession();
         if(SessionHelper.isAuthenticated()==true){
-        	logger.debug("用户注销");
+        	SystemIntegrator integrationHelper = SpringContextHolder.getBean(prj.web.utils.Constants.SystemIntegrationHelper);
+        	integrationHelper.onLogoff();
+        	logger.debug("用户注销成功:"+SessionHelper.getAuthenticatedUser().getUsername());
         }
         /*
         if (!ValidateUtil.isEmpty(session.getAttribute(WebSessionListener.SPRING_SECURITY_CONTEXT))) {
@@ -109,8 +111,8 @@ public class AuthenticationSessionListener extends AbstractHelperClass implement
         if(event.getName() == SessionHelper.getAuthenticationAttributeName()
         		&& SessionHelper.isAuthenticated()){
         	SystemIntegrator integrationHelper = SpringContextHolder.getBean(prj.web.utils.Constants.SystemIntegrationHelper);
-        	integrationHelper.whenAuthenticated();
-        	logger.debug("用户登录");
+        	integrationHelper.onLogin();
+        	logger.debug("用户登录成功:"+SessionHelper.getAuthenticatedUser().getUsername());
         }
     	
         

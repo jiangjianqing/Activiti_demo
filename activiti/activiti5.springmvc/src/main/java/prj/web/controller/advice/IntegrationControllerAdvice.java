@@ -14,7 +14,7 @@ import prj.web.utils.SystemIntegratorImpl;
 public class IntegrationControllerAdvice extends AbstractHelperClass {
 
 	@Resource
-	private SystemIntegratorImpl integrationHelper;
+	private SystemIntegratorImpl systemIntegrator;
 	
 	//用于自动绑定前台请求参数到Model中。
     @InitBinder  
@@ -32,7 +32,7 @@ public class IntegrationControllerAdvice extends AbstractHelperClass {
      */
   	@ModelAttribute  
     public void onRequest() {  
-  		integrationHelper.whenServletRequest();
+  		systemIntegrator.onServletRequest();
 
     }
     

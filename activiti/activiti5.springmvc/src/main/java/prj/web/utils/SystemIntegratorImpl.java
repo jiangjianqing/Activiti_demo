@@ -38,11 +38,15 @@ public class SystemIntegratorImpl  extends AbstractHelperClass
 		}	
 	}
 	
-	public void whenAuthenticated(){
+	public void onLogin(){
 		integrateActiviti();
 	}
 	
-	public void whenServletRequest(){
+	public void onLogoff(){
+		
+	}
+	
+	public void onServletRequest(){
 		integrateActiviti();
 	}
 }
