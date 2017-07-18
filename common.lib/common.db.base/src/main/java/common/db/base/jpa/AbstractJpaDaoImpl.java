@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import common.db.base.exception.DaoException;
-import common.db.base.exception.NoFieldChangedException;
 import common.db.base.exception.OutOfPageRangeException;
 import common.db.base.jpa.internal.BaseJpaDaoImpl;
 import common.db.base.jpa.internal.PaginationJpaDaoImpl;
@@ -56,11 +55,11 @@ public abstract class AbstractJpaDaoImpl<T> implements AbstractJpaDao<T> {
 		baseDao.create(t);
 	}
 	
-	public T update(T t) throws DaoException, NoFieldChangedException{
+	public T update(T t) throws DaoException{
 		return baseDao.merge(t);
 	}
 	
-	public boolean delete(T t) throws DaoException, NoFieldChangedException{
+	public boolean delete(T t) throws DaoException{
 		return baseDao.remove(t);
 	}
 
