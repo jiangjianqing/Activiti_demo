@@ -1,4 +1,4 @@
-package common.web.utils;
+package prj.web.utils;
 
 import javax.annotation.Resource;
 
@@ -14,21 +14,9 @@ import common.service.utils.AbstractHelperClass;
 import common.service.utils.SpringContextHolder;
 import common.web.utils.*;
 
-public class SystemIntegrationHelper extends AbstractHelperClass {
+public class SystemIntegratorImpl  extends AbstractHelperClass 
+		implements SystemIntegrator{
 
-	//由AbstractHelperClass提供的静态类方法支持函数，必须放在子类中
-	protected final static String getStaticClassName(){
-			return new Object() {
-				//静态方法中获取当前类名
-				public String getClassName() {
-					String className = this.getClass().getName();
-					return className.substring(0, className.lastIndexOf('$'));
-				}
-			}.getClassName();
-		}
-		
-	protected final static Logger logger = LoggerFactory
-				.getLogger(getStaticClassName());
 	//------------------static 方法模板定义结束---------------------	
 	
 	private static IdentityService getIdentityService(){
@@ -41,7 +29,7 @@ public class SystemIntegrationHelper extends AbstractHelperClass {
 	 * 最终调用ThreadLocal的set方法.具体的代码如下:
 	 * identityService.setAuthenticatedUserId(userId);
 	 */
-	private static void integrateActiviti(){
+	private void integrateActiviti(){
 		
 		if (SessionHelper.isAuthenticated()) {
 			AuthenticationUser user = SessionHelper.getAuthenticatedUser();
@@ -50,11 +38,11 @@ public class SystemIntegrationHelper extends AbstractHelperClass {
 		}	
 	}
 	
-	public static void whenAuthenticated(){
+	public void whenAuthenticated(){
 		integrateActiviti();
 	}
 	
-	public static void whenServletRequest(){
+	public void whenServletRequest(){
 		integrateActiviti();
 	}
 }

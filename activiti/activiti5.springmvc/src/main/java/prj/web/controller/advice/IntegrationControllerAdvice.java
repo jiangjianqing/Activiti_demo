@@ -1,27 +1,21 @@
-package common.web.controller.advice;
+package prj.web.controller.advice;
 
-import javax.persistence.EntityNotFoundException;
+import javax.annotation.Resource;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.context.request.NativeWebRequest;
 
-import common.db.base.exception.DaoException;
-import common.db.base.exception.NoFieldChangedException;
-import common.db.base.exception.OutOfPageRangeException;
-import common.security.AuthenticationUser;
 import common.service.utils.AbstractHelperClass;
-import common.web.utils.SystemIntegrationHelper;
+import prj.web.utils.SystemIntegratorImpl;
 
 @ControllerAdvice //(basePackages = "com.github") //basePackages用于指定对哪些包里的Controller起作用。
 public class IntegrationControllerAdvice extends AbstractHelperClass {
 
+	@Resource
+	private SystemIntegratorImpl integrationHelper;
+	
 	//用于自动绑定前台请求参数到Model中。
     @InitBinder  
     public void initBinder(WebDataBinder binder) {  
@@ -38,7 +32,7 @@ public class IntegrationControllerAdvice extends AbstractHelperClass {
      */
   	@ModelAttribute  
     public void onRequest() {  
-          SystemIntegrationHelper.whenServletRequest();
+  		integrationHelper.whenServletRequest();
 
     }
     

@@ -12,9 +12,12 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import org.aspectj.apache.bcel.classfile.Constant;
+
 import common.service.utils.AbstractHelperClass;
+import common.service.utils.SpringContextHolder;
 import common.web.utils.SessionHelper;
-import common.web.utils.SystemIntegrationHelper;
+import common.web.utils.SystemIntegrator;
 
 /**
  * 记录用户的登录和注销
@@ -105,8 +108,8 @@ public class AuthenticationSessionListener extends AbstractHelperClass implement
         
         if(event.getName() == SessionHelper.getAuthenticationAttributeName()
         		&& SessionHelper.isAuthenticated()){
-    		
-    		SystemIntegrationHelper.whenAuthenticated();
+        	SystemIntegrator integrationHelper = SpringContextHolder.getBean(prj.web.utils.Constants.SystemIntegrationHelper);
+        	integrationHelper.whenAuthenticated();
         	logger.debug("用户登录");
         }
     	

@@ -39,10 +39,8 @@
 	<!-- 用于持有ApplicationContext,可以使用SpringContextHolder.getBean('xxxx')的静态方法得到spring bean对象 -->
 	<bean class="common.service.utils.SpringContextHolder" lazy-init="false" /> 
 	
-	<!-- 使用GenericHibernateDao的范例
-	<bean id="userdao" class="com.test.DAO.Impl.UserDAOImpl">
-		<property name="hibernateTemplate" ref="hibernateTemplate"></property>
-	</bean>
-	 -->
+	
+	<!-- 当需要与其他系统对接时提供SystemIntegrationHelper接口的实现类 -->
+	<bean id="systemIntegrationHelper" class="prj.web.utils.SystemIntegratorImpl"/> 
 	 
 </beans>
