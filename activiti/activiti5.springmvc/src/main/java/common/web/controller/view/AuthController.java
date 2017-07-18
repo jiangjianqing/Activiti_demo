@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import common.service.utils.AbstractController;
+import common.web.controller.AbstractSecurityController;
 
 
 /**
@@ -30,7 +30,7 @@ import common.service.utils.AbstractController;
 
 @Controller
 @RequestMapping("/auth")
-public class AuthController extends AbstractController{
+public class AuthController extends AbstractSecurityController{
 
 	//重要：使用@Value注入配置文件中的内容
 	@Value("${security.loginProcessingUrl}")  

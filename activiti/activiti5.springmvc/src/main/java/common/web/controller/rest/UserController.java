@@ -36,6 +36,8 @@ import common.db.repository.jpa.identity.UserDAO;
 import common.db.repository.jpa.identity.impl.UserDaoImpl;
 import common.security.AuthenticationUser;
 import common.security.CustomUserDetailsService;
+import common.service.utils.AbstractHelperClass;
+import common.web.utils.WrappedResponseBody;
 
 /**
  * 如类级别的映射为 @RequestMapping(value="/narrow", produces="text/html")，
@@ -80,7 +82,7 @@ import common.security.CustomUserDetailsService;
 @RequestMapping("/rest/identity/user")
 @SessionAttributes(types = {AuthenticationUser.class,/*String.class*/},value={"currentUser","session.message"})//将符合types或者vlaue的ModelMap对象 存入Session
 //放到Session属性列表中，以便这个属性可以跨请求访问
-public class UserController {
+public class UserController extends AbstractHelperClass{
 	
 	@Resource
 	private CustomUserDetailsService userDetailsService;
@@ -107,7 +109,8 @@ public class UserController {
 	//		,@RequestParam(required=false) String[] groupIds){
 	
 	@RequestMapping(value={"" , "/"},method=RequestMethod.POST)
-	public String addUser(@Valid @RequestBody common.db.model.identity.User user, BindingResult result /*其他参数必须在result后面*/) throws DaoException{
+	@ResponseBody
+	public WrappedResponseBody addUser(@Valid @RequestBody common.db.model.identity.User user, BindingResult result /*其他参数必须在result后面*/) throws DaoException{
 		if(result.hasErrors()) { //验证失败 
 			
 			System.out.println("验证User出现错误");
@@ -118,7 +121,7 @@ public class UserController {
         	userDetailsService.encodeNewUserPassword(user);
         	userDao.create(user);
         }
-        return "show";  //验证成功
+        return new WrappedResponseBody(user);  //验证成功
 	}
 	
 	
