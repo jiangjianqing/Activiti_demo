@@ -44,7 +44,7 @@ import common.security.AuthenticationUser;
 import common.security.CustomUserDetailsService;
 import common.service.utils.SpringContextHolder;
 import common.web.model.RequestParamNaming;
-import common.web.utils.WrappedResponseBody;
+import common.web.model.WrappedResponseBody;
 
 /**
  * 用于提供server和client共用的命名
@@ -56,32 +56,35 @@ import common.web.utils.WrappedResponseBody;
 //放到Session属性列表中，以便这个属性可以跨请求访问
 public class NamingController {
 	
-	public class AllNaming implements Serializable{
-		private RequestParamNaming requestParamNaming ;
+	private AllNamings allNamings;
+	
+	public NamingController() {
+		RequestParamNaming requestParamNaming = new RequestParamNaming();
+		SpringContextHolder.getAutowireCapableBeanFactory().autowireBean(requestParamNaming);
 		
-
-		public RequestParamNaming getRequestParamNaming() {
-			return requestParamNaming;
-		}
-
-		public void setRequestParamNaming(RequestParamNaming requestParamNaming) {
-			this.requestParamNaming = requestParamNaming;
-		}
-		
+		allNamings = new AllNamings();
+		allNamings.setRequestParamNaming(requestParamNaming);
 	}
 	
 	@RequestMapping(value={"" , "/"},method=RequestMethod.GET)
 	@ResponseBody
 	public WrappedResponseBody getAll() throws OutOfPageRangeException, DaoException{
-		RequestParamNaming requestParamNaming = new RequestParamNaming();
-		SpringContextHolder.getAutowireCapableBeanFactory().autowireBean(requestParamNaming);
 		
-		AllNaming naming = new AllNaming();
-		naming.setRequestParamNaming(requestParamNaming);
-		return new WrappedResponseBody(naming);
+		return new WrappedResponseBody(allNamings);
 	}
 
-	
+}
+
+class AllNamings implements Serializable{
+	private RequestParamNaming requestParamNaming ;
 	
 
+	public RequestParamNaming getRequestParamNaming() {
+		return requestParamNaming;
+	}
+
+	public void setRequestParamNaming(RequestParamNaming requestParamNaming) {
+		this.requestParamNaming = requestParamNaming;
+	}
+	
 }

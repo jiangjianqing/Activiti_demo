@@ -38,7 +38,7 @@ import common.db.repository.jpa.identity.impl.UserDaoImpl;
 import common.security.AuthenticationUser;
 import common.security.CustomUserDetailsService;
 import common.service.utils.AbstractHelperClass;
-import common.web.utils.WrappedResponseBody;
+import common.web.model.WrappedResponseBody;
 
 /**
  * 如类级别的映射为 @RequestMapping(value="/narrow", produces="text/html")，
