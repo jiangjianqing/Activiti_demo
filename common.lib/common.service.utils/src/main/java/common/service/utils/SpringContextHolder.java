@@ -2,6 +2,7 @@ package common.service.utils;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -51,6 +52,16 @@ public class SpringContextHolder implements ApplicationContextAware {
 	public static <T> T getBean(Class<T> clazz) {
 		checkApplicationContext();
 		return applicationContext.getBean(clazz);
+	}
+	
+	/**
+	 * 通过代码创建类实例，同时注入spring内容
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static AutowireCapableBeanFactory getAutowireCapableBeanFactory() {
+		checkApplicationContext();
+		return applicationContext.getAutowireCapableBeanFactory();
 	}
 
 	/**
