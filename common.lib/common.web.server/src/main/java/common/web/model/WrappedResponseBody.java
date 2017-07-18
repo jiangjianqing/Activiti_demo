@@ -1,11 +1,13 @@
-package common.web.utils;
+package common.web.model;
+
+import java.io.Serializable;
 
 /**
  * 本类用于对返回前端的JSON数据进行格式化处理
  * @author jjq
  *
  */
-public class WrappedResponseBody {
+public class WrappedResponseBody implements Serializable{
 	private Boolean hasError = false;
 	private String message = "";
 	private Object data;
