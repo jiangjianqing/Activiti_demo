@@ -27,8 +27,10 @@ import common.web.controller.AbstractViewController;
  * 	以下@ExceptionHandler方法处理都禁止标注@ResponseBody  //重要：如果不使用@ResponseBody标注，将返回一个逻辑视图名  
  * @author jjq
  *
+ *basePackages用于指定对哪些包里的Controller起作用,无法使用通配符
+ *所以使用assignableTypes来代替（也可以使用annotations 实现同样功能）
  */
-@ControllerAdvice(basePackageClasses = {AbstractViewController.class}) //basePackages用于指定对哪些包里的Controller起作用。
+@ControllerAdvice(assignableTypes = {AbstractViewController.class}) 
 public class ViewControllerExceptionAdvice extends AbstractHelperClass {
 
 	//用于自动绑定前台请求参数到Model中。

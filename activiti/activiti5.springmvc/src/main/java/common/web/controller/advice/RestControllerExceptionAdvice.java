@@ -29,8 +29,11 @@ import common.web.model.WrappedResponseBody;
  * 没有使用@RestControllerAdvice,是为了与spring3.x保持兼容 
  * @author jjq
  *
+ *basePackages用于指定对哪些包里的Controller起作用,无法使用通配符
+ *所以使用assignableTypes来代替（也可以使用annotations 实现同样功能）
+ *
  */
-@ControllerAdvice(basePackageClasses = {AbstractRestController.class}) //basePackages用于指定对哪些包里的Controller起作用。
+@ControllerAdvice(assignableTypes = {AbstractRestController.class})
 public class RestControllerExceptionAdvice extends AbstractHelperClass {
 
 	//用于自动绑定前台请求参数到Model中。
