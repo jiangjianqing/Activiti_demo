@@ -35,6 +35,7 @@ import common.db.base.exception.DaoException;
 import common.db.base.exception.OutOfPageRangeException;
 import common.db.base.page.PageObject;
 import common.db.model.identity.Role;
+import common.db.model.identity.RoleTypeEnum;
 import common.db.model.identity.User;
 import common.db.repository.jpa.identity.RoleDao;
 import common.db.repository.jpa.identity.UserDAO;
@@ -78,6 +79,25 @@ public class NamingController  extends AbstractRestController {
 
 class AllNamings implements Serializable{
 	private RequestParamNaming requestParamNaming ;
+	
+	private Map<String , String> roleTypes = new HashMap<String, String>();
+	
+	public AllNamings(){
+		populateRoleTypes();
+	}
+	
+	public Map<String, String> getRoleTypes() {
+		return roleTypes;
+	}
+
+	/*
+	 * 填充RoleTypeEnum中的类型信息
+	 */
+	private void populateRoleTypes(){
+		for (RoleTypeEnum s : RoleTypeEnum.values()){
+			roleTypes.put(s.getCode(), s.getDescription());
+		}
+	};
 	
 
 	public RequestParamNaming getRequestParamNaming() {
