@@ -26,10 +26,7 @@ public class PageInfo {
     private int startPoint;
     private int endPoint;
     private PaginationStrategy paginationStrategy;
-    List<Integer> pageNumberList;
-    public List<Integer> getPageNumberList() {
-        return pageNumberList;
-    }
+
     /**
      * @param dataCount   总数据数
      * @param currentPage 当前页
@@ -47,7 +44,6 @@ public class PageInfo {
         maxPage    = dataCount % pageSize == 0 ? dataCount / pageSize : dataCount/ pageSize + 1;
         paginationStrategy = new PaginationStrategyImpl();
         setDataPoint(paginationStrategy);
-        setPageNumberList();
         
         //20160129添加maxPage>0条件：如果没有查询数据，则maxPage=0,currentPage=0
         if(maxPage==0)
@@ -81,25 +77,7 @@ public class PageInfo {
     public PageInfo(int dataCount, int currentPage,int pageSize) throws OutOfPageRangeException {
     	initPageObject(dataCount,currentPage,pageSize);  
     }
-    
-    private void setPageNumberList(){
-            this.pageNumberList  = new ArrayList<Integer>();
-            //20160126暂时屏蔽
-            /*int pageNumber = currentPage-3;
-            while(pageNumber<=0){
-                pageNumber++;
-            }
-            int count = 0;
-            while(pageNumber<=maxPage-1&&count < 7){
-                     count ++;
-                     this.pageNumberList.add(pageNumber);
-                     pageNumber++;
-            }*/
-            for(int i=0;i<maxPage;i++){
-            	this.pageNumberList.add(i+1);
-            }
-    }
-    
+       
     private void setDataPoint(PaginationStrategy paginationStrategy){  
         paginationStrategy.setDataPoint(currentPage, pageSize);
         startPoint = paginationStrategy.getStartPoint();
