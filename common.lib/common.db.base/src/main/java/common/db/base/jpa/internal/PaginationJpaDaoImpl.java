@@ -15,7 +15,7 @@ public class PaginationJpaDaoImpl extends ExtendJpaDaoImpl {
     public final <T>PageObject<T> queryForPaginationList(int currentPage, int pageSize, String queryForListHQL,Object queryParams) throws OutOfPageRangeException, DaoException {
         int dataCount = queryCount(queryForListHQL, queryParams);
         PageObject<T> pageObject = new PageObject<T>(dataCount, currentPage,pageSize);
-        pageObject.setPageList(queryForList(queryForListHQL, queryParams, pageObject.getStartPoint(),pageObject.getPageSize()));
+        pageObject.setPageData(queryForList(queryForListHQL, queryParams, pageObject.getPageInfo().getStartPoint(),pageObject.getPageInfo().getPageSize()));
         return pageObject;
     }
 
@@ -46,7 +46,7 @@ public class PaginationJpaDaoImpl extends ExtendJpaDaoImpl {
     protected final <T>PageObject<T> queryForPaginationList(int currentPage,String queryForListHQL,Object queryParams) throws OutOfPageRangeException, DaoException {
     	int dataCount = queryCount(queryForListHQL, queryParams);
         PageObject<T> pageObject = new PageObject<T>(dataCount, currentPage);
-        pageObject.setPageList(queryForList(queryForListHQL, queryParams, pageObject.getStartPoint(),pageObject.getPageSize()));
+        pageObject.setPageData(queryForList(queryForListHQL, queryParams, pageObject.getPageInfo().getStartPoint(),pageObject.getPageInfo().getPageSize()));
         return pageObject;
     }
 
