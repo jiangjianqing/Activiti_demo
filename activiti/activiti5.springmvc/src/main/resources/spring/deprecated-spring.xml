@@ -18,6 +18,10 @@
 	http://www.springframework.org/schema/jee/spring-jee.xsd
 	">
 	
+	<!-- 20170719 SpringContextHolder内部使用contextLoader获取当前的applicationContext，不再需要对该类进行初始化 -->
+	<!-- 用于持有ApplicationContext,可以使用SpringContextHolder.getBean('xxxx')的静态方法得到spring bean对象 -->
+	<bean class="common.service.utils.SpringContextHolder" lazy-init="false" /> 
+	
 	<!-- 2017-07-15 重要： 废弃对hibernate的直接支持，改用JPA -->
 	<!-- 定义Hibernate的SessionFactory -->
 	<bean id="hibernateSessionFactory" name="hibernateSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">

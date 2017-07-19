@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
@@ -73,8 +74,16 @@ public class SpringContextHolder implements ApplicationContextAware {
 
 	private static void checkApplicationContext() {
 		if (applicationContext == null) {
-			throw new IllegalStateException(
-					"applicaitonContext未注入,请在applicationContext.xml中定义SpringContextHolder");
+			
+//通过servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);
+			//已经将WebApplicationContext的实例放入ServletContext 中了。
+			
+			//重要：20170719 这里直接直接使用spring提供的contextLoader来获取applicationContext,所以系统中可以不初始化本类了
+			applicationContext = ContextLoader.getCurrentWebApplicationContext();
+		    //WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();    
+            //ServletContext servletContext = webApplicationContext.getServletContext();  
+			//throw new IllegalStateException(
+			//		"applicaitonContext未注入,请在applicationContext.xml中定义SpringContextHolder");
 		}
 	}
 }
