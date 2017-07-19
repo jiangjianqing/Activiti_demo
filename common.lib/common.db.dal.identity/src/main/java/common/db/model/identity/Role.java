@@ -25,7 +25,8 @@ public class Role implements Serializable{
 	private String name;
 	
 	@Column(name="TYPE")
-	private String type;
+	@Enumerated(EnumType.STRING)
+	private RoleTypeEnum type;
 
 	//bi-directional many-to-many association to SysUser
 	@ManyToMany(mappedBy="roles",fetch=FetchType.EAGER)
@@ -42,11 +43,11 @@ public class Role implements Serializable{
 		this.id = id;
 	}
 
-	public String getType() {
+	public RoleTypeEnum getType() {
 		return this.type;
 	}
 
-	public void setType(String type) {
+	public void setType(RoleTypeEnum type) {
 		this.type = type;
 	}
 

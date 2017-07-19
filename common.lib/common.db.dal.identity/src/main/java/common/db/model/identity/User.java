@@ -18,6 +18,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mchange.util.FailSuppressedMessageLogger;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -85,7 +86,7 @@ public class User implements Serializable{
 	*/	
 	
 	@PrePersist
-	void prePersist(){}
+	void populateDBFields(){}
 	
 	@PreUpdate
     void preUpdate() {
@@ -99,7 +100,7 @@ public class User implements Serializable{
 	void preDestroy(){}
 	
 	@PostLoad
-	public void postLoad(){
+	public void populateTransientFields(){
 		if (this.roles == null){
 			this.roles = new ArrayList<Role>();
 		}
@@ -107,6 +108,13 @@ public class User implements Serializable{
 			roleIds.add(role.getId());
 		}
 	}
+	/**
+	 *代码自动生成字符串ID的方式 
+	@Id
+    @GeneratedValue(generator = "idGenerator")
+    @GenericGenerator(name = "idGenerator", strategy = "uuid2") //这个是hibernate的注解/生成32位UUID
+    protected String id;
+	 */
 
 	@Id
 	@Column(name="ID")
@@ -118,7 +126,7 @@ public class User implements Serializable{
 	@Column(name="PASSWORD",nullable=false,length=255)
 	private String password;
 
-	@Column(name="SALT")
+	@Column(name="SALT" , updatable=false)
 	private String salt;
 
 	@NotNull(message="{user.name.null}")
