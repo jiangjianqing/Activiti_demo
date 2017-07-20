@@ -1,12 +1,5 @@
 package common.db.base;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-
-
 public interface  AbstractEnum<T> {
 
 	/**
@@ -21,36 +14,60 @@ public interface  AbstractEnum<T> {
 	 */
 	public String getDescription();
 	
-	public default Map<T, String> getCodeAndDescriptions(Class<? extends Enum> cls){
-		Map<T , String> alls = new HashMap<T, String>();
-		
-		Method method = null;
-		try {
-			method = cls.getMethod("values");
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	//20170720：非常重要 在接口中无法定义子类必须实现的静态类 ,以下都为标准写法
+	/*
+	 * 
+	ADMIN(null , "管理员"),USER(null ,"普通用户");
+	
+	//重要：code必须要么设置=null，要么设置为unique string，即使空字符串也可以
+	
+	private RoleTypeEnum(String code, String description) {
+		this.code = code;
+		this.description = description;
+	}
+
+	private String code;
+	private String description;
+	
+	//取出当前Enum编码
+	@Override
+	public String getCode() {
+		if(code!=null){
+			return code;
+		}else{
+			return super.toString();
 		}
-		AbstractEnum[] objs = null;
-		try {
-			objs = (AbstractEnum[]) method.invoke(null);
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		for (AbstractEnum s : objs){
-			alls.put((T) s.getCode(), s.getDescription());
-		}
-		return alls;
 	}
 	
+	@Override
+	public String getDescription() {
+		return description;
+	}
+	
+	//由于静态类无法覆盖Object的方法，子类需要添加如下方法
+	@Override
+	public String toString(){
+		return getCode();
+	}
+	
+	//子类必须实现代码解析的静态方法
+	public static RoleTypeEnum parseCode(String code) {
+		for (RoleTypeEnum s : RoleTypeEnum.values()) {
+			if (s.getCode().equalsIgnoreCase(code))
+				return s;
+		}
+		return null;
+	}
+	
+	//子类必须实现取列表的静态方法
+	public static Map<String, String> getCodeAndDescriptions(){
+		Map<String , String> ret = new HashMap<String, String>();
+		for (RoleTypeEnum s : RoleTypeEnum.values()){
+			ret.put(s.getCode(), s.getDescription());
+		}
+		
+		return ret;
+	}
+	
+	*/
 }
