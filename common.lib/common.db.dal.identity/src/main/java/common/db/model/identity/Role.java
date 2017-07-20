@@ -3,6 +3,7 @@ package common.db.model.identity;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -15,6 +16,14 @@ import java.util.List;
 //@NamedQuery(name="SysRole.findAll", query="SELECT s FROM SysRole s")
 public class Role implements Serializable{
 	private static final long serialVersionUID = 1L;
+	
+	@PostLoad
+	public void populateTransientFields(){
+		//为前端填充角色类型描述信息
+		if (type!=null){
+			setTypeDescription(type.getDescription());
+		}
+	}
 
 	@Id
 	@Column(name="ID")
@@ -27,6 +36,17 @@ public class Role implements Serializable{
 	@Column(name="TYPE")
 	@Enumerated(EnumType.STRING)
 	private RoleTypeEnum type;
+	
+	@Transient
+	private String typeDescription;
+
+	public String getTypeDescription() {
+		return typeDescription;
+	}
+
+	public void setTypeDescription(String roleTypeDescription) {
+		this.typeDescription = roleTypeDescription;
+	}
 
 	//bi-directional many-to-many association to SysUser
 	@ManyToMany(mappedBy="roles",fetch=FetchType.EAGER)

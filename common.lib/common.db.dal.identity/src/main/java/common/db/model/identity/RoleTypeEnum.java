@@ -1,6 +1,9 @@
 package common.db.model.identity;
 
-import common.db.base.StringEnum;
+import java.util.HashMap;
+import java.util.Map;
+
+import common.db.base.AbstractEnum;
 
 /**
  * 角色类型枚举对象
@@ -9,7 +12,7 @@ import common.db.base.StringEnum;
  * @author jjq
  *
  */
-public enum RoleTypeEnum implements StringEnum{
+public enum RoleTypeEnum implements AbstractEnum<String>{
 	ADMIN(null , "管理员"),USER(null ,"普通用户");
 	
 	//-------------------------以下基本都为标准写法，请勿修改-------------------------------
@@ -56,10 +59,19 @@ public enum RoleTypeEnum implements StringEnum{
 	 */
 	public static RoleTypeEnum parseCode(String code) {
 		for (RoleTypeEnum s : RoleTypeEnum.values()) {
-			if (s.code.equalsIgnoreCase(code))
+			if (s.getCode().equalsIgnoreCase(code))
 				return s;
 		}
 		return null;
+	}
+	
+	public static Map<String, String> getCodeAndDescriptions(){
+		Map<String , String> ret = new HashMap<String, String>();
+		for (RoleTypeEnum s : RoleTypeEnum.values()){
+			ret.put(s.getCode(), s.getDescription());
+		}
+		
+		return ret;
 	}
 	
 	/*  以下为不实用的范例
