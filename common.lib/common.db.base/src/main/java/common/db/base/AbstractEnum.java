@@ -14,7 +14,7 @@ public interface  AbstractEnum<T> {
 	 */
 	public String getDescription();
 	
-	//20170720：非常重要 在接口中无法定义子类必须实现的静态类 ,以下都为标准写法
+	//20170720：非常重要 在接口中无法定义子类必须实现的静态方法 ,以下都为标准写法
 	/*
 	 * 
 	ADMIN(null , "管理员"),USER(null ,"普通用户");
