@@ -80,25 +80,11 @@ public class NamingController  extends AbstractRestController {
 class AllNamings implements Serializable{
 	private RequestParamNaming requestParamNaming ;
 	
-	private Map<String , String> roleTypes = new HashMap<String, String>();
-	
-	public AllNamings(){
-		populateRoleTypes();
-	}
+	private Map<String , String> roleTypes = RoleTypeEnum.getCodeAndDescriptions();
 	
 	public Map<String, String> getRoleTypes() {
 		return roleTypes;
-	}
-
-	/*
-	 * 填充RoleTypeEnum中的类型信息
-	 */
-	private void populateRoleTypes(){
-		for (RoleTypeEnum s : RoleTypeEnum.values()){
-			roleTypes.put(s.getCode(), s.getDescription());
-		}
-	};
-	
+	}	
 
 	public RequestParamNaming getRequestParamNaming() {
 		return requestParamNaming;
