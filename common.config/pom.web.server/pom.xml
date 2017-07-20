@@ -1,37 +1,45 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+    <parent>
 		<groupId>common.config</groupId>
-		<artifactId>pom.activiti5</artifactId>
+		<artifactId>pom.spring</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../../common.config/pom.activiti5</relativePath>
+		<relativePath>../pom.spring</relativePath>
 	</parent>
-	<groupId>prj.activiti.demo</groupId>
-	<artifactId>activiti5.springmvc</artifactId>
+	<groupId>common.config</groupId>
+	<artifactId>pom.web.server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>pom</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>common.lib</groupId>
+			<artifactId>common.db.dal.identity</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>common.lib</groupId>
+			<artifactId>common.service.utils</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>common.lib</groupId>
+			<artifactId>common.security</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>common.lib</groupId>
+			<artifactId>common.web.server</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
-		<!-- 默认已经加入mybatis.generator 支持，除非切换数据库种类，否则不需要修改
-			<plugin>
-			
-				<groupId>org.mybatis.generator</groupId>  
-                <artifactId>mybatis-generator-maven-plugin</artifactId>  
-                <dependencies>  
-                    <dependency>  
-                        <groupId>mysql</groupId>  
-                        <artifactId>mysql-connector-java</artifactId>  
-                        <version>${mysql.connector.version}</version>  
-                    </dependency>  
-                </dependencies>  
-                
-			</plugin>
-			-->
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.4.6.v20170531</version>
 				<configuration>
 					<scanIntervalSeconds>10</scanIntervalSeconds>
 					<httpConnector>

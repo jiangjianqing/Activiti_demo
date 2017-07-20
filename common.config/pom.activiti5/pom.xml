@@ -3,9 +3,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>common.config</groupId>
-		<artifactId>pom.spring</artifactId>
+		<artifactId>pom.web.server</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-		<relativePath>../pom.spring</relativePath>
+		<relativePath>../pom.web.server</relativePath>
 	</parent>
 	<artifactId>pom.activiti5</artifactId>
 	<packaging>pom</packaging>
