@@ -1,13 +1,13 @@
 package enumtype.test;
 
-import common.db.base.StringEnum;
+import common.db.base.AbstractEnum;
 
 /**
  * 状态枚举的范例，这里算是写了一个标准用法
  * @author jjq
  *
  */
-public enum StatusEnum implements StringEnum{
+public enum StatusEnum implements AbstractEnum<String>{
 	//这里的("xxx")其实就是下面构造函数的参数传入 StatusEnum(String code)
 	//再配合toString() ,最终实现了类似C++中的enum赋值效果
 	
@@ -36,7 +36,7 @@ public enum StatusEnum implements StringEnum{
 	 */
 	public static StatusEnum parseCode(String code) {
 		for (StatusEnum s : StatusEnum.values()) {
-			if (s.code.equalsIgnoreCase(code))
+			if (s.code.equalsIgnoreCase(code)) //忽略大小写
 				return s;
 		}
 		return null;
