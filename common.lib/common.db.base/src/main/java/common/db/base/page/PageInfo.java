@@ -22,7 +22,7 @@ public class PageInfo {
 	private int currentPage;
     private int dataCount;
     private int pageSize;
-    private int maxPage;
+    private int totalPages;
     private int startPoint;
     private int endPoint;
     private PaginationStrategy paginationStrategy;
@@ -41,14 +41,14 @@ public class PageInfo {
         this.pageSize = pageSize;
         this.dataCount = dataCount;
         this.currentPage = currentPage;
-        maxPage    = dataCount % pageSize == 0 ? dataCount / pageSize : dataCount/ pageSize + 1;
+        totalPages    = dataCount % pageSize == 0 ? dataCount / pageSize : dataCount/ pageSize + 1;
         paginationStrategy = new PaginationStrategyImpl();
         setDataPoint(paginationStrategy);
         
         //20160129添加maxPage>0条件：如果没有查询数据，则maxPage=0,currentPage=0
-        if(maxPage==0)
-        	currentPage=maxPage;
-        else if(currentPage>maxPage || (currentPage<1)){
+        if(totalPages==0)
+        	currentPage=totalPages;
+        else if(currentPage>totalPages || (currentPage<1)){
         	throw new OutOfPageRangeException();
         }
     }
@@ -110,8 +110,8 @@ public class PageInfo {
      * 获得一共有多少页
      * @return 一共有多少页
      */
-    public int getMaxPage() {
-        return maxPage;
+    public int getTotalPages() {
+        return totalPages;
     }
     /**
      * 获得总数据数
@@ -140,7 +140,7 @@ public class PageInfo {
         StringBuilder builder = new StringBuilder();
         builder.append("  当前页码 ").append(currentPage).append(" 总数据数 ").append(dataCount);
         builder.append("  起始点 ").append(startPoint).append(" 结束点 ").append(endPoint);
-        builder.append("  总页数 ").append(maxPage).   append(" 单页数据数 ").append(pageSize);
+        builder.append("  总页数 ").append(totalPages).   append(" 单页数据数 ").append(pageSize);
         return builder.toString();
     }
 }
