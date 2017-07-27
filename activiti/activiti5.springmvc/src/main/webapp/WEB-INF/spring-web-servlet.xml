@@ -130,7 +130,7 @@
 	<mvc:resources mapping="/fonts/**" location="/static/fonts/" />
 	<mvc:resources mapping="/lib/**" location="/static/lib/" />
 	<mvc:resources mapping="/styles/**" location="/static/styles/" />
-	<mvc:resources mapping="/vender/**" location="/static/vender/"/>
+	<mvc:resources mapping="/vendor/**" location="/static/vendor/"/>
 	<mvc:resources mapping="/static/**" location="/static/"/>
 
 </beans>
