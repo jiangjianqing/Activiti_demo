@@ -12,6 +12,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import common.db.base.test.AbstractMyBatisTestCase;
+import common.db.model.identity.User;
+import common.db.repository.mybatis.identity.UserDao;
 
 public class IdentityMyBatisTest extends AbstractMyBatisTestCase {
 
@@ -19,7 +21,7 @@ public class IdentityMyBatisTest extends AbstractMyBatisTestCase {
 //  private ApplicationContext ac = null;  
 	
     //@Resource  
-    //private IUserService userService = null;  
+    //private UserDao UserDao = null;  
   
 //  @Before  
 //  public void before() {  
@@ -29,7 +31,9 @@ public class IdentityMyBatisTest extends AbstractMyBatisTestCase {
   
     @Test  
     public void test1() {  
-        //User user = userService.getUserById(1);  
+        //User user= new User();
+        //user.setId(new Long(123));
+        //UserDao.insert(user);  
         // System.out.println(user.getUserName());  
         // logger.info("值："+user.getUserName());  
         //logger.info(JSON.toJSONString(user));  
