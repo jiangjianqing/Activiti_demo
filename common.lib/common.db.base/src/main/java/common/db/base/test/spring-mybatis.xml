@@ -47,7 +47,7 @@
     
     <!-- 自动映射扫描，代替org.mybatis.spring.MapperFactoryBean -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-    	<property name="basePackage" value="com.liming.manager"/>
+    	<property name="basePackage" value="**.db.repository.mybatis.*"/>
     	
     	<!-- annotationClass和markerInterface是两个扫描过滤条件 -->
     	<!-- 当指定了annotationClass的时候，MapperScannerConfigurer将只注册使用了annotationClass注解标记的接口 -->

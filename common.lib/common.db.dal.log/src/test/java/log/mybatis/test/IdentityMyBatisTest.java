@@ -1,4 +1,4 @@
-package identity.test;
+package log.mybatis.test;
 
 import static org.junit.Assert.*;
 

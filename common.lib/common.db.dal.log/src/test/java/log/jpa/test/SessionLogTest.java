@@ -1,4 +1,4 @@
-package log.test;
+package log.jpa.test;
 
 import static org.junit.Assert.*;
 
