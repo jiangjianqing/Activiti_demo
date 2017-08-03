@@ -33,6 +33,10 @@
 	<bean id="roleDao" class="common.db.repository.jpa.identity.impl.RoleDaoImpl">
 		
 	</bean> 
+	
+	<bean id="sessionLogDao" class="common.db.repository.jpa.log.impl.SessionLogDaoImpl">
+		
+	</bean> 
        
 	<!--  这里开始定义Spring bean例子  -->
 	
