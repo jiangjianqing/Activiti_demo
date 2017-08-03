@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="common.db.repository.mybatis.identity.RoleDao">  
+<mapper namespace="common.db.repository.mybatis.identity.RoleDao">
   <resultMap id="BaseResultMap" type="common.db.model.identity.Role">
-    <result column="ID" jdbcType="BIGINT" property="id" />
+    <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="NAME" jdbcType="VARCHAR" property="name" />
     <result column="TYPE" jdbcType="VARCHAR" property="type" />
   </resultMap>
+  
   <insert id="insert" parameterType="common.db.model.identity.Role">
     insert into COMMON_ID_ROLE (ID, NAME, TYPE
       )
@@ -37,5 +38,6 @@
       </if>
     </trim>
   </insert>
+  
   
 </mapper>

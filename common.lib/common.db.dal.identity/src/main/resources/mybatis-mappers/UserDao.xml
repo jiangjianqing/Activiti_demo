@@ -17,12 +17,10 @@
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="USERNAME" jdbcType="VARCHAR" property="username" />
   </resultMap>
-  <sql id="Base_Column_List">
-    ID, ACCOUNT_NON_EXPIRED, ACCOUNT_NON_LOCKED, CREATE_TIME, CREDENTIALS_NON_EXPIRED, 
-    EMAIL, ENABLED, FIRST_NAME, LAST_NAME, LAST_SUCCESS_LOGIN_TIME, PASSWORD, SALT, UPDATE_TIME, 
-    USERNAME
-  </sql>
- 
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from COMMON_ID_USER
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
   <insert id="insert" parameterType="common.db.model.identity.User">
     insert into COMMON_ID_USER (ID, ACCOUNT_NON_EXPIRED, ACCOUNT_NON_LOCKED, 
       CREATE_TIME, CREDENTIALS_NON_EXPIRED, EMAIL, 
