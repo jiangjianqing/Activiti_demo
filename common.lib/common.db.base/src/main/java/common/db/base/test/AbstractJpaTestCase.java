@@ -1,4 +1,4 @@
-package identity.test;
+package common.db.base.test;
 
 import static org.junit.Assert.fail;
 
