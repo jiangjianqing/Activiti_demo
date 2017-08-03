@@ -34,14 +34,21 @@
 		
 	</bean> 
 	
-	<bean id="sessionLogDao" class="common.db.repository.jpa.log.impl.SessionLogDaoImpl">
-		
-	</bean> 
+	
        
 	<!--  这里开始定义Spring bean例子  -->
 	
 	
 	<!-- 当需要与其他系统对接时提供SystemIntegrationHelper接口的实现类 -->
 	<bean id="systemIntegrationHelper" class="prj.web.utils.SystemIntegratorImpl"/> 
+	
+	<!-- 重要：Session日志记录只需要继承SessionEvent即可 -->
+	<bean id="sessionLogger" class="common.web.service.impl.SessionLoggerImpl">
+		<property name="sessionLogDao">
+		<bean class="common.db.repository.jpa.log.impl.SessionLogDaoImpl">
+		
+		</bean> 
+		</property>
+	</bean> 
 	 
 </beans>

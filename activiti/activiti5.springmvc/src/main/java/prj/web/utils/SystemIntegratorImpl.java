@@ -1,6 +1,7 @@
 package prj.web.utils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 import org.activiti.engine.IdentityService;
 import org.h2.util.New;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import common.security.AuthenticationUser;
 import common.service.utils.AbstractHelperClass;
 import common.service.utils.SpringContextHolder;
+import common.web.service.SystemIntegrator;
 import common.web.utils.*;
 
 public class SystemIntegratorImpl  extends AbstractHelperClass 
@@ -38,11 +40,11 @@ public class SystemIntegratorImpl  extends AbstractHelperClass
 		}	
 	}
 	
-	public void onLogin(){
+	public void onLogin(HttpSession session){
 		integrateActiviti();
 	}
 	
-	public void onLogoff(){
+	public void onLogout(HttpSession session){
 		
 	}
 	
