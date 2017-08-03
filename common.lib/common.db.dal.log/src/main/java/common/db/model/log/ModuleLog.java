@@ -1,4 +1,4 @@
-package common.db.modal.log;
+package common.db.model.log;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -60,7 +61,7 @@ uniqueConstraints = @UniqueConstraint(
 @Entity
 @DynamicInsert //设置为true,表示insert对象的时候,生成动态的insert语句,如果这个字段的值是null就不会加入到insert语句当中.默认false。
 @DynamicUpdate //设置为true,表示update对象的时候,生成动态的update语句,如果这个字段的值是null就不会被加入到update语句中,默认false。
-@Table(name="COMMON_LOG_SESSION")
+@Table(name="COMMON_LOG_MODULE")
 @NamedQueries({
     //@NamedQuery(name="findAll",query="SELECT u FROM User u"),
     //@NamedQuery(name="findUserWithId",query="SELECT u FROM User u WHERE u.id = ?1"),
@@ -68,7 +69,7 @@ uniqueConstraints = @UniqueConstraint(
 }) 
 //重要：不要在父类与子类同时使用JsonIgnoreProperties，会导致父类的设定失效
 //@JsonIgnoreProperties(value={"sysRoles"/*,"password","salt"*/})
-public class SessionLog implements Serializable{
+public class ModuleLog implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@PrePersist
@@ -111,91 +112,17 @@ public class SessionLog implements Serializable{
 
 	private Long userId;
 	
-	private String sessionId;
+	private Long sessionLogId;//外键，可重复
 	
-	private String hostName;
+	private String moduleName;
 	
-	private String ipAddr;
+	private String methodName;//例如取用户列表
 	
-	private Date createTime;
+	private String methodType;//修改、删除、编辑等等
 	
-	private Date loginTime;
+	private String methodParams;
 	
-	private Date logoutTime;
-	
-	//是否超时导致会话无效
-	private Boolean SessionNonTimeouted;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
-	public String getSessionId() {
-		return sessionId;
-	}
-
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
-	}
-
-	public String getHostName() {
-		return hostName;
-	}
-
-	public void setHostName(String hostName) {
-		this.hostName = hostName;
-	}
-
-	public String getIpAddr() {
-		return ipAddr;
-	}
-
-	public void setIpAddr(String ipAddr) {
-		this.ipAddr = ipAddr;
-	}
-
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-	public Date getLoginTime() {
-		return loginTime;
-	}
-
-	public void setLoginTime(Date loginTime) {
-		this.loginTime = loginTime;
-	}
-
-	public Date getLogoutTime() {
-		return logoutTime;
-	}
-
-	public void setLogoutTime(Date logoutTime) {
-		this.logoutTime = logoutTime;
-	}
-
-	public Boolean getSessionNonTimeouted() {
-		return SessionNonTimeouted;
-	}
-
-	public void setSessionNonTimeouted(Boolean sessionNonTimeouted) {
-		SessionNonTimeouted = sessionNonTimeouted;
-	}
+	private Date execStartTime;
+	private Date execEndTime;
 
 }

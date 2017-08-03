@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import common.db.base.exception.DaoException;
-import common.db.modal.log.SessionLog;
+import common.db.model.log.SessionLog;
 import common.db.repository.jpa.log.SessionLogDao;
 import common.db.repository.jpa.log.impl.SessionLogDaoImpl;
 

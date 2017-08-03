@@ -1,4 +1,4 @@
-package common.db.modal.log;
+package common.db.model.log;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -12,7 +12,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -61,7 +60,7 @@ uniqueConstraints = @UniqueConstraint(
 @Entity
 @DynamicInsert //设置为true,表示insert对象的时候,生成动态的insert语句,如果这个字段的值是null就不会加入到insert语句当中.默认false。
 @DynamicUpdate //设置为true,表示update对象的时候,生成动态的update语句,如果这个字段的值是null就不会被加入到update语句中,默认false。
-@Table(name="COMMON_LOG_MODULE")
+@Table(name="COMMON_LOG_SESSION")
 @NamedQueries({
     //@NamedQuery(name="findAll",query="SELECT u FROM User u"),
     //@NamedQuery(name="findUserWithId",query="SELECT u FROM User u WHERE u.id = ?1"),
@@ -69,7 +68,7 @@ uniqueConstraints = @UniqueConstraint(
 }) 
 //重要：不要在父类与子类同时使用JsonIgnoreProperties，会导致父类的设定失效
 //@JsonIgnoreProperties(value={"sysRoles"/*,"password","salt"*/})
-public class ModuleLog implements Serializable{
+public class ErrorLog implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@PrePersist
@@ -114,15 +113,7 @@ public class ModuleLog implements Serializable{
 	
 	private Long sessionLogId;//外键，可重复
 	
-	private String moduleName;
+	private Date createTime;
 	
-	private String methodName;//例如取用户列表
-	
-	private String methodType;//修改、删除、编辑等等
-	
-	private String methodParams;
-	
-	private Date execStartTime;
-	private Date execEndTime;
 
 }

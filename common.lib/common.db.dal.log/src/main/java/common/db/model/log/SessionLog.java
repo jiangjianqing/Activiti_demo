@@ -1,4 +1,4 @@
-package common.db.modal.log;
+package common.db.model.log;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -68,7 +68,7 @@ uniqueConstraints = @UniqueConstraint(
 }) 
 //重要：不要在父类与子类同时使用JsonIgnoreProperties，会导致父类的设定失效
 //@JsonIgnoreProperties(value={"sysRoles"/*,"password","salt"*/})
-public class ErrorLog implements Serializable{
+public class SessionLog implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@PrePersist
@@ -111,9 +111,91 @@ public class ErrorLog implements Serializable{
 
 	private Long userId;
 	
-	private Long sessionLogId;//外键，可重复
+	private String sessionId;
+	
+	private String hostName;
+	
+	private String ipAddr;
 	
 	private Date createTime;
 	
+	private Date loginTime;
+	
+	private Date logoutTime;
+	
+	//是否超时导致会话无效
+	private Boolean SessionNonTimeouted;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+
+	public String getHostName() {
+		return hostName;
+	}
+
+	public void setHostName(String hostName) {
+		this.hostName = hostName;
+	}
+
+	public String getIpAddr() {
+		return ipAddr;
+	}
+
+	public void setIpAddr(String ipAddr) {
+		this.ipAddr = ipAddr;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getLoginTime() {
+		return loginTime;
+	}
+
+	public void setLoginTime(Date loginTime) {
+		this.loginTime = loginTime;
+	}
+
+	public Date getLogoutTime() {
+		return logoutTime;
+	}
+
+	public void setLogoutTime(Date logoutTime) {
+		this.logoutTime = logoutTime;
+	}
+
+	public Boolean getSessionNonTimeouted() {
+		return SessionNonTimeouted;
+	}
+
+	public void setSessionNonTimeouted(Boolean sessionNonTimeouted) {
+		SessionNonTimeouted = sessionNonTimeouted;
+	}
 
 }
