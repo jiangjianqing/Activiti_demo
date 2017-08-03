@@ -13,8 +13,8 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<hibernate.version>4.3.6.Final</hibernate.version>
-		<openjpa.version>2.4.0</openjpa.version><!--openjpa 2.4.0 只支持jpa2.0规范 -->
+        <mybatis.generator.version>1.3.5</mybatis.generator.version>
+        <mybatis.version>3.4.4</mybatis.version>
 	</properties>
 
 	<!-- 20170714 osgi使用 <packaging>bundle</packaging> -->
@@ -74,7 +74,6 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>6.0.6</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -100,19 +99,22 @@
 
 	<build>
 		<plugins>
-			<plugin>
-			
-				<groupId>org.mybatis.generator</groupId>  
+			<plugin>  
+                <groupId>org.mybatis.generator</groupId>  
                 <artifactId>mybatis-generator-maven-plugin</artifactId>  
+                <version>${mybatis.generator.version}</version>  
+                <configuration>  
+                    <configurationFile>src/main/resources/mybatis-generator.xml</configurationFile>  
+                    <overwrite>true</overwrite>  
+                </configuration>  
                 <dependencies>  
                     <dependency>  
                         <groupId>mysql</groupId>  
                         <artifactId>mysql-connector-java</artifactId>  
                         <version>${mysql.connector.version}</version>  
                     </dependency>  
-                </dependencies>  
-                
-			</plugin>
+                </dependencies> 
+            </plugin> 
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
