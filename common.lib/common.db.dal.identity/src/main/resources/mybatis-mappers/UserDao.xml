@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="common.db.repository.mybatis.identity.UserDao">
   <resultMap id="BaseResultMap" type="common.db.model.identity.User">
-    <result column="ID" jdbcType="BIGINT" property="id" />
+    <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="ACCOUNT_NON_EXPIRED" jdbcType="BIT" property="accountNonExpired" />
     <result column="ACCOUNT_NON_LOCKED" jdbcType="BIT" property="accountNonLocked" />
     <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
@@ -17,6 +17,12 @@
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="USERNAME" jdbcType="VARCHAR" property="username" />
   </resultMap>
+  <sql id="Base_Column_List">
+    ID, ACCOUNT_NON_EXPIRED, ACCOUNT_NON_LOCKED, CREATE_TIME, CREDENTIALS_NON_EXPIRED, 
+    EMAIL, ENABLED, FIRST_NAME, LAST_NAME, LAST_SUCCESS_LOGIN_TIME, PASSWORD, SALT, UPDATE_TIME, 
+    USERNAME
+  </sql>
+ 
   <insert id="insert" parameterType="common.db.model.identity.User">
     insert into COMMON_ID_USER (ID, ACCOUNT_NON_EXPIRED, ACCOUNT_NON_LOCKED, 
       CREATE_TIME, CREDENTIALS_NON_EXPIRED, EMAIL, 
@@ -120,5 +126,6 @@
       </if>
     </trim>
   </insert>
+  
   
 </mapper>

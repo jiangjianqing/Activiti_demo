@@ -52,4 +52,28 @@ public class RoleDaoImpl implements common.db.repository.mybatis.identity.RoleDa
 		return 0;
 	}
 
+	@Override
+	public int deleteByPrimaryKey(Long id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Role selectByPrimaryKey(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int updateByPrimaryKeySelective(Role record) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int updateByPrimaryKey(Role record) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
