@@ -16,6 +16,7 @@ import org.aspectj.apache.bcel.classfile.Constant;
 
 import common.service.utils.AbstractHelperClass;
 import common.service.utils.SpringContextHolder;
+import common.web.service.SessionLogger;
 import common.web.utils.SessionHelper;
 import common.web.utils.SystemIntegrator;
 
@@ -74,6 +75,8 @@ public class AuthenticationSessionListener extends AbstractHelperClass implement
         		systemIntegrator.onLogoff();
         	}
         	logger.debug("用户注销成功:"+SessionHelper.getAuthenticatedUser().getUsername());
+        	
+        	SessionLogger.logout(session);
         }
         /*
         if (!ValidateUtil.isEmpty(session.getAttribute(WebSessionListener.SPRING_SECURITY_CONTEXT))) {
@@ -109,7 +112,7 @@ public class AuthenticationSessionListener extends AbstractHelperClass implement
     public void attributeAdded(HttpSessionBindingEvent event) {
         //记录用户实际登录时间非访问时间
         HttpSession session = event.getSession();
-        
+
         if(event.getName() == SessionHelper.getAuthenticationAttributeName()
         		&& SessionHelper.isAuthenticated()){
         	SystemIntegrator systemIntegrator = SpringContextHolder.getBean(SystemIntegrator.class);
@@ -120,6 +123,8 @@ public class AuthenticationSessionListener extends AbstractHelperClass implement
         	}
         	
         	logger.debug("用户登录成功:"+SessionHelper.getAuthenticatedUser().getUsername());
+        	
+        	SessionLogger.login(session);
         }
     	
         

@@ -28,7 +28,7 @@
 		</dependency>
 		<dependency>
 			<groupId>common.lib</groupId>
-			<artifactId>common.db.dal.identity</artifactId>
+			<artifactId>common.db.dal.log</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
