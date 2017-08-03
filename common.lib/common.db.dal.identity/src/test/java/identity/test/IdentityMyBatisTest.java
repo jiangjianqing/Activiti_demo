@@ -12,7 +12,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import common.db.base.test.AbstractMyBatisTestCase;
+import common.db.model.identity.Role;
+import common.db.model.identity.RoleTypeEnum;
 import common.db.model.identity.User;
+import common.db.repository.mybatis.identity.RoleDao;
 import common.db.repository.mybatis.identity.UserDao;
 
 public class IdentityMyBatisTest extends AbstractMyBatisTestCase {
@@ -20,8 +23,8 @@ public class IdentityMyBatisTest extends AbstractMyBatisTestCase {
 	
 //  private ApplicationContext ac = null;  
 	
-    //@Resource  
-    //private UserDao UserDao = null;  
+    @Resource  
+    private RoleDao roleDao;  
   
 //  @Before  
 //  public void before() {  
@@ -31,6 +34,10 @@ public class IdentityMyBatisTest extends AbstractMyBatisTestCase {
   
     @Test  
     public void test1() {  
+    	Role role=new Role();
+    	role.setName("Mybatistest");
+    	role.setType(RoleTypeEnum.ADMIN);
+    	roleDao.insert(role);
         //User user= new User();
         //user.setId(new Long(123));
         //UserDao.insert(user);  

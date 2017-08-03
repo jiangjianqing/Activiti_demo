@@ -17,7 +17,7 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
 	
 	<context id="generatorTables" targetRuntime="MyBatis3">
 		
-		<property name="mergeable" value="false"/>
+		<property name="mergeable" value="false"></property>
 		
 		<plugin type="org.mybatis.generator.plugins.MapperConfigPlugin">
 			<property name="fileName" value="mybatis-config.xml" />
@@ -76,6 +76,7 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         	enableDeleteByExample="false" enableSelectByExample="false" 
         	selectByExampleQueryId="false"/>
 		
+		<!--  可加入  mapperName="UserDao" 改变mapper文件名称 -->
 		<table tableName="COMMON_ID_USER" domainObjectName="User" mapperName="UserDao"
         	enableCountByExample="false" enableUpdateByExample="false" 
         	enableDeleteByExample="false" enableSelectByExample="false" 
