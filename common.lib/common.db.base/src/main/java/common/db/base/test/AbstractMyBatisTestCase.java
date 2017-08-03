@@ -12,7 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)     //表示继承了SpringJUnit4ClassRunner类  
-@ContextConfiguration(locations = {"classpath*:common/db/base/test/spring-mybatis.xml","classpath*:spring-mybatis.xml"})  
+@ContextConfiguration(locations = {"classpath:common/db/base/test/spring-mybatis.xml","classpath:spring-mybatis.xml"})  
 public class AbstractMyBatisTestCase {
 
 	protected final Logger logger = LoggerFactory
