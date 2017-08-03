@@ -1,15 +1,11 @@
-package common.web.utils;
+package common.web.service;
 
-public interface SystemIntegrator {
-	/**
-	 * 当用户登录认证通过时进行的集成操作
-	 */
-	void onLogin();
-	
-	/**
-	 * 当用户注销登陆后进行的集成操作
-	 */
-	void onLogoff();
+/**
+ * 用于识别用于与其他系统集成的类
+ * @author jjq
+ *
+ */
+public interface SystemIntegrator extends SessionEvent {
 	
 	/**
 	 * 每次收到用户请求是需要执行的集成操作

@@ -1,4 +1,4 @@
-package common.web.service;
+package common.web.service.impl;
 
 import java.util.Date;
 
@@ -16,32 +16,27 @@ import common.db.model.log.SessionLog;
 import common.db.repository.jpa.log.SessionLogDao;
 import common.service.utils.AbstractHelperClass;
 import common.service.utils.SpringContextHolder;
+import common.web.service.SessionEvent;
+import common.web.service.SessionLogger;
 import common.web.utils.SessionHelper;
 
-public class SessionLogger extends AbstractHelperClass {
+public class SessionLoggerImpl extends AbstractHelperClass implements SessionLogger {
 
-	// 由AbstractHelperClass提供的静态类方法支持函数，必须放在子类中
-	protected final static String getStaticClassName() {
-		return new Object() {
-			// 静态方法中获取当前类名
-			public String getClassName() {
-				String className = this.getClass().getName();
-				return className.substring(0, className.lastIndexOf('$'));
-			}
-		}.getClassName();
+	private final String sessionAttrName = "sessionLogInfo";
+	
+	private SessionLogDao sessionLogDao;
+
+
+	public SessionLogDao getSessionLogDao() {
+		return sessionLogDao;
 	}
 
-	protected final static Logger logger = LoggerFactory.getLogger(getStaticClassName());
-	// ------------------static 方法模板定义结束---------------------
-
-	private static final String sessionAttrName = "sessionLogInfo";
-
-	private static SessionLogDao getSessionLogDao() {
-		return SpringContextHolder.getBean(SessionLogDao.class);
+	public void setSessionLogDao(SessionLogDao sessionLogDao) {
+		this.sessionLogDao = sessionLogDao;
 	}
 
-	public static void login(HttpSession session) {
-		SessionLogDao sessionLogDao = getSessionLogDao();
+	@Override
+	public void onLogin(HttpSession session) {
 		if (sessionLogDao == null) {
 			logger.error("没有发现sessionLogDao,无法记录会话日志");
 			return;
@@ -66,8 +61,8 @@ public class SessionLogger extends AbstractHelperClass {
 
 	}
 
-	public static void logout(HttpSession session) {
-		SessionLogDao sessionLogDao = getSessionLogDao();
+	@Override
+	public void onLogout(HttpSession session) {
 		if (sessionLogDao == null) {
 			logger.error("没有发现sessionLogDao,无法记录会话日志");
 			return;

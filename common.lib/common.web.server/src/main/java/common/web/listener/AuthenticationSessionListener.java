@@ -1,8 +1,8 @@
 package common.web.listener;
 
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpServletRequest;
@@ -15,10 +15,12 @@ import javax.servlet.http.HttpSessionListener;
 import org.aspectj.apache.bcel.classfile.Constant;
 
 import common.service.utils.AbstractHelperClass;
+import common.service.utils.CallBack;
 import common.service.utils.SpringContextHolder;
+import common.web.service.SessionEvent;
 import common.web.service.SessionLogger;
+import common.web.service.SystemIntegrator;
 import common.web.utils.SessionHelper;
-import common.web.utils.SystemIntegrator;
 
 /**
  * 记录用户的登录和注销
@@ -70,13 +72,16 @@ public class AuthenticationSessionListener extends AbstractHelperClass implement
         // 记录用户登出时间(以最后一次访问SESSION为准)
         HttpSession session = event.getSession();
         if(SessionHelper.isAuthenticated()==true){
-        	SystemIntegrator systemIntegrator = SpringContextHolder.getBean(SystemIntegrator.class);
-        	if (systemIntegrator != null){
-        		systemIntegrator.onLogoff();
-        	}
-        	logger.debug("用户注销成功:"+SessionHelper.getAuthenticatedUser().getUsername());
         	
-        	SessionLogger.logout(session);
+        	iterateSessionEvents(new CallBack() {
+				@Override
+				public void execute(Object... objects) {
+					SessionEvent sessionEvent = (SessionEvent)objects[0];
+					sessionEvent.onLogout(session);
+				}
+			});     	
+        	
+        	logger.debug("用户注销成功:"+SessionHelper.getAuthenticatedUser().getUsername());
         }
         /*
         if (!ValidateUtil.isEmpty(session.getAttribute(WebSessionListener.SPRING_SECURITY_CONTEXT))) {
@@ -107,6 +112,22 @@ public class AuthenticationSessionListener extends AbstractHelperClass implement
         //因为系统销毁SESSION 可能不及时,所以手动清一下属性
         //session.removeAttribute(WebSessionListener.SESSION_ATTRIBUTE_MEMBERLOGINRECORD);
     }
+    
+    /**
+     * 重要：使用匿名类直接new接口
+     * @param cb
+     */
+    private void iterateSessionEvents(CallBack cb){
+    	Map<String, SessionEvent> map = SpringContextHolder.getBeansOfType(SessionEvent.class);
+    	logger.debug(String.format("遍历所有实现了SessionEvent的类，数量=%d",map.size()));  
+    	for (Map.Entry<String, SessionEvent> entry : map.entrySet()) {  
+    		
+    	    logger.debug("Key = " + entry.getKey() + ", Value = " + entry.getValue());  
+    	    SessionEvent sessionEvent = entry.getValue();
+    	    
+    	    cb.execute(sessionEvent);
+    	}
+    }
 
     @Override
     public void attributeAdded(HttpSessionBindingEvent event) {
@@ -115,16 +136,23 @@ public class AuthenticationSessionListener extends AbstractHelperClass implement
 
         if(event.getName() == SessionHelper.getAuthenticationAttributeName()
         		&& SessionHelper.isAuthenticated()){
+        	
+        	iterateSessionEvents(new CallBack() {
+				@Override
+				public void execute(Object... objects) {
+					SessionEvent sessionEvent = (SessionEvent)objects[0];
+					sessionEvent.onLogin(session);
+				}
+			});
+
+        	/*
         	SystemIntegrator systemIntegrator = SpringContextHolder.getBean(SystemIntegrator.class);
-        	if (systemIntegrator != null){
-        		systemIntegrator.onLogin();
-        	}else{
-        		logger.debug("没有找到SystemIntegrator接口的实现类，如果需要与其他系统集成，请提供该类");
-        	}
+        	if (foundSystemIntegrator == false){
+        		logger.warn("没有找到SystemIntegrator接口的实现类，如果需要与其他系统集成，请提供该类");
+        	}*/
         	
         	logger.debug("用户登录成功:"+SessionHelper.getAuthenticatedUser().getUsername());
-        	
-        	SessionLogger.login(session);
+
         }
     	
         

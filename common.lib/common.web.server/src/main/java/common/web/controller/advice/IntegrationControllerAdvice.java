@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import common.service.utils.AbstractHelperClass;
-import common.web.utils.SystemIntegrator;
+import common.web.service.SystemIntegrator;
 
 @ControllerAdvice //(basePackages = "com.github") //basePackages用于指定对哪些包里的Controller起作用。
 public class IntegrationControllerAdvice extends AbstractHelperClass {
