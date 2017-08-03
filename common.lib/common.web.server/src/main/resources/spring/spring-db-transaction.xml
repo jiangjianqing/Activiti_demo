@@ -15,22 +15,12 @@
 	http://www.springframework.org/schema/tx/spring-tx.xsd
 	">
 	
-	<!-- 注册一个JDBC数据源事务管理器 -->
-	<bean id="jdbcTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource"/>
-	</bean>
-	
-	<!-- jpa事务管理器 -->
-    <bean id="jpaTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory"/>
-    </bean>
-	
 	<!-- 基于@Transactional注解方式的事务管理(也可以改用jdbcTransactionManager)  根据需要选择-->
 	<!-- 20150818,测试activiti时改用jdbc,因为使用mybatis访问数据库 -->
-	<tx:annotation-driven transaction-manager="jpaTransactionManager"/>
+	<tx:annotation-driven transaction-manager="transactionManager"/>
    
 	<!-- 配置事务的传播特性  transaction-manager指定事务管理器为hibernateTransactionManager(也可以改用jdbcTransactionManager)-->
-	<tx:advice id="txAdvice" transaction-manager="jpaTransactionManager">
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<!-- 需要启动事务的业务逻辑，如果当前没有事务，则新建一个事务-->
 			<tx:method name="save*" propagation="REQUIRED" />
