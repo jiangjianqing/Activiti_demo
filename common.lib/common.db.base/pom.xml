@@ -15,6 +15,7 @@
 	-->
 
 	<dependencies>
+	<!-- 20170803 将junit加入是为了 让dal能够复用 common.db.base.test包中的内容-->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
