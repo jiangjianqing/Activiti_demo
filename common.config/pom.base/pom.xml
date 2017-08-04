@@ -23,7 +23,9 @@
 		<junit.version>4.12</junit.version>
 		<log4j-version>1.2.16</log4j-version>
 		<slf4j-version>1.7.7</slf4j-version>
-        <mysql.connector.version>6.0.6</mysql.connector.version>
+        <mybatis.version>3.4.4</mybatis.version>
+        <!-- 2017-08-03 重要：6.x的版本导致mybatis-generator重复生成数据 -->
+        <mysql.connector.version>5.1.43</mysql.connector.version>
         <jackson.version>2.8.9</jackson.version>
         <!-- 20170714 升级mybatis时也需要同步升级bundle插件 -->
         <maven.bundle.plugin.version>3.3.0</maven.bundle.plugin.version>
@@ -54,13 +56,6 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${slf4j-version}</version>
-			<scope>${scope.type}</scope>
-		</dependency>
-
-        <dependency>
-			<groupId>org.mybatis.generator</groupId>
-			<artifactId>mybatis-generator-core</artifactId>
-			<version>${mybatis.generator.version}</version>
 			<scope>${scope.type}</scope>
 		</dependency>
 
