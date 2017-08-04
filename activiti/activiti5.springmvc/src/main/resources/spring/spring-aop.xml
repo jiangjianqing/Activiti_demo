@@ -20,20 +20,18 @@
 	<!-- 开启基于@AspectJ切面的注解处理器 -->
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
 
-	
-	<!-- 从这里开始配置自定义aop信息-->
-	<!--  切面配置例子  （目标对象要在spring-bean中申明，是aop:aspect操作的对象<bean id="目标对象名称" class="目标对象类全名"/> ）
-		<bean id="切面对象名称" class="切面对象类全名"/>
-		<aop:config expose-proxy="true">
-			<aop:aspect id="切面ID" ref="要引用的切面实例名称">
-				<aop:pointcut id="xxxxxxxPointcut" expression="execution(* com.lei.demo.service..*.*(..))" /> expression中为目标对象所在package的正则表达式
-				<aop:before pointcut-ref="xxxxxxxPointcut" method="切面类中用作前置通知的方法" />
-				<aop:after-returning pointcut-ref="xxxxxxxPointcut" method="切面类中用作后置通知的方法" />
-				<aop:after-throwing pointcut-ref="xxxxxxxPointcut" method="切面类中用作异常通知的方法" throwing="e"/>
-				<aop:after pointcut-ref="xxxxxxxPointcut" method="切面类中用作最终通知的方法" />
-				<aop:around pointcut-ref="xxxxxxxPointcut" method="切面类中用作环绕通知的方法" />
-			</aop:aspect>
-		</aop:config>
-		-->
-	
+		
+	<!-- 20170804 : 如果类里已经使用了AOP注释，则不再需要以下aop:config配置信息
+	<bean id="切面对象名称" class="切面对象类全名"/>
+	<aop:config expose-proxy="true">
+		<aop:aspect id="controllerAop" ref="apiServiceAspect">
+			<aop:pointcut id="controllerPointcut" expression="execution(* common.web.controller.rest.*.*(..))" /> 
+			<aop:before pointcut-ref="controllerPointcut" method="before" />
+			<aop:after-returning pointcut-ref="controllerPointcut" method="afterReturning" returning="returnObj" />
+			<aop:after-throwing pointcut-ref="controllerPointcut" method="afterThrowing" throwing="e"/>
+			<aop:after pointcut-ref="controllerPointcut" method="after" />
+			<aop:around pointcut-ref="controllerPointcut" method="around" />
+		</aop:aspect>
+	</aop:config>
+	-->
 </beans>

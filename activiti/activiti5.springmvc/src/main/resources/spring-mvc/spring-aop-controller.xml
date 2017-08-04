@@ -37,17 +37,16 @@
 		-->
 	
 	<bean id="apiServiceAspect" class="common.aop.ApiServiceAspect"/>
+	<!-- 20170804 : 如果类里已经使用了AOP注释，则不再需要以下配置信息
 	<aop:config expose-proxy="true">
 		<aop:aspect id="controllerAop" ref="apiServiceAspect">
 			<aop:pointcut id="controllerPointcut" expression="execution(* common.web.controller.rest.*.*(..))" /> 
 			<aop:before pointcut-ref="controllerPointcut" method="before" />
-			<!-- 
-			<aop:after-returning pointcut-ref="controllerPointcut" method="afterReturning" />
+			<aop:after-returning pointcut-ref="controllerPointcut" method="afterReturning" returning="returnObj" />
 			<aop:after-throwing pointcut-ref="controllerPointcut" method="afterThrowing" throwing="e"/>
 			<aop:after pointcut-ref="controllerPointcut" method="after" />
 			<aop:around pointcut-ref="controllerPointcut" method="around" />
-			 -->
 		</aop:aspect>
 	</aop:config>
-	
+	 -->
 </beans>
