@@ -53,6 +53,8 @@ public class SessionLoggerImpl extends AbstractHelperClass implements SessionLog
 		try {
 			sessionLogDao.create(info);
 			session.setAttribute(sessionAttrName, info);
+			//注册SessionLogId，便于其他日志使用
+			session.setAttribute(SessionHelper.SESSION_LOG_ID, info.getId());
 			logger.warn(String.format("创建sessionlog,id=%d", info.getId()));
 		} catch (DaoException e) {
 			// TODO Auto-generated catch block

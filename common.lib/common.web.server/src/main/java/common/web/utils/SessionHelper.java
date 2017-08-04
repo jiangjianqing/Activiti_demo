@@ -37,6 +37,8 @@ public class SessionHelper extends AbstractHelperClass {
 	
 	private final static String springSecurityContextName = "SPRING_SECURITY_CONTEXT";
 	
+	public final static String SESSION_LOG_ID = "SESSION_LOG_ID";
+	
 
 	
 	public static String getAuthenticationAttributeName(){
@@ -90,5 +92,9 @@ public class SessionHelper extends AbstractHelperClass {
 			logger.error("发现未知的AuthenticationUser类型，需要处理");
 		}	
 		return user;
+	}
+	
+	public static Long getSessionLogId(HttpSession session){
+		return (Long) session.getAttribute(SESSION_LOG_ID);
 	}
 }
