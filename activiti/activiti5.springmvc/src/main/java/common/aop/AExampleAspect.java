@@ -16,7 +16,19 @@ import org.json.JSONObject;
 import common.service.utils.AbstractHelperClass;
 
 @Aspect
-public class ApiServiceAspect extends AbstractHelperClass {
+public class AExampleAspect extends AbstractHelperClass {
+	
+	/* 重要：可以使用@annotation语法来标记需要aop的方法
+	//Service层切点    
+    @Pointcut("@annotation(com.annotation.SystemServiceLog)")    
+     public  void serviceAspect() {    
+    }    
+    
+    //Controller层切点    
+    @Pointcut("@annotation(com.annotation.SystemControllerLog)")    
+     public  void controllerAspect() {    
+    }   
+    */
 	
 	private final String POINT_CUT = "anyMethod()"; 
 	
@@ -77,7 +89,20 @@ public class ApiServiceAspect extends AbstractHelperClass {
 	 */
 	@AfterThrowing(value = POINT_CUT, throwing = "e") 
 	public void afterThrowing(JoinPoint joinPoint, Throwable e){
+		
+		logger.error("-------------------afterThrowing.handler.start-------------------");  
 		logger.error("afterThrowing: "+e.getMessage(), e); 
+        /*
+		if(!des.equals("")){  
+            logger.error("方法描述：" + des);  
+        }  */
+        //logger.error(getMethodNameAndArgs(joinPoint));  
+        //log.error("ConstantUtil.getTrace(e): " + getTrace(e));  
+  
+        logger.error("异常名称：" + e.getClass().toString());  
+        logger.error("-------------------afterThrowing.handler.end------------------");
+		// 在这里判断异常，根据不同的异常返回错误。  
+        //if (e.getClass().equals(DataAccessException.class)) {  
 	}
 	
 	/**

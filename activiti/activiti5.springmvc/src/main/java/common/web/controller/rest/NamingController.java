@@ -31,6 +31,7 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import common.aop.annotation.SystemControllerLog;
 import common.db.base.exception.DaoException;
 import common.db.base.exception.OutOfPageRangeException;
 import common.db.base.page.PageObject;
@@ -68,6 +69,7 @@ public class NamingController  extends AbstractRestController {
 		allNamings.setRequestParamNaming(requestParamNaming);
 	}
 	
+	@SystemControllerLog(description="查询系统命名参数")
 	@RequestMapping(value={"" , "/"},method=RequestMethod.GET)
 	@ResponseBody
 	public WrappedResponseBody getAll() throws OutOfPageRangeException, DaoException{
