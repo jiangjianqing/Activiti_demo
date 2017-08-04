@@ -117,12 +117,108 @@ public class ModuleLog implements Serializable{
 	private String moduleName;
 	
 	private String methodName;//例如取用户列表
+	private String description;
 	
-	private String methodType;//修改、删除、编辑等等
+	private String type;//修改、删除、编辑等等
 	
-	private String methodParams;
+	private String params;
 	
-	private Date execStartTime;
-	private Date execEndTime;
+	private String exceptionName;
+	
+	private String exceptionDetail;
+	
+	@Temporal(TemporalType.TIMESTAMP)//利用@Temporal则可以获取自己想要的格式类型
+	@Column(name="CREATE_TIME" , updatable=false //createTime不许更新
+		,columnDefinition="TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"
+	)
+	private Date createTime;
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public Long getSessionLogId() {
+		return sessionLogId;
+	}
+
+	public void setSessionLogId(Long sessionLogId) {
+		this.sessionLogId = sessionLogId;
+	}
+
+	public String getModuleName() {
+		return moduleName;
+	}
+
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
+
+	public String getMethodName() {
+		return methodName;
+	}
+
+	public void setMethodName(String methodName) {
+		this.methodName = methodName;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getParams() {
+		return params;
+	}
+
+	public void setParams(String params) {
+		this.params = params;
+	}
+
+	public String getExceptionName() {
+		return exceptionName;
+	}
+
+	public void setExceptionName(String exceptionName) {
+		this.exceptionName = exceptionName;
+	}
+
+	public String getExceptionDetail() {
+		return exceptionDetail;
+	}
+
+	public void setExceptionDetail(String exceptionDetail) {
+		this.exceptionDetail = exceptionDetail;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 }
