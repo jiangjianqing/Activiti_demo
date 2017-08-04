@@ -34,6 +34,10 @@
 		
 	</bean> 
 	
+	<bean id="moduleLogDao" class="common.db.repository.jpa.log.impl.ModuleLogDaoImpl">
+		
+	</bean> 
+	
 	
        
 	<!--  这里开始定义Spring bean例子  -->

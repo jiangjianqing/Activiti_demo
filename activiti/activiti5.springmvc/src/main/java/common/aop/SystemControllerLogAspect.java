@@ -3,6 +3,7 @@ package common.aop;
 import java.lang.reflect.Method;
 import java.util.regex.Pattern;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -21,10 +22,15 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import common.aop.annotation.SystemControllerLog;
 import common.aop.annotation.SystemServiceLog;
+import common.db.model.log.ModuleLog;
+import common.db.repository.jpa.log.ModuleLogDao;
 import common.service.utils.AbstractHelperClass;
 
 @Aspect
 public class SystemControllerLogAspect extends AbstractHelperClass {
+	
+	@Resource
+	private ModuleLogDao moduleLogDao;
 
 	private final String POINT_CUT = "systemControllerLogAspect()";
 
@@ -48,19 +54,21 @@ public class SystemControllerLogAspect extends AbstractHelperClass {
             //System.out.println("请求人:" + user.getName());    
             System.out.println("请求IP:" + ip);    
             //*========数据库日志=========*// 
-            /*
-            Log log = SpringContextHolder.getBean("logxx");    
-            log.setDescription(getControllerMethodDescription(joinPoint));    
-            log.setMethod((joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()"));    
-            log.setType("0");    
-            log.setRequestIp(ip);    
-            log.setExceptionCode( null);    
-            log.setExceptionDetail( null);    
+            ModuleLog log = new ModuleLog();
+            log.setDescription(AspectUtils.getControllerMethodDescription(joinPoint));
+            log.setMethodName((joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()"));   
+            log.setType("0");
+            log.setExceptionName( null);    
+            log.setExceptionDetail( null);
             log.setParams( null);    
+            /*
+            Log log = SpringContextHolder.getBean("logxx");     
+            log.setRequestIp(ip);     
             log.setCreateBy(user);    
             log.setCreateDate(DateUtil.getCurrentDate());    
             //保存数据库    
             logService.add(log);    */
+            moduleLogDao.create(log);
             System.out.println("=====前置通知结束=====");    
         }  catch (Exception e) {    
             //记录本地异常日志    
@@ -101,20 +109,18 @@ public class SystemControllerLogAspect extends AbstractHelperClass {
             //System.out.println("请求人:" + user.getName());    
             System.out.println("请求IP:" + ip);    
             System.out.println("请求参数:" + params);    
-               /*==========数据库日志=========*/
-            /*
-            Log log = SpringContextHolder.getBean("logxx");    
-            log.setDescription(getServiceMthodDescription(joinPoint));    
-            log.setExceptionCode(e.getClass().getName());    
-            log.setType("1");    
-            log.setExceptionDetail(e.getMessage());    
-            log.setMethod((joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()"));    
-            log.setParams(params);    
-            log.setCreateBy(user);    
-            log.setCreateDate(DateUtil.getCurrentDate());    
-            log.setRequestIp(ip);    
+            /*==========数据库日志=========*/
+            ModuleLog log = new ModuleLog();
+            log.setDescription(AspectUtils.getControllerMethodDescription(joinPoint));
+            log.setMethodName((joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()"));   
+            log.setType("1");
+            log.setExceptionName( e.getClass().getName());    
+            log.setExceptionDetail( e.getMessage());
+            log.setParams( params);  
+            moduleLogDao.create(log);
+               
+            /*    
             //保存数据库    
-            logService.add(log);    
             */
             System.out.println("=====异常通知结束=====");    
         }  catch (Exception ex) {    
