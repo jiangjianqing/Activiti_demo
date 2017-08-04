@@ -18,7 +18,8 @@
 	<!-- 重要： 整个系统中只能设置一次 加载资源文件  其中包含变量信息，必须在Spring配置文件的最前面加载，即第一个加载-->
 	<context:property-placeholder location="classpath:system.properties" />
 	
-	<import resource="spring-mvc/spring-*.xml"/>
+	<!-- 20170804 重要：DispatcherServlet和ContextLoaderListener的配置文件分开，需要分别加载 -->
+	<import resource="classpath*:spring-mvc/spring-*.xml"/>
    
 	<!-- 启用spring mvc 注解 -->
 	<context:annotation-config />
@@ -33,22 +34,6 @@
 		/>时，如果是3.1之前已经默认注入AnnotationMethodHandlerAdapter，3.1之后默认注入RequestMappingHandlerAdapter只需加上上面提及的jar包即可! 
 		<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" 
 		/> -->
-
-	<!-- 默认的注解映射的支持 -->
-	<mvc:annotation-driven>
-		<!-- 消息转换器 -->
-		<mvc:message-converters register-defaults="true">
-			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
-				<property name="supportedMediaTypes">
-					<list>
-						<!-- 这里顺序不能反，一定先写text/html,不然ie下出现下载提示 -->
-						<value>text/html;charset=UTF-8</value>
-						<value>application/json;charset=UTF-8</value>
-					</list>
-				</property>
-			</bean>
-		</mvc:message-converters>
-	</mvc:annotation-driven>
 
 
 	<!-- tiles 配置 ，同时展示了p命名空间的用法，现在可以使用p: 作为<bean> 元素所有属性的前缀来装配Bean 的属性 -->
@@ -100,39 +85,5 @@
 		<property name="viewClass"
 			value="org.springframework.web.servlet.view.JstlView" />
 	</bean>
-
-	<!-- 这个是使用文件上传功能时的必要配置，同时在pom.xml中需要引入commons-fileupload 组件 -->
-	<bean id="multipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<!-- 默认编码 -->  
-        <property name="defaultEncoding" value="utf-8" />    
-        <!-- 文件大小最大值 -->  
-        <property name="maxUploadSize" value="10485760000" />    
-        <!-- 内存中的最大值 -->  
-        <property name="maxInMemorySize" value="40960" />  
-	</bean>
-
-	<!-- 重要：默认处理 -->
-	<mvc:default-servlet-handler />
-
-	<!-- 对静态资源文件的访问 *代表当前目录下 **代表当前目录及子目录下 -->
-	<!-- 
-	对应的xx.propterties文件中的值如下：
-		mapping_path=poster
-		local_path=D:/poster
-	<mvc:resources mapping="/${mapping_path}/**" location="file:${local_path}/">  
-	 -->
-	
-	<mvc:resources mapping="/images/**" location="/static/images/"
-		cache-period="31556926" />
-	<mvc:resources mapping="/js/**" location="/static/js/"
-		cache-period="31556926" />
-	<mvc:resources mapping="/css/**" location="/static/css/"
-		cache-period="31556926" />
-	<mvc:resources mapping="/fonts/**" location="/static/fonts/" />
-	<mvc:resources mapping="/lib/**" location="/static/lib/" />
-	<mvc:resources mapping="/styles/**" location="/static/styles/" />
-	<mvc:resources mapping="/vendor/**" location="/static/vendor/"/>
-	<mvc:resources mapping="/static/**" location="/static/"/>
 
 </beans>
