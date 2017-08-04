@@ -25,6 +25,7 @@ import common.aop.annotation.SystemServiceLog;
 import common.db.model.log.ModuleLog;
 import common.db.repository.jpa.log.ModuleLogDao;
 import common.service.utils.AbstractHelperClass;
+import common.web.utils.SessionHelper;
 
 @Aspect
 public class SystemControllerLogAspect extends AbstractHelperClass {
@@ -55,6 +56,7 @@ public class SystemControllerLogAspect extends AbstractHelperClass {
             System.out.println("请求IP:" + ip);    
             //*========数据库日志=========*// 
             ModuleLog log = new ModuleLog();
+            log.setSessionLogId(SessionHelper.getSessionLogId(session));
             log.setDescription(AspectUtils.getControllerMethodDescription(joinPoint));
             log.setMethodName((joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()"));   
             log.setType("0");
@@ -111,6 +113,7 @@ public class SystemControllerLogAspect extends AbstractHelperClass {
             System.out.println("请求参数:" + params);    
             /*==========数据库日志=========*/
             ModuleLog log = new ModuleLog();
+            log.setSessionLogId(SessionHelper.getSessionLogId(session));
             log.setDescription(AspectUtils.getControllerMethodDescription(joinPoint));
             log.setMethodName((joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()"));   
             log.setType("1");

@@ -1,5 +1,7 @@
 package common.aop;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.regex.Pattern;
 
 import org.aspectj.lang.JoinPoint;
@@ -168,4 +170,17 @@ public class AExampleAspect extends AbstractHelperClass {
         }
         return result;  
     }
+	
+	/** 
+     * 将异常信息输出到log文件 
+     * @param t 
+     * @return 
+     */  
+    public static String getTrace(Throwable t) {          
+        StringWriter stringWriter= new StringWriter();          
+        PrintWriter writer= new PrintWriter(stringWriter);          
+        t.printStackTrace(writer);          
+        StringBuffer buffer= stringWriter.getBuffer();         
+        return buffer.toString();      
+    } 
 }
