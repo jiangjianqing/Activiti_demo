@@ -44,6 +44,14 @@ public class AuthenticationSessionListener extends AbstractHelperClass implement
     @Override
     public void sessionCreated(HttpSessionEvent event) {
     	HttpSession session = event.getSession();
+    	
+    	iterateSessionEvents(new CallBack() {
+			@Override
+			public void execute(Object... objects) {
+				SessionEvent sessionEvent = (SessionEvent)objects[0];
+				sessionEvent.onCreate(session);
+			}
+		});  
         // 国际化 语言环境,不一定在这里初始化,先注释
         // Locale locale = new Locale("zh", "CN");
         // event.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,locale);

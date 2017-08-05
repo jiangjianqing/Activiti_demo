@@ -51,4 +51,10 @@ public class SystemIntegratorImpl  extends AbstractHelperClass
 	public void onServletRequest(){
 		integrateActiviti();
 	}
+
+	@Override
+	public void onCreate(HttpSession session) {
+		// TODO Auto-generated method stub
+		
+	}
 }

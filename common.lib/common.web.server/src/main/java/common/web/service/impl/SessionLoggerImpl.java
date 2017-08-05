@@ -41,18 +41,15 @@ public class SessionLoggerImpl extends AbstractHelperClass implements SessionLog
 			logger.error("没有发现sessionLogDao,无法记录会话日志");
 			return;
 		}
-		SessionLog info = new SessionLog();
-		info.setLoginTime(new Date());
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		info.setIpAddr(request.getRemoteAddr());
-		info.setHostName(request.getRemoteHost());
-		info.setCreateTime(new Date(session.getCreationTime()));
-		info.setSessionId(session.getId());
-		info.setUserId(SessionHelper.getAuthenticatedUser().getId());
-		
-		try {
-			sessionLogDao.create(info);
+		SessionLog info = (SessionLog)session.getAttribute(sessionAttrName);
+		if (info == null){
+			info = createNewSessionLog(session);
 			session.setAttribute(sessionAttrName, info);
+		}
+		info.setLoginTime(new Date());
+		info.setUserId(SessionHelper.getAuthenticatedUser().getId());
+		try {
+			sessionLogDao.update(info);
 			//注册SessionLogId，便于其他日志使用
 			session.setAttribute(SessionHelper.SESSION_LOG_ID, info.getId());
 			logger.warn(String.format("创建sessionlog,id=%d", info.getId()));
@@ -79,6 +76,35 @@ public class SessionLoggerImpl extends AbstractHelperClass implements SessionLog
 			e.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public void onCreate(HttpSession session) {
+		SessionLog info = createNewSessionLog(session);
+		try {
+			sessionLogDao.create(info);
+			session.setAttribute(sessionAttrName, info);
+			//注册SessionLogId，便于其他日志使用
+			session.setAttribute(SessionHelper.SESSION_LOG_ID, info.getId());
+		} catch (DaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 根据HttpSession创建一个新的SessionLog对象
+	 * @param session
+	 * @return
+	 */
+	private SessionLog createNewSessionLog(HttpSession session){
+		SessionLog info = new SessionLog();
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		info.setIpAddr(request.getRemoteAddr());
+		info.setHostName(request.getRemoteHost());
+		info.setCreateTime(new Date(session.getCreationTime()));
+		info.setSessionId(session.getId());
+		return info;
 	}
 
 }
