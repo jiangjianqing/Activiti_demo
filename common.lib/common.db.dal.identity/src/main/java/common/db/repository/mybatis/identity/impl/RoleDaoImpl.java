@@ -5,13 +5,11 @@ import javax.annotation.Resource;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.stereotype.Repository;
 
 import common.db.model.identity.Role;
 import common.db.repository.mybatis.identity.RoleDao;
 
-@Repository
-public class RoleDaoImpl implements common.db.repository.mybatis.identity.RoleDao {
+public class RoleDaoImpl implements RoleDao {
 
 	@Resource
 	private SqlSessionFactory sessionFactory;

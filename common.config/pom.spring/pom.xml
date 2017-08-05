@@ -105,6 +105,7 @@
 		    <groupId>org.mybatis</groupId>
 		    <artifactId>mybatis</artifactId>
 		    <version>${mybatis.version}</version>
+		    <scope>${scope.type}</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mybatis</groupId>
