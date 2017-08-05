@@ -58,6 +58,7 @@ public class SystemControllerLogAspect extends AbstractHelperClass {
             ModuleLog log = new ModuleLog();
             log.setSessionLogId(SessionHelper.getSessionLogId(session));
             log.setDescription(AspectUtils.getControllerMethodDescription(joinPoint));
+            log.setModuleName(joinPoint.getTarget().getClass().getName());  
             log.setMethodName((joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()"));   
             log.setType("0");
             log.setExceptionName( null);    

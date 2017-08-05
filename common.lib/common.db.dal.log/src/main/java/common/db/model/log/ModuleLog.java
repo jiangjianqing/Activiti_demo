@@ -108,9 +108,6 @@ public class ModuleLog implements Serializable{
 	@Column(name="ID")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-
-
-	private Long userId;
 	
 	private Long sessionLogId;//外键，可重复
 	
@@ -139,14 +136,6 @@ public class ModuleLog implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
 	}
 
 	public Long getSessionLogId() {
