@@ -8,9 +8,11 @@ import java.sql.SQLException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.spi.PersistenceProvider;
 
 import org.hibernate.Session;
 import org.hibernate.internal.SessionFactoryImpl;
+import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -24,7 +26,9 @@ public abstract class AbstractJpaTestCase {
 	 * @param persistenceUnitName
 	 */
 	protected static void setPersistenceUnitName(String persistenceUnitName){
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName,
+		PersistenceProvider provider = new HibernatePersistenceProvider();
+		//20170805 Persistence.createEntityManagerFactory(  this is deprecated
+		EntityManagerFactory emf = provider.createEntityManagerFactory(persistenceUnitName,
 				System.getProperties());
 		em = emf.createEntityManager();
 
