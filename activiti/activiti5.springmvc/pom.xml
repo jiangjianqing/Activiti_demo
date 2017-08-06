@@ -2,10 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>common.config</groupId>
-		<artifactId>pom.spring</artifactId>
+		<groupId>common.maven.pom</groupId>
+		<artifactId>parent.spring.web</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../pom.spring</relativePath>
 	</parent>
 	<groupId>prj.activiti.demo</groupId>
 	<artifactId>activiti5.springmvc</artifactId>
@@ -17,8 +16,8 @@
 		<groovy-version>2.4.3</groovy-version>
 		<h2-version>1.3.168</h2-version>
 	</properties>
-	<dependencies>
-	
+
+	<dependencies>	
 		<dependency>
 			<groupId>common.lib</groupId>
 			<artifactId>common.db.dal.identity</artifactId>
@@ -38,6 +37,13 @@
 			<groupId>common.lib</groupId>
 			<artifactId>common.web.server</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<!-- 20170806 需要指定数据库驱动，因为其默认scope被设为test -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.connector.version}</version>
 		</dependency>
 	
 		<dependency>
