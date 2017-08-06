@@ -3,24 +3,24 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>common.maven.pom</groupId>
-		<artifactId>parent.db.model</artifactId>
+		<artifactId>parent.base</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>common.lib</groupId>
-	<artifactId>common.db.dal.log</artifactId>
+	<artifactId>common.db.base.test</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 	
 	<dependencies>
+	<!-- 20170803 将junit加入是为了 让dal能够复用 common.db.base.test包中的内容-->
 		<dependency>
-			<groupId>common.lib</groupId>
-			<artifactId>common.db.base</artifactId>
-			<version>${project.version}</version>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
 		</dependency>
 		<dependency>
-			<groupId>common.lib</groupId>
-			<artifactId>common.db.base.test</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-entitymanager</artifactId>
+		    <version>4.3.6.Final</version>
 		</dependency>
 	</dependencies>
-	
 </project>

@@ -18,6 +18,12 @@
 			<artifactId>common.db.base</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>common.lib</groupId>
+			<artifactId>common.db.base.test</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	
 </project>

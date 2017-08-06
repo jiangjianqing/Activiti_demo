@@ -13,21 +13,6 @@
 	<packaging>bundle</packaging>
 	-->
 
-	<dependencies>
-	<!-- 20170803 将junit加入是为了 让dal能够复用 common.db.base.test包中的内容-->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-entitymanager</artifactId>
-		    <version>4.3.6.Final</version>
-		</dependency>
-	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
