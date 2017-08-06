@@ -15,7 +15,6 @@ import javax.persistence.Persistence;
 import org.hibernate.Session;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.internal.SessionImpl;
-import org.hibernate.metamodel.domain.Superclass;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

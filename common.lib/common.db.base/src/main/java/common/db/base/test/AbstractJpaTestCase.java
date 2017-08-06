@@ -12,6 +12,7 @@ import javax.persistence.spi.PersistenceProvider;
 
 import org.hibernate.Session;
 import org.hibernate.internal.SessionFactoryImpl;
+import org.hibernate.internal.SessionImpl;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -25,7 +26,7 @@ public abstract class AbstractJpaTestCase {
 	 * 必须在子类的@BeforeClass中调用该方法,初始化JPA环境
 	 * @param persistenceUnitName
 	 */
-	protected static void setPersistenceUnitName(String persistenceUnitName){
+	protected static void setPersistenceUnitName(String persistenceUnitName) {
 		PersistenceProvider provider = new HibernatePersistenceProvider();
 		//20170805 Persistence.createEntityManagerFactory(  this is deprecated
 		EntityManagerFactory emf = provider.createEntityManagerFactory(persistenceUnitName,
@@ -38,17 +39,16 @@ public abstract class AbstractJpaTestCase {
 		// 方式1
 		// Connection cnn = em.unwrap(SessionImpl.class).connection();成功
 		// 方式2
+		//20170806  .getConnectionProvider方法在Hibernate5.2上已经移除
+		//cnn = sessionFactory.getConnectionProvider().getConnection();
 		Session session = (Session) em.getDelegate();
 		SessionFactoryImpl sessionFactory = (SessionFactoryImpl) session.getSessionFactory();
-		Connection cnn = null;
-		try {
-			cnn = sessionFactory.getConnectionProvider().getConnection();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		Connection cnn = em.unwrap(SessionImpl.class).connection();;
+		
 		System.out.println("**************getConnection**********");
 		System.out.println(cnn);
+		
 	};
 
 

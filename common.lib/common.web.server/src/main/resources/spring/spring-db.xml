@@ -167,7 +167,7 @@
         </property>  
     </bean>  
     
-    <bean id="jpaPersistenceProvider" class="org.hibernate.ejb.HibernatePersistence" />
+    <bean id="jpaPersistenceProvider" class="org.hibernate.jpa.HibernatePersistenceProvider" />
       
     <!-- 用于设置JPA实现厂商的特定属性 -->  
     <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">

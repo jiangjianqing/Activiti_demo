@@ -18,6 +18,13 @@
 	</properties>
 
 	<dependencies>	
+		
+		<!--20170806 hibernate-core 5.2.10.Final 替换hibernate-entitymanager存在 Duplicate key name 问题 -->
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-core</artifactId>
+		    <version>5.2.10.Final</version>
+		</dependency>
 		<dependency>
 			<groupId>common.lib</groupId>
 			<artifactId>common.db.dal.identity</artifactId>

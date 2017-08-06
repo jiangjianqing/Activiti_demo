@@ -13,9 +13,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import org.hibernate.Session;
-import org.hibernate.internal.SessionFactoryImpl;
-
 import common.db.base.exception.DaoException;
 
 public class BaseJpaDaoImpl<T> {

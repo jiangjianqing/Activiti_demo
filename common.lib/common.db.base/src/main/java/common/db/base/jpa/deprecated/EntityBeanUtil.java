@@ -28,8 +28,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.cfg.NotYetImplementedException;
-
 import common.db.base.DateUtil;
 import common.db.base.jpa.annotation.EODisplayName;
 import common.db.base.jpa.annotation.EnumDescription;
