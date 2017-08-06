@@ -2,11 +2,19 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>common.config</groupId>
-		<artifactId>pom.db.model</artifactId>
+		<groupId>common.maven.pom</groupId>
+		<artifactId>parent.db.model</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../../common.config/pom.db.model</relativePath>
 	</parent>
 	<groupId>common.lib</groupId>
 	<artifactId>common.db.dal.log</artifactId>
+	
+	<dependencies>
+		<dependency>
+			<groupId>common.lib</groupId>
+			<artifactId>common.db.base</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+	
 </project>

@@ -18,7 +18,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.mchange.util.FailSuppressedMessageLogger;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -15,9 +15,9 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/spring-*.xml")
+@ContextConfiguration(locations = "classpath*:spring/spring-*.xml")
 @Transactional
-@TransactionConfiguration(transactionManager = "jdbcTransactionManager", defaultRollback = false)
+//@TransactionConfiguration(transactionManager = "jdbcTransactionManager", defaultRollback = false)
 public abstract class BaseSpringActivitiTester {
 	@Autowired
 	protected IdentityService identityService;
