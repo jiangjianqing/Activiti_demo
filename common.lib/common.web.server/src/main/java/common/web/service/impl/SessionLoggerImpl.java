@@ -41,16 +41,21 @@ public class SessionLoggerImpl extends AbstractHelperClass implements SessionLog
 			logger.error("没有发现sessionLogDao,无法记录会话日志");
 			return;
 		}
+		//20170806 session创建时就记录的话，会导致注销的时候多记录一次的bug，暂时关闭
+		/*
 		SessionLog info = (SessionLog)session.getAttribute(sessionAttrName);
 		if (info == null){
 			info = createNewSessionLog(session);
 			session.setAttribute(sessionAttrName, info);
-		}
+		}*/
+		SessionLog info = createNewSessionLog(session);
 		info.setLoginTime(new Date());
 		info.setUserId(SessionHelper.getAuthenticatedUser().getId());
 		try {
-			sessionLogDao.update(info);
+			//sessionLogDao.update(info);
+			sessionLogDao.create(info);
 			//注册SessionLogId，便于其他日志使用
+			session.setAttribute(sessionAttrName, info);
 			session.setAttribute(SessionHelper.SESSION_LOG_ID, info.getId());
 			logger.warn(String.format("创建sessionlog,id=%d", info.getId()));
 		} catch (DaoException e) {
@@ -80,6 +85,8 @@ public class SessionLoggerImpl extends AbstractHelperClass implements SessionLog
 
 	@Override
 	public void onCreate(HttpSession session) {
+		//20170806 session创建时就记录的话，会导致注销的时候多记录一次的bug，暂时关闭
+		/*
 		SessionLog info = createNewSessionLog(session);
 		try {
 			sessionLogDao.create(info);
@@ -90,6 +97,7 @@ public class SessionLoggerImpl extends AbstractHelperClass implements SessionLog
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 	}
 	
 	/**
