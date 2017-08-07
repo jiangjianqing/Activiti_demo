@@ -32,60 +32,20 @@ import common.service.utils.AbstractHelperClass;
  * @author jjq
  *
  */
-public class CustomUserDetailsService extends AbstractHelperClass implements UserDetailsService {
+public class SimpleUserDetailsService extends AbstractHelperClass implements UserDetailsService {
 
-	private PasswordEncoder passwordEncoder;
+	private PasswordEncoderAssist passwordEncoderAssist;
+
+	public PasswordEncoderAssist getPasswordEncoderAssist() {
+		return passwordEncoderAssist;
+	}
+
+	public void setPasswordEncoderAssist(PasswordEncoderAssist passwordEncoderAssist) {
+		this.passwordEncoderAssist = passwordEncoderAssist;
+	}
 
 	@Resource
 	private UserDaoImpl userDao;
-	
-	/**
-	 * 对新添加的用户的密码进行编码，修改密码也要使用这里
-	 * @param user
-	 */
-	public void encodeNewUserPassword(User user){
-		//特别重要：在这里设置了每个User的Salt
-		user.setSalt(user.getUserName());
-		user.setPassword(encodePassword(user.getPassword(),user));
-	}
-	/**
-	 * 获取用户的Salt
-	 * @param user
-	 * @return
-	 */
-	private String getSalt(User user){
-		return user.getSalt();
-	}
-
-	/**
-	 * 获取原始密码，为了加强密码的防破解，使用了salt
-	 * @param password
-	 * @param user
-	 * @return
-	 */
-	public String getRawPassword(String password,User user){
-		return password + getSalt(user);
-	}
-	
-	/**
-	 * 对用户密码进行编码
-	 * @param password
-	 * @param user
-	 * @return
-	 */
-	public String encodePassword(String password,User user){
-		return passwordEncoder.encode(getRawPassword(password,user));
-	}
-	
-	/**
-	 * 判断输入的明文密码和User中存储的加密密码是否匹配
-	 * @param password
-	 * @param user
-	 * @return
-	 */
-	public boolean isPasswordMatch(String password,UserDetails user){
-		return passwordEncoder.matches(getRawPassword(password,(User)user), user.getPassword());
-	}
 
 	/**
 	 * 判断用户名和密码是否正确
@@ -106,7 +66,7 @@ public class CustomUserDetailsService extends AbstractHelperClass implements Use
 
 		if(null!=password){
 
-			if(isPasswordMatch(password,(UserDetails)user) == false)
+			if(passwordEncoderAssist.matches(password,user) == false)
 				throw new PasswardInvalidException();
 		}
 
@@ -165,13 +125,6 @@ public class CustomUserDetailsService extends AbstractHelperClass implements Use
         return authList;  
     }  
 
-    public PasswordEncoder getPasswordEncoder() {
-		return passwordEncoder;
-	}
-
-	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-		this.passwordEncoder = passwordEncoder;
-	}
 
 }
 

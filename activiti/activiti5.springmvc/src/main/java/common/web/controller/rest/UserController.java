@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,8 @@ import common.db.base.page.PageObject;
 import common.db.model.identity.User;
 import common.db.repository.jpa.identity.UserDAO;
 import common.security.AuthenticationUser;
-import common.security.CustomUserDetailsService;
+import common.security.PasswordEncoderAssist;
+import common.security.SimpleUserDetailsService;
 import common.service.utils.BindingResultHelper;
 import common.web.controller.AbstractRestController;
 import common.web.model.WrappedResponseBody;
@@ -66,7 +68,7 @@ import common.web.model.WrappedResponseBody;
 public class UserController extends AbstractRestController{
 	
 	@Resource
-	private CustomUserDetailsService userDetailsService;
+	private PasswordEncoderAssist passwordEncoderAssist;
 	
 	@Resource
 	private UserDAO userDao;
@@ -96,7 +98,7 @@ public class UserController extends AbstractRestController{
 	@ResponseBody
 	public WrappedResponseBody create(@Valid @RequestBody User user, BindingResult result /*其他参数必须在result后面*/) throws DaoException{
 		BindingResultHelper.checkValidateResult(result);
-		userDetailsService.encodeNewUserPassword(user);//对密码进行加密处理
+		passwordEncoderAssist.encodeNewUserPassword(user);//对密码进行加密处理
     	userDao.create(user);
         return new WrappedResponseBody(user);  //验证成功
 	}

@@ -7,23 +7,37 @@ import org.springframework.security.authentication.dao.AbstractUserDetailsAuthen
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+import common.db.model.identity.User;
 
 /**
  * 如果要对当前的用户登陆信息做更多验证，只需要在这里增加内容，比如回答问题等等
  * @author jjq
  *
  */
-public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
+public class SimpleAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
 	@Resource
-	private CustomUserDetailsService userDetailsService;
+	private UserDetailsService userDetailsService;
+	
+	@Resource
+	private PasswordEncoderAssist passwordEncoderAssist;
 
-	public CustomUserDetailsService getUserDetailsService() {
+	public UserDetailsService getUserDetailsService() {
 		return userDetailsService;
 	}
 
-	public void setUserDetailsService(CustomUserDetailsService userDetailsService) {
+	public void setUserDetailsService(UserDetailsService userDetailsService) {
 		this.userDetailsService = userDetailsService;
+	}
+
+	public PasswordEncoderAssist getPasswordEncoderAssist() {
+		return passwordEncoderAssist;
+	}
+
+	public void setPasswordEncoderAssist(PasswordEncoderAssist passwordEncoderAssist) {
+		this.passwordEncoderAssist = passwordEncoderAssist;
 	}
 
 	/**
@@ -49,7 +63,7 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 
 		UserDetails user=userDetailsService.loadUserByUsername(username);
 		
-		boolean validPassword=userDetailsService.isPasswordMatch(authentication.getCredentials().toString(), user);
+		boolean validPassword=passwordEncoderAssist.matches(authentication.getCredentials().toString(), (User)user);
 		if (!validPassword){
 			throw new BadCredentialsException(messages.getMessage(
                     "AbstractUserDetailsAuthenticationProvider.badCredentials", "CustomAuthenticationProvider Bad credentials"));
