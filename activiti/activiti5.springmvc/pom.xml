@@ -42,6 +42,28 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		
+		<!-- 视图模板区 -->
+		<dependency>
+			<groupId>org.thymeleaf</groupId>
+			<artifactId>thymeleaf-spring4</artifactId>
+			<version>3.0.6.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity4</artifactId>
+			<version>3.0.2.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>nz.net.ultraq.thymeleaf</groupId>
+			<artifactId>thymeleaf-layout-dialect</artifactId>
+			<version>2.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-extras</artifactId>
+			<version>3.0.7</version>
+		</dependency>
+		
 		<!-- 20170806 需要指定数据库驱动，因为其默认scope被设为test -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -73,24 +95,8 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<configuration>
-					<scanIntervalSeconds>10</scanIntervalSeconds>
-					<httpConnector>
-						<port>9090</port>
-					</httpConnector>
-					<webAppConfig>
-						<contextPath>/${project.artifactId}</contextPath>
-					</webAppConfig>
-				</configuration>
-				<!-- 这里适合8.1.16 版本 <configuration> <scanIntervalSecond>10</scanIntervalSecond> 
-					<webApp> <contextPath>/${project.artifactId}</contextPath> </webApp> <connectors> 
-					<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector"> 
-					<port>8787</port> <maxIdleTime>60000</maxIdleTime> </connector> </connectors> 
-					</configuration> -->
-			</plugin>
+			<!-- 20170808 从parent.spring.web继承了配置 ， mvn clean jetty:run直接运行即可 -->
+			
 			<!-- 20150818 非osgi项目不能设置这两项 <plugin> <groupId>org.apache.maven.plugins</groupId> 
 				<artifactId>maven-war-plugin</artifactId> <configuration> <archive> <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile> 
 				<addMavenDescriptor>false</addMavenDescriptor> </archive> </configuration> 
