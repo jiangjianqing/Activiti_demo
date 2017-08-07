@@ -31,7 +31,6 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import common.aop.annotation.SystemControllerLog;
 import common.db.base.exception.DaoException;
 import common.db.base.exception.OutOfPageRangeException;
 import common.db.base.page.PageObject;
@@ -44,6 +43,7 @@ import common.db.repository.jpa.identity.impl.RoleDaoImpl;
 import common.db.repository.jpa.identity.impl.UserDaoImpl;
 import common.security.AuthenticationUser;
 import common.security.SimpleUserDetailsService;
+import common.service.aop.annotation.SystemControllerLog;
 import common.service.utils.SpringContextHolder;
 import common.web.controller.AbstractRestController;
 import common.web.model.RequestParamNaming;

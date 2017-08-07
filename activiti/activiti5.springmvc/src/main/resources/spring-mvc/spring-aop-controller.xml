@@ -36,8 +36,8 @@
 		</aop:config>
 		-->
 	
-	<bean id="apiServiceAspect" class="common.aop.AExampleAspect"/>
-	<bean class="common.aop.SystemControllerLogAspect"/>
+	<bean id="apiServiceAspect" class="common.service.aop.AExampleAspect"/>
+	<bean class="common.web.aop.SystemControllerLogAspect"/>
 	<!-- 20170804 : 如果类里已经使用了AOP注释，则不再需要以下配置信息
 	<aop:config expose-proxy="true">
 		<aop:aspect id="controllerAop" ref="apiServiceAspect">
