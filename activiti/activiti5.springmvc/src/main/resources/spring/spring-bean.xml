@@ -54,5 +54,23 @@
 		</bean> 
 		</property>
 	</bean> 
+	
+	<!-- 20170808 静态方法调用，静态变量赋值
+	name="staticMethod" ：固定写法，顾名思义就是静态方法。
+	value="com.sojson.core.domain.DomainDistribution.setDomainInfo" ：对应的静态方法，
+	com.sojson.core.domain.DomainDistribution 是类的全路径，而setDomainInfo 是静态方法名称。
+	name="arguments" ：参数，而我的array 是因为我要注入的是一个数组，其实是一个 json  数组。
+	 -->
+	<!-- 
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+         <property name="staticMethod" value="common.db.base.AbstractDao.setDomainInfo"/>
+         <property name="arguments">
+         	<array>
+         		<value>{"convert":"word2spell,cn2spark,pingindic,low2up,fullhalf"}</value>
+         		<value>{"color":"cj,img,online,page,select,use,web"}</value>
+         	</array>
+         </property>
+    </bean>
+     -->
 	 
 </beans>
