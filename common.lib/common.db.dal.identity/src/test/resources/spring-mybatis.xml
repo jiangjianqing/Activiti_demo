@@ -13,7 +13,7 @@
 	<!-- 引入配置文件 -->
 	<context:property-placeholder location="classpath:db.properties" />
 
-	<!-- 20170808 使用通用mapper 尚未解决role-user 一对多问题 报错：No typehandler found for property users -->
+	<!-- 20170808 使用通用mapper，其目前只支持单表 报错：No typehandler found for property users -->
 	<!-- 
 	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
 	    <property name="basePackage" value="**.db.repository.mybatis.*"/>
