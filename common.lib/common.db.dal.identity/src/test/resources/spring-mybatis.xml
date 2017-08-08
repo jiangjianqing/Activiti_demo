@@ -13,6 +13,13 @@
 	<!-- 引入配置文件 -->
 	<context:property-placeholder location="classpath:db.properties" />
 
+	<!-- 20170808 使用通用mapper
+	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
+	    <property name="basePackage" value="**.db.repository.mybatis.*"/>
+	    <property name="markerInterface" value="tk.mybatis.mapper.common.Mapper"/>
+	</bean>
+	 -->
+
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"  
         destroy-method="close">  
         <property name="driverClassName" value="${jdbc.driverClassName}" />  
@@ -53,11 +60,6 @@
 	  <constructor-arg index="0" ref="mybatisSqlSessionFactory" />
 	  <constructor-arg index="1" value="SIMPLE"/>  
 	</bean>
-
-	<bean id="mybatisSqlSessionTemplateBatch" class="org.mybatis.spring.SqlSessionTemplate">
-	  <constructor-arg index="0" ref="mybatisSqlSessionFactory" />
-	  <constructor-arg index="1" value="BATCH"/>  
-	</bean>
     
     <!-- 自动映射扫描，代替org.mybatis.spring.MapperFactoryBean -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
@@ -77,6 +79,8 @@
     	
     	<!-- 指定数据访问对象 -->
     	<property name="sqlSessionTemplateBeanName" value="mybatisSqlSessionTemplateBatch" /> 
+    	<!-- 
     	<property name="sqlSessionFactoryBeanName" value="mybatisSqlSessionFactory"/>  
+    	 -->
     </bean>
 </beans> 

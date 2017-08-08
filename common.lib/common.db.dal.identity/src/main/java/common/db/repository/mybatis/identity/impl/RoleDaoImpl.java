@@ -9,7 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import common.db.model.identity.Role;
 import common.db.repository.mybatis.identity.RoleDao;
 
-public class RoleDaoImpl implements RoleDao {
+public abstract class RoleDaoImpl implements RoleDao {
 
 	@Resource
 	private SqlSessionFactory sessionFactory;
@@ -49,7 +49,7 @@ public class RoleDaoImpl implements RoleDao {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+/*
 	@Override
 	public int deleteByPrimaryKey(Long id) {
 		// TODO Auto-generated method stub
@@ -61,6 +61,7 @@ public class RoleDaoImpl implements RoleDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	*/
 
 	@Override
 	public int updateByPrimaryKeySelective(Role record) {

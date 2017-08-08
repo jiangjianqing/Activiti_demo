@@ -94,6 +94,18 @@
     <bean id="mybatisSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
     	<property name="dataSource" ref="dataSource"></property>  
     	<property name="configLocation" value="classpath:mybatis-config.xml"></property>  
+    	<!-- 
+    	<property name="mapperLocations" value="classpath:com/sinyat/api/weather/mapping/*.xml" />
+        <property name="typeAliasesPackage" value="com.sinyat.api.weather.model" />
+         -->
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    
+                </bean>
+            </array>
+        </property>
+        
     </bean>
     
 
