@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 import common.db.base.exception.DaoException;
 import common.db.base.exception.OutOfPageRangeException;
 import common.db.base.jpa.AbstractJpaDaoImpl;
-import common.db.base.page.PageObject;
 import common.db.model.log.SessionLog;
 import common.db.repository.jpa.log.SessionLogDao;
 

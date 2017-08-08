@@ -9,11 +9,13 @@ import javax.persistence.PersistenceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.pagehelper.PageInfo;
+
 import common.db.base.exception.DaoException;
 import common.db.base.exception.OutOfPageRangeException;
 import common.db.base.jpa.internal.BaseJpaDaoImpl;
 import common.db.base.jpa.internal.PaginationJpaDaoImpl;
-import common.db.base.page.PageObject;
+
 
 /**
  * 后续所有的JPA DAO 类都需要从这里继承
@@ -72,11 +74,11 @@ public abstract class AbstractJpaDaoImpl<T,K> implements AbstractJpaDao<T,K> {
 		return baseDao.listAll();
 	}
 
-	public PageObject<T> getPageList(int currPage) throws OutOfPageRangeException, DaoException {
+	public PageInfo<T> getPageList(int currPage) throws OutOfPageRangeException, DaoException {
 		return paginationDao.queryForPaginationList(currPage , getEntityClazz());
 	}
 
-	public PageObject<T> getPageList(int currPage, int pageSize) throws OutOfPageRangeException, DaoException{
+	public PageInfo<T> getPageList(int currPage, int pageSize) throws OutOfPageRangeException, DaoException{
 		return paginationDao.queryForPaginationList(currPage,pageSize , getEntityClazz());
 	}
 

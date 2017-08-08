@@ -18,6 +18,11 @@
 	</properties>
 
 	<dependencies>	
+		<dependency>
+		    <groupId>com.github.pagehelper</groupId>
+		    <artifactId>pagehelper</artifactId>
+		    <version>5.0.4</version>
+		</dependency>
 		
 		<!--20170806 hibernate-core 5.2.10.Final 替换hibernate-entitymanager存在 Duplicate key name 问题 -->
 

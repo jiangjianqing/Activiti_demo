@@ -24,8 +24,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import com.github.pagehelper.PageInfo;
+
 import common.db.base.exception.*;
-import common.db.base.page.PageObject;
 import common.db.base.test.AbstractJpaTestCase;
 import common.db.model.identity.Role;
 import common.db.model.identity.User;
@@ -59,7 +60,7 @@ public class IdentityJpaTest  extends AbstractJpaTestCase {
 	@Test
 	public void A1_testSysUserAdd() throws DaoException, OutOfPageRangeException
 	{
-		PageObject<User> page=userDao.getPageList(1);
+		PageInfo<User> page=userDao.getPageList(1);
 		System.out.println("测试用户新增");
 		User newUser=userDao.findByKey(new Long(1));
 
