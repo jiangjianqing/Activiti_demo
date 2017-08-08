@@ -12,7 +12,7 @@ import common.db.model.identity.Role;
 import common.db.model.identity.User;
 import common.db.repository.jpa.identity.UserDAO;
 
-public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDAO {
+public class UserDaoImpl extends AbstractJpaDaoImpl<User,Long> implements UserDAO {
 
 	public User findByUserName(String userName) throws DaoException{
 		;

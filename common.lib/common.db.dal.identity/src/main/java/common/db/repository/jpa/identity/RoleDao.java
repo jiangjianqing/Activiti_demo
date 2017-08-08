@@ -6,7 +6,7 @@ import common.db.base.jpa.AbstractJpaDao;
 import common.db.base.page.PageObject;
 import common.db.model.identity.Role;
 
-public interface RoleDao extends AbstractJpaDao<Role>{
+public interface RoleDao extends AbstractJpaDao<Role,Long>{
 
 }
 

@@ -22,7 +22,7 @@ import common.db.base.page.PageObject;
  * @param <T>
  */
 
-public abstract class AbstractJpaDaoImpl<T> implements AbstractJpaDao<T> {
+public abstract class AbstractJpaDaoImpl<T,K> implements AbstractJpaDao<T,K> {
 	
 	protected BaseJpaDaoImpl<T> baseDao = new BaseJpaDaoImpl<T>();
 	protected PaginationJpaDaoImpl paginationDao = new PaginationJpaDaoImpl();
@@ -60,11 +60,11 @@ public abstract class AbstractJpaDaoImpl<T> implements AbstractJpaDao<T> {
 		return baseDao.remove(t);
 	}
 
-	public T findByKey(Object key) throws DaoException {
+	public T findByKey(K key) throws DaoException {
 		return baseDao.findByKey(key);
 	}
 
-	public boolean deleteByKey(Object key) throws DaoException {
+	public boolean deleteByKey(K key) throws DaoException {
 		return baseDao.removeByKey(key);
 	}
 	

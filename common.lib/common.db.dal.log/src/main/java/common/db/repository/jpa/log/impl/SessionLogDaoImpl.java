@@ -11,6 +11,6 @@ import common.db.base.page.PageObject;
 import common.db.model.log.SessionLog;
 import common.db.repository.jpa.log.SessionLogDao;
 
-public class SessionLogDaoImpl extends AbstractJpaDaoImpl<SessionLog> implements SessionLogDao {
+public class SessionLogDaoImpl extends AbstractJpaDaoImpl<SessionLog,Long> implements SessionLogDao {
 
 }

@@ -11,6 +11,6 @@ import common.db.base.page.PageObject;
 import common.db.model.log.ModuleLog;
 import common.db.repository.jpa.log.ModuleLogDao;
 
-public class ModuleLogDaoImpl extends AbstractJpaDaoImpl<ModuleLog> implements ModuleLogDao {
+public class ModuleLogDaoImpl extends AbstractJpaDaoImpl<ModuleLog,Long> implements ModuleLogDao {
 
 }

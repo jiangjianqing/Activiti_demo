@@ -15,11 +15,11 @@ import common.db.base.page.PageObject;
  *
  * @param <T>
  */
-public interface AbstractDao<T> {
+public interface AbstractDao<T,K> {
 	void create(T t) throws DaoException;
 	T update(T t) throws DaoException;
-	T findByKey(Object key) throws DaoException;
-	boolean deleteByKey(Object key) throws DaoException;
+	T findByKey(K key) throws DaoException;
+	boolean deleteByKey(K key) throws DaoException;
 	List<T> getList() throws DaoException;
 	
 	PageObject<T> getPageList(int currPage) throws OutOfPageRangeException, DaoException;

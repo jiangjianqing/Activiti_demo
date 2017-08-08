@@ -10,7 +10,7 @@ import common.db.base.page.PageObject;
 import common.db.model.identity.Role;
 import common.db.repository.jpa.identity.RoleDao;
 
-public class RoleDaoImpl extends AbstractJpaDaoImpl<Role> implements RoleDao {
+public class RoleDaoImpl extends AbstractJpaDaoImpl<Role,Long> implements RoleDao {
 
 
 }
