@@ -2,10 +2,13 @@ package identity.test;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
+
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.hibernate.service.spi.SessionFactoryServiceInitiator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -38,13 +41,15 @@ public class IdentityMyBatisTest {
     public void test1() {  
     	
     	Role role=new Role();
-    	role.setName("Mybatistest");
+    	role.setName("Mybatistest"+new Date().toString());
     	role.setType(RoleTypeEnum.ADMIN);
     	try(SqlSession session=sessionFactory.openSession()){
 			//session.getMapper获取的是一个代理对象
 			RoleDao roleDao=session.getMapper(RoleDao.class);
 
+			//20170808 这里的事务处理不完善
 			roleDao.insert(role);
+			session.rollback();
 			}
     	
         //User user= new User();
