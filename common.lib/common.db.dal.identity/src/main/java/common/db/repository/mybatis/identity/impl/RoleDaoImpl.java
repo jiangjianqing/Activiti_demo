@@ -1,15 +1,19 @@
 package common.db.repository.mybatis.identity.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.github.pagehelper.PageInfo;
+
 import common.db.model.identity.Role;
 import common.db.repository.mybatis.identity.RoleDao;
 
-public abstract class RoleDaoImpl implements RoleDao {
+public class RoleDaoImpl implements RoleDao {
 
 	@Resource
 	private SqlSessionFactory sessionFactory;
@@ -33,7 +37,6 @@ public abstract class RoleDaoImpl implements RoleDao {
 		this.sessionFactory = sessionFactory;
 	}
 
-	@Override
 	public int insert(Role record) {
 		//return sqlSessionTemplate.insert("insert", record);
 		try(SqlSession session=sessionFactory.openSession()){
@@ -44,12 +47,39 @@ public abstract class RoleDaoImpl implements RoleDao {
 			}
 	}
 
-	@Override
 	public int insertSelective(Role record) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-/*
+
+	public int updateByPrimaryKeySelective(Role record) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int updateByPrimaryKey(Role record) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<Role> getList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PageInfo<Role> getPageList(int currPage) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PageInfo<Role> getPageList(int currPage, int pageSize) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	@Override
 	public int deleteByPrimaryKey(Long id) {
 		// TODO Auto-generated method stub
@@ -60,19 +90,6 @@ public abstract class RoleDaoImpl implements RoleDao {
 	public Role selectByPrimaryKey(Long id) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-	*/
-
-	@Override
-	public int updateByPrimaryKeySelective(Role record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateByPrimaryKey(Role record) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 }

@@ -62,6 +62,13 @@ public abstract class AbstractJpaDaoImpl<T,K> implements AbstractJpaDao<T,K> {
 		return ret;
 	}
 	
+	/**
+	 * 只插入不为null的字段，在JPA中目前只能通过hibernate的DynamicInsert\DynamicUpdate实现
+	 */
+	public int insertSelective(T t) {
+		return insert(t);
+	}
+	
 	public int updateByPrimaryKey(T t){
 		int ret=-1;
 		try {
@@ -71,6 +78,13 @@ public abstract class AbstractJpaDaoImpl<T,K> implements AbstractJpaDao<T,K> {
 			e.printStackTrace();
 		}
 		return ret;
+	}
+	
+	/**
+	 * 只更新不为null的字段，在JPA中目前只能通过hibernate的DynamicInsert\DynamicUpdate实现
+	 */
+	public int updateByPrimaryKeySelective(T t) {
+		return updateByPrimaryKey(t);
 	}
 
 	public T selectByPrimaryKey(K key) {

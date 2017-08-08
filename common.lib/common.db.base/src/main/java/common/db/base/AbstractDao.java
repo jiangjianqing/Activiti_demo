@@ -19,7 +19,9 @@ import common.db.base.exception.OutOfPageRangeException;
 public interface AbstractDao<T,K> {
 	public static int DEFAULT_PAGE_SIZE=10;
 	int insert(T t);
+	int insertSelective(T t);
 	int updateByPrimaryKey(T t);
+	int updateByPrimaryKeySelective(T t);
 	T selectByPrimaryKey(K key);
 	int deleteByPrimaryKey(K key);
 	List<T> getList();
