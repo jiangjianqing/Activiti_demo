@@ -17,6 +17,7 @@ import common.db.base.exception.OutOfPageRangeException;
  * @param <T>
  */
 public interface AbstractDao<T,K> {
+	public static int DEFAULT_PAGE_SIZE=10;
 	void create(T t) throws DaoException;
 	T update(T t) throws DaoException;
 	T findByKey(K key) throws DaoException;

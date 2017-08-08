@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 
+import common.db.base.AbstractDao;
 import common.db.base.DbUtil;
 import common.db.base.exception.DaoException;
 import common.db.base.exception.OutOfPageRangeException;
@@ -51,12 +52,12 @@ public class PaginationJpaDaoImpl extends ExtendJpaDaoImpl {
     }
 
     public final <T>PageInfo<T> queryForPaginationList(int pageNum, String queryForListHQL) throws OutOfPageRangeException, DaoException{
-        return this.queryForPaginationList(pageNum,10,queryForListHQL,null);
+        return this.queryForPaginationList(pageNum,AbstractDao.DEFAULT_PAGE_SIZE,queryForListHQL,null);
     }
 
     public final<T>PageInfo<T> queryForPaginationList(int pageNum,Class<T> clazz,String[] fields,LinkedHashMap<String,String>conditions,Object queryParams,LinkedHashMap<String,String> orderBy) throws OutOfPageRangeException, DaoException{
     	String queryHQL = getSimpleQueryString(clazz,fields,conditions,orderBy);   
-        return this.queryForPaginationList(pageNum,10, queryHQL, queryParams);
+        return this.queryForPaginationList(pageNum,AbstractDao.DEFAULT_PAGE_SIZE, queryHQL, queryParams);
     }
 
 }
