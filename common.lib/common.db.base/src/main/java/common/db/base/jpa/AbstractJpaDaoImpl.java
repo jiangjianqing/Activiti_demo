@@ -50,36 +50,81 @@ public abstract class AbstractJpaDaoImpl<T,K> implements AbstractJpaDao<T,K> {
 		paginationDao.SetEntityManager(em);
 	}
 
-	public void create(T t) throws DaoException {
-		baseDao.create(t);
+	public int insert(T t) {
+		int ret=-1;
+		try {
+			baseDao.create(t);
+			ret=1;
+		} catch (DaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ret;
 	}
 	
-	public T update(T t) throws DaoException{
-		return baseDao.merge(t);
+	public int updateByPrimaryKey(T t){
+		int ret=-1;
+		try {
+			baseDao.merge(t);
+			ret = 1;
+		}catch(DaoException e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
+
+	public T selectByPrimaryKey(K key) {
+		try {
+			return baseDao.findByKey(key);
+		} catch (DaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public int deleteByPrimaryKey(K key) {
+		int ret=-1;
+		try {
+			baseDao.removeByKey(key);
+			ret = 1;
+		}catch(DaoException e) {
+			e.printStackTrace();
+		}
+		return ret;
 	}
 	
-	public boolean delete(T t) throws DaoException{
-		return baseDao.remove(t);
+	public List<T> getList(){
+		try {
+			return baseDao.listAll();
+		} catch (DaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	public T findByKey(K key) throws DaoException {
-		return baseDao.findByKey(key);
+	public PageInfo<T> getPageList(int currPage) {
+		try {
+			return paginationDao.queryForPaginationList(currPage , getEntityClazz());
+		} catch (OutOfPageRangeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	public boolean deleteByKey(K key) throws DaoException {
-		return baseDao.removeByKey(key);
-	}
-	
-	public List<T> getList() throws DaoException{
-		return baseDao.listAll();
-	}
-
-	public PageInfo<T> getPageList(int currPage) throws OutOfPageRangeException, DaoException {
-		return paginationDao.queryForPaginationList(currPage , getEntityClazz());
-	}
-
-	public PageInfo<T> getPageList(int currPage, int pageSize) throws OutOfPageRangeException, DaoException{
-		return paginationDao.queryForPaginationList(currPage,pageSize , getEntityClazz());
+	public PageInfo<T> getPageList(int currPage, int pageSize){
+		try {
+			return paginationDao.queryForPaginationList(currPage,pageSize , getEntityClazz());
+		} catch (OutOfPageRangeException | DaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

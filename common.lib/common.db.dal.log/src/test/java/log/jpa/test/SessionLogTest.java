@@ -43,7 +43,7 @@ public class SessionLogTest extends common.db.base.test.AbstractJpaTestCase {
 		data.setCreateTime(new Date());
 		data.setIpAddr("192.168.1.1");
 		data.setHostName("pc-123");
-		sessionLogDao.create(data);
+		sessionLogDao.insert(data);
 		assertNotNull(data.getId());
 		System.out.println(String.format("new SessionLog's id = %s",data.getId()));
 	}

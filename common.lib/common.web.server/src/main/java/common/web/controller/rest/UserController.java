@@ -98,14 +98,14 @@ public class UserController extends AbstractRestController{
 	public WrappedResponseBody create(@Valid @RequestBody User user, BindingResult result /*其他参数必须在result后面*/) throws DaoException{
 		BindingResultHelper.checkValidateResult(result);
 		passwordEncoderAssist.encodeNewUserPassword(user);//对密码进行加密处理
-    	userDao.create(user);
+    	userDao.insert(user);
         return new WrappedResponseBody(user);  //验证成功
 	}
 	
 	@RequestMapping(value={"/{id}"},method={RequestMethod.GET})
 	@ResponseBody
 	public WrappedResponseBody findById(@PathVariable Long id) throws DaoException, EntityNotFoundException{
-		User user=userDao.findByKey(id);
+		User user=userDao.selectByPrimaryKey(id);
 		if(user==null){
 			throw new EntityNotFoundException(id.toString());
 		}
@@ -117,13 +117,13 @@ public class UserController extends AbstractRestController{
 	public WrappedResponseBody update(@PathVariable Long id,@Valid @RequestBody User user,BindingResult result ) throws DaoException{
 		BindingResultHelper.checkValidateResult(result);
 		user.setId(id);
-		return new WrappedResponseBody(userDao.update(user));
+		return new WrappedResponseBody(userDao.updateByPrimaryKey(user));
 	}
 	
 	@RequestMapping(value={"/{id}"},method={RequestMethod.DELETE})
 	@ResponseBody
 	public WrappedResponseBody  delete(@PathVariable Long id) throws DaoException{
-		userDao.deleteByKey(id);
+		userDao.deleteByPrimaryKey(id);
 		return new WrappedResponseBody("");
 	}
 

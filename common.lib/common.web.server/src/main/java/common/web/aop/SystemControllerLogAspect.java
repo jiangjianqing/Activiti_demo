@@ -72,7 +72,7 @@ public class SystemControllerLogAspect extends AbstractHelperClass {
             log.setCreateDate(DateUtil.getCurrentDate());    
             //保存数据库    
             logService.add(log);    */
-            moduleLogDao.create(log);
+            moduleLogDao.insert(log);
             System.out.println("=====前置通知结束=====");    
         }  catch (Exception e) {    
             //记录本地异常日志    
@@ -122,7 +122,7 @@ public class SystemControllerLogAspect extends AbstractHelperClass {
             log.setExceptionName( e.getClass().getName());    
             log.setExceptionDetail( e.getMessage());
             log.setParams( params);  
-            moduleLogDao.create(log);
+            moduleLogDao.insert(log);
                
             /*    
             //保存数据库    

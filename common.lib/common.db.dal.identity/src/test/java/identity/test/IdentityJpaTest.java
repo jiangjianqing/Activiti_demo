@@ -62,14 +62,14 @@ public class IdentityJpaTest  extends AbstractJpaTestCase {
 	{
 		PageInfo<User> page=userDao.getPageList(1);
 		System.out.println("测试用户新增");
-		User newUser=userDao.findByKey(new Long(1));
+		User newUser=userDao.selectByPrimaryKey(new Long(1));
 
 		newUser=new User();
 		newUser.setUserName(newUserName);
 
 		newUser.setPassword("123456");
 		newUser.setSalt("tt");
-		userDao.create(newUser);
+		userDao.insert(newUser);
 		System.out.println("newUser.id="+newUser.getId());
 
 		newUser=userDao.findByUserName(newUserName);
@@ -82,7 +82,7 @@ public class IdentityJpaTest  extends AbstractJpaTestCase {
 		System.out.println("测试角色新增");
 		Role newRole=new Role();
 		newRole.setName(newRoleName);
-		roleService.create(newRole);		
+		roleService.insert(newRole);		
 		System.out.println("newRole.id="+newRole.getId());
 	}
 
@@ -96,7 +96,7 @@ public class IdentityJpaTest  extends AbstractJpaTestCase {
 		
 		System.out.println("用户拥有的角色数量:"+newUser.getRoles().size());
 		
-		Role newRole=roleService.findByKey(new Long(1));
+		Role newRole=roleService.selectByPrimaryKey(new Long(1));
 		
 		System.out.println("newUser="+newUser);
 		if (newUser.getRoles() == null){

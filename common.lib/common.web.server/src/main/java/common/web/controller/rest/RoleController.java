@@ -50,14 +50,14 @@ public class RoleController extends AbstractRestController {
 	@ResponseBody
 	public WrappedResponseBody create(@Valid @RequestBody Role role , BindingResult result) throws DaoException{
 		BindingResultHelper.checkValidateResult(result);
-		roleDao.create(role);
+		roleDao.insert(role);
 		return new WrappedResponseBody(role); 
 	}
 	
 	@RequestMapping(value={"/{id}"},method={RequestMethod.GET})
 	@ResponseBody
 	public WrappedResponseBody findById(@PathVariable Long id) throws DaoException, EntityNotFoundException{
-		Role role=roleDao.findByKey(id);
+		Role role=roleDao.selectByPrimaryKey(id);
 		if(role == null){
 			throw new EntityNotFoundException(id.toString());
 		}
@@ -69,14 +69,14 @@ public class RoleController extends AbstractRestController {
 	public WrappedResponseBody update(@PathVariable Long id,@Valid @RequestBody Role role , BindingResult result) throws DaoException{
 		BindingResultHelper.checkValidateResult(result);
 		role.setId(id);
-		return new WrappedResponseBody(roleDao.update(role));
+		return new WrappedResponseBody(roleDao.updateByPrimaryKey(role));
 	}
 	
 	
 	@RequestMapping(value={"/{id}"},method={RequestMethod.DELETE})
 	@ResponseBody
 	public WrappedResponseBody  delete(@PathVariable Long id) throws DaoException{
-		roleDao.deleteByKey(id);
+		roleDao.deleteByPrimaryKey(id);
 		return new WrappedResponseBody("");
 	}
 	

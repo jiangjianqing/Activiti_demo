@@ -53,12 +53,12 @@ public class SessionLoggerImpl extends AbstractHelperClass implements SessionLog
 		info.setUserId(SessionHelper.getAuthenticatedUser().getId());
 		try {
 			//sessionLogDao.update(info);
-			sessionLogDao.create(info);
+			sessionLogDao.insert(info);
 			//注册SessionLogId，便于其他日志使用
 			session.setAttribute(sessionAttrName, info);
 			session.setAttribute(SessionHelper.SESSION_LOG_ID, info.getId());
 			logger.warn(String.format("创建sessionlog,id=%d", info.getId()));
-		} catch (DaoException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -75,8 +75,8 @@ public class SessionLoggerImpl extends AbstractHelperClass implements SessionLog
 		SessionLog info = (SessionLog) session.getAttribute(sessionAttrName);
 		try {
 			info.setLogoutTime(new Date());
-			sessionLogDao.update(info);
-		} catch (DaoException e) {
+			sessionLogDao.updateByPrimaryKey(info);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

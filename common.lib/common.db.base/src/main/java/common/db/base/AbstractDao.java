@@ -18,12 +18,12 @@ import common.db.base.exception.OutOfPageRangeException;
  */
 public interface AbstractDao<T,K> {
 	public static int DEFAULT_PAGE_SIZE=10;
-	void create(T t) throws DaoException;
-	T update(T t) throws DaoException;
-	T findByKey(K key) throws DaoException;
-	boolean deleteByKey(K key) throws DaoException;
-	List<T> getList() throws DaoException;
+	int insert(T t);
+	int updateByPrimaryKey(T t);
+	T selectByPrimaryKey(K key);
+	int deleteByPrimaryKey(K key);
+	List<T> getList();
 	
-	PageInfo<T> getPageList(int currPage) throws OutOfPageRangeException, DaoException;
-	PageInfo<T> getPageList(int currPage,int pageSize) throws OutOfPageRangeException, DaoException;
+	PageInfo<T> getPageList(int currPage);
+	PageInfo<T> getPageList(int currPage,int pageSize);
 }
