@@ -1,4 +1,4 @@
-package identity.test;
+package common.db.base.test;
 
 import static org.junit.Assert.*;
 
@@ -16,15 +16,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import common.db.base.test.AbstractMyBatisTestCase;
-import common.db.model.identity.Role;
-import common.db.model.identity.RoleTypeEnum;
-import common.db.repository.mybatis.identity.RoleDao;
+@RunWith(SpringJUnit4ClassRunner.class)     //表示继承了SpringJUnit4ClassRunner类  
+@ContextConfiguration(locations = {"classpath*:spring-mybatis.xml"})
+public abstract class AbstractMyBatisTestCase {
 
-public class IdentityMyBatisTest extends AbstractMyBatisTestCase {
+	protected final Logger logger = LoggerFactory
+			.getLogger(getClass());
 	
-	@Resource
-	private RoleDao roleDao;
+	//@Resource
+	//private RoleDao roleDao;
 	//private SqlSessionFactory sessionFactory;
   
 //  @Before  
@@ -33,13 +33,13 @@ public class IdentityMyBatisTest extends AbstractMyBatisTestCase {
 //      userService = (IUserService) ac.getBean("userService");  
 //  }  
   
-    @Test  
-    public void test1() {  
+
+    //@Test  
+    //public void test1() {  
     	
-    	logger.warn("**注意：这里的测试会连接mysql并写入真实的数据，测试用例的写法还要完善!");
-    	Role role=new Role();
-    	role.setName("Mybatistest"+new Date().toString());
-    	role.setType(RoleTypeEnum.ADMIN);
+    	//Role role=new Role();
+    	//role.setName("Mybatistest"+new Date().toString());
+    	//role.setType(RoleTypeEnum.ADMIN);
     	/*
     	try(SqlSession session=sessionFactory.openSession()){
 			//session.getMapper获取的是一个代理对象
@@ -49,7 +49,7 @@ public class IdentityMyBatisTest extends AbstractMyBatisTestCase {
 			
 			session.rollback();
 			}*/
-    	roleDao.insert(role);
+    	//roleDao.insert(role);
     	
         //User user= new User();
         //user.setId(new Long(123));
@@ -57,5 +57,6 @@ public class IdentityMyBatisTest extends AbstractMyBatisTestCase {
         // System.out.println(user.getUserName());  
         // logger.info("值："+user.getUserName());  
         //logger.info(JSON.toJSONString(user));  
-    }  
+    //}  
+
 }

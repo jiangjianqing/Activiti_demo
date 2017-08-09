@@ -8,81 +8,11 @@
                         http://www.springframework.org/schema/context    
                         http://www.springframework.org/schema/context/spring-context.xsd    
 						">
-	<!-- 自动扫描 -->
-	<context:component-scan base-package="common.db.repository.mybatis.identity.impl" />
-	<!-- 引入配置文件 -->
-	<context:property-placeholder location="classpath:db.properties" />
+						
+	<!-- 20170808 ： mybatis的基本配置已经在common.db.base.test/spring-mybatis.xml中完成 -->
+	<!-- 20170808 ： 自动扫描未生效，这里主要用于声明Mybatis相关的Dao Bean -->
 
-	<!-- 20170808 使用通用mapper，其目前只支持单表 报错：No typehandler found for property users -->
-	<!-- 
-	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-	    <property name="basePackage" value="**.db.repository.mybatis.*"/>
-	    <property name="markerInterface" value="tk.mybatis.mapper.common.Mapper"/>
-	</bean>
-	 -->
-	 
+	<bean class="common.db.repository.mybatis.identity.impl.RoleDaoImpl"/>
+	
 
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"  
-        destroy-method="close">  
-        <property name="driverClassName" value="${jdbc.driverClassName}" />  
-        <property name="url" value="${jdbc.url}" />  
-        <property name="username" value="${jdbc.user}" />  
-        <property name="password" value="${jdbc.password}" />  
-        <!-- 初始化连接大小 -->  
-        <property name="initialSize" value="${initialSize}"></property>  
-        <!-- 连接池最大空闲 -->  
-        <property name="maxIdle" value="${maxIdle}"></property>  
-        <!-- 连接池最小空闲 -->  
-        <property name="minIdle" value="${minIdle}"></property>  
-
-    </bean>  
-  
-    <!-- 配置mybatis的SqlSessionFactory -->  
-    <bean id="mybatisSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
-    	<property name="dataSource" ref="dataSource"></property>  
-    	<property name="configLocation" value="classpath:mybatis-config.xml"></property>  
-    	<property name="configurationProperties">
-            <props>
-                <!-- mapUnderscoreToCamelCase属性将表中列名的下划线映射为JavaBean属性的驼峰式命名，默认为false -->
-                <prop key="mapUnderscoreToCamelCase">true</prop>
-            </props>
-        </property>
-        <!-- 显式指定Mapper文件位置
-        <property name="mapperLocations">
-            <list>
-                <value>classpath*:mybatis-mappers/UserDao.xml</value>
-                <value>classpath*:mybatis-mappers/RoleDao.xml</value>
-            </list>
-        </property>
-         -->
-    </bean>
-    
-
-	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-	  <constructor-arg index="0" ref="mybatisSqlSessionFactory" />
-	  <constructor-arg index="1" value="SIMPLE"/>  
-	</bean>
-    
-    <!-- 自动映射扫描，代替org.mybatis.spring.MapperFactoryBean -->
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-    	<!-- 20170803 :不是用接口方式实现管理．则该段无效！ 
-    	会出现警告：No MyBatis mapper was found in '[**.db.repository.mybatis.*]' package. Please check your configuration.-->
-    	<property name="basePackage" value="**.db.repository.mybatis.*"/>
-    	
-    	
-    	<!-- annotationClass和markerInterface是两个扫描过滤条件 -->
-    	<!-- 当指定了annotationClass的时候，MapperScannerConfigurer将只注册使用了annotationClass注解标记的接口 -->
-    	<property name="annotationClass" value="org.springframework.stereotype.Repository"/>
-    	<!-- markerInterface是用于指定一个接口的，当指定了markerInterface之后，MapperScannerConfigurer将只注册继承自markerInterface的接口。 -->
-    	<!--  
-    	<property name="markerInterface" value="com.tiantian.mybatis.mapper.SuperMapper"/>  
-    	-->
-    	
-    	
-    	<!-- 指定数据访问对象 -->
-    	<property name="sqlSessionTemplateBeanName" value="mybatisSqlSessionTemplateBatch" /> 
-    	<!-- 
-    	<property name="sqlSessionFactoryBeanName" value="mybatisSqlSessionFactory"/>  
-    	 -->
-    </bean>
 </beans> 
