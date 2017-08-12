@@ -10,7 +10,7 @@
 						">
 						
 	<!-- 引入配置文件 -->
-	<context:property-placeholder location="classpath*:db.properties" />
+	<context:property-placeholder location="classpath:db.properties" />
 	
 	<!-- 自动扫描 -->
 	<context:component-scan base-package="**.db.repository.mybatis.**.impl" />
@@ -88,4 +88,31 @@
     	<property name="sqlSessionFactoryBeanName" value="mybatisSqlSessionFactory"/>  
     	 -->
     </bean>
+    
+    <!-- JPA实体管理器工厂 spring默认初始化一个名为"default"的persistenceunit-->  
+    <bean id="entityManagerFactory"  
+        class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">  
+        <property name="dataSource" ref="dataSource" />  
+        <property name="persistenceProvider" ref="jpaPersistenceProvider"/>
+        <property name="packagesToScan">
+			<list>  
+				<value>**.db.model.*</value>  
+			</list>  
+		</property>  
+  
+        <property name="jpaProperties">  
+            <props>  
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>  
+                <prop key="hibernate.max_fetch_depth">3</prop>  
+                <prop key="hibernate.jdbc.fetch_size">18</prop>  
+                <prop key="hibernate.jdbc.batch_size">50</prop>  <!-- 设置Hibernate一个提交批次中的最大SQL语句数 -->
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>  
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>  
+                <prop key="hibernate.format_sql">true</prop>  
+                <prop key="javax.persistence.validation.mode">none</prop>  
+            </props>  
+        </property>  
+    </bean>  
+
+	<bean id="jpaPersistenceProvider" class="org.hibernate.jpa.HibernatePersistenceProvider" />
 </beans> 
