@@ -13,7 +13,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import common.db.base.exception.DaoException;
 import common.db.model.log.SessionLog;
-import common.db.repository.jpa.log.SessionLogDao;
+import common.db.repository.log.SessionLogDao;
 import common.service.utils.AbstractHelperClass;
 import common.service.utils.SpringContextHolder;
 import common.web.service.SessionEvent;

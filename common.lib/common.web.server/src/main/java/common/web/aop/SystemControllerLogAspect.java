@@ -21,7 +21,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import common.db.model.log.ModuleLog;
-import common.db.repository.jpa.log.ModuleLogDao;
+import common.db.repository.log.ModuleLogDao;
 import common.service.aop.AspectUtils;
 import common.service.aop.annotation.SystemControllerLog;
 import common.service.aop.annotation.SystemServiceLog;

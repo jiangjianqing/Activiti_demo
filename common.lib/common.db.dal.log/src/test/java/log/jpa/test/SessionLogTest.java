@@ -14,9 +14,10 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import common.db.base.exception.DaoException;
+import common.db.base.jpa.AbstractJpaDao;
 import common.db.model.log.SessionLog;
-import common.db.repository.jpa.log.SessionLogDao;
-import common.db.repository.jpa.log.impl.SessionLogDaoImpl;
+import common.db.repository.log.SessionLogDao;
+import common.db.repository.log.jpa.impl.SessionLogDaoImpl;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SessionLogTest extends common.db.base.test.AbstractJpaTestCase {
@@ -27,7 +28,7 @@ public class SessionLogTest extends common.db.base.test.AbstractJpaTestCase {
 	public static void setUpBeforeClass() throws Exception {
 		setPersistenceUnitName("log");
 		sessionLogDao = new SessionLogDaoImpl();
-		sessionLogDao.setEntityManager(em);
+		((AbstractJpaDao)sessionLogDao).setEntityManager(em);
 	}
 
 	/*

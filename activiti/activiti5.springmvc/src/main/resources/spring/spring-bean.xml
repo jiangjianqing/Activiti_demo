@@ -34,7 +34,7 @@
 		
 	</bean> 
 	
-	<bean id="moduleLogDao" class="common.db.repository.jpa.log.impl.ModuleLogDaoImpl">
+	<bean id="moduleLogDao" class="common.db.repository.log.jpa.impl.ModuleLogDaoImpl">
 		
 	</bean> 
 	
@@ -49,7 +49,7 @@
 	<!-- 重要：Session日志记录只需要继承SessionEvent即可 -->
 	<bean id="sessionLogger" class="common.web.service.impl.SessionLoggerImpl">
 		<property name="sessionLogDao">
-		<bean class="common.db.repository.jpa.log.impl.SessionLogDaoImpl">
+		<bean class="common.db.repository.log.jpa.impl.SessionLogDaoImpl">
 		
 		</bean> 
 		</property>
