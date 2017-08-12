@@ -12,7 +12,7 @@
 	<!-- 20170808 ： mybatis的基本配置已经在common.db.base.test/spring-mybatis.xml中完成 -->
 	<!-- 20170808 ： 自动扫描未生效，这里主要用于声明Mybatis相关的Dao Bean -->
 
-	<bean class="common.db.repository.mybatis.identity.impl.RoleDaoImpl"/>
+	<bean class="common.db.repository.identity.mybatis.impl.RoleDaoImpl"/>
 	
 
 </beans> 

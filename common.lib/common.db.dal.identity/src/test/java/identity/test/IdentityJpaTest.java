@@ -27,13 +27,14 @@ import org.junit.runners.MethodSorters;
 import com.github.pagehelper.PageInfo;
 
 import common.db.base.exception.*;
+import common.db.base.jpa.AbstractJpaDao;
 import common.db.base.test.AbstractJpaTestCase;
 import common.db.model.identity.Role;
 import common.db.model.identity.User;
-import common.db.repository.jpa.identity.RoleDao;
-import common.db.repository.jpa.identity.UserDAO;
-import common.db.repository.jpa.identity.impl.RoleDaoImpl;
-import common.db.repository.jpa.identity.impl.UserDaoImpl;
+import common.db.repository.identity.RoleDao;
+import common.db.repository.identity.UserDAO;
+import common.db.repository.identity.jpa.impl.RoleDaoImpl;
+import common.db.repository.identity.jpa.impl.UserDaoImpl;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class IdentityJpaTest  extends AbstractJpaTestCase {
@@ -50,10 +51,12 @@ public class IdentityJpaTest  extends AbstractJpaTestCase {
 		setPersistenceUnitName("identity");
 		
 		userDao=new UserDaoImpl();
-		userDao.setEntityManager(em);
+		((AbstractJpaDao)userDao).setEntityManager(em);
+		//userDao.setEntityManager(em);
 
 		roleService=new RoleDaoImpl();
-		roleService.setEntityManager(em);
+		((AbstractJpaDao)roleService).setEntityManager(em);
+		//roleService.setEntityManager(em);
 	}
 	
 	

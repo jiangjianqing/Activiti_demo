@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="common.db.repository.mybatis.identity.RoleDao">
+<mapper namespace="common.db.repository.identity.RoleDao">
   <resultMap id="BaseResultMap" type="common.db.model.identity.Role">
     <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="NAME" jdbcType="VARCHAR" property="name" />

@@ -1,4 +1,4 @@
-package common.db.repository.mybatis.identity.impl;
+package common.db.repository.identity.mybatis.impl;
 
 import java.util.List;
 
@@ -11,8 +11,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import com.github.pagehelper.PageInfo;
 
 import common.db.model.identity.Role;
-import common.db.repository.mybatis.identity.RoleDao;
+import common.db.repository.identity.RoleDao;
 
+//20170808 使用通用Mapper，但尚未解决1对多问题,其只能用于单表
 public class RoleDaoImpl implements RoleDao {
 
 	@Resource

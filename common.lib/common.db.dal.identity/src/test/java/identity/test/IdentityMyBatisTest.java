@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import common.db.base.test.AbstractMyBatisTestCase;
 import common.db.model.identity.Role;
 import common.db.model.identity.RoleTypeEnum;
-import common.db.repository.mybatis.identity.RoleDao;
+import common.db.repository.identity.RoleDao;
 
 public class IdentityMyBatisTest extends AbstractMyBatisTestCase {
 	

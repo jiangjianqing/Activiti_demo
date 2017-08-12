@@ -1,36 +1,45 @@
-package common.db.repository.jpa.identity.impl;
+package common.db.repository.identity.jpa.impl;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 
 import common.db.base.exception.DaoException;
 import common.db.base.jpa.AbstractJpaDaoImpl;
 import common.db.base.jpa.internal.JpaUtil;
 import common.db.model.identity.Role;
 import common.db.model.identity.User;
-import common.db.repository.jpa.identity.UserDAO;
+import common.db.repository.identity.UserDAO;
 
 public class UserDaoImpl extends AbstractJpaDaoImpl<User,Long> implements UserDAO {
 
-	public User findByUserName(String userName) throws DaoException{
+	public User findByUserName(String userName) {
 		;
 		//String jpql=String.format("select o from %s o where o.username=?",User.class.getSimpleName());
 		//List<User> userList=paginationDao.queryForList(jpql,new Object[]{userName});
 		Map<String,Object> sMap = new HashMap<String, Object>();  
 		sMap.put("name", userName);  
-		List<User> userList=paginationDao.queryForList(baseDao.createNamedQuery("User.findByName"),sMap);
 		User ret=null;
-		if (userList.size()!=1){
-			if(userList.size()>1){
-				throw new DaoException("CustomException","username存在重复");
+		try {
+			List<User> userList=paginationDao.queryForList(baseDao.createNamedQuery("User.findByName"),sMap);
+			if (userList.size()!=1){
+				if(userList.size()>1){
+					throw new Exception("username存在重复");
 
+				}
+			}else{
+				ret=userList.get(0);
 			}
-		}else{
-			ret=userList.get(0);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 		return ret;
+		
 	}
 
 	private <T> boolean isArrayEqual(List<T> list,List<T> list2){
