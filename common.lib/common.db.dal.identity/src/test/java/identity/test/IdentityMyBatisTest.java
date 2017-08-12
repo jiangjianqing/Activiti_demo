@@ -50,6 +50,8 @@ public class IdentityMyBatisTest extends AbstractMyBatisTestCase {
 			session.rollback();
 			}*/
     	roleDao.insert(role);
+    	//20170812 在map文件中加入就可以获得新ID <insert id="insert" keyProperty="id" useGeneratedKeys="true" 
+    	logger.warn("new Role's id="+role.getId().toString());
     	
         //User user= new User();
         //user.setId(new Long(123));

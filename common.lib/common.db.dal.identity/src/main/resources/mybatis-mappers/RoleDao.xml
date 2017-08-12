@@ -7,10 +7,10 @@
     <result column="TYPE" jdbcType="VARCHAR" property="type" />
   </resultMap>
   
-  <insert id="insert" parameterType="common.db.model.identity.Role">
-    insert into COMMON_ID_ROLE (ID, NAME, TYPE
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="common.db.model.identity.Role">
+    insert into COMMON_ID_ROLE (NAME, TYPE
       )
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}
+    values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="common.db.model.identity.Role">
