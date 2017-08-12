@@ -8,7 +8,7 @@ DROP TABLE if exists ACT_ID_USER;
 
 DROP VIEW if exists ACT_ID_USER;
 CREATE VIEW ACT_ID_USER as select 
-    Convert(COMMON_ID_USER.ID,char(64)) as ID_
+    Convert(COMMON_ID_USER.USERNAME,char(64)) as ID_
     ,COMMON_ID_USER.FIRST_NAME as FIRST_
     ,COMMON_ID_USER.LAST_NAME as LAST_
     ,COMMON_ID_USER.EMAIL as EMAIL_
@@ -20,12 +20,14 @@ CREATE VIEW ACT_ID_USER as select
 
 DROP VIEW if exists ACT_ID_GROUP;
 CREATE VIEW ACT_ID_GROUP as select 
-    Convert(COMMON_ID_ROLE.ID,char(64)) as ID_
+    Convert(COMMON_ID_ROLE.NAME,char(64)) as ID_
     ,0 as REV_
     ,COMMON_ID_ROLE.NAME as NAME_
     ,COMMON_ID_ROLE.TYPE as TYPE_
     from COMMON_ID_ROLE
 ;
+
+/*20170812 以下表格中使用了USER.id Role.id，可能存在问题*/
 
 DROP VIEW if exists ACT_ID_MEMBERSHIP;
 CREATE VIEW ACT_ID_MEMBERSHIP as select 

@@ -28,6 +28,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import common.db.model.identity.Role;
+import common.db.model.identity.RoleTypeEnum;
+import common.db.repository.identity.RoleDao;
+import common.db.repository.identity.UserDAO;
+import common.service.utils.SpringContextHolder;
+
 public class IdentifyServiceTest extends BaseSpringActivitiTester {
 	
 	@Before
@@ -44,12 +50,19 @@ public class IdentifyServiceTest extends BaseSpringActivitiTester {
 	
 	@Test
 	public void testUser() throws Exception {
-		User user=identityService.newUser("jjq");
+		common.db.model.identity.User user = new common.db.model.identity.User();
+		user.setUserName("jjq");
+		user.setPassword("1234567");
 		user.setFirstName("蒋");
 		user.setLastName("建清");
 		user.setEmail("cz_jjq@qq.com");
-		
+		UserDAO userDAO=SpringContextHolder.getBean(UserDAO.class);
+		userDAO.insert(user);
+		/*
+		User user=identityService.newUser("jjq");
+		//...
 		identityService.saveUser(user);
+		*/
 		
 		User userInDb=identityService.createUserQuery().userId("jjq").singleResult();
 		assertNotNull(userInDb);
@@ -62,10 +75,18 @@ public class IdentifyServiceTest extends BaseSpringActivitiTester {
 
 	@Test
 	public void testGroup() throws Exception{
+		RoleDao roleDao = SpringContextHolder.getBean(RoleDao.class);
+		Role role = new Role();
+		role.setName("deptLeader");
+		role.setType(RoleTypeEnum.USER);
+		roleDao.insert(role);
+		/*
 		Group group=identityService.newGroup("deptLeader");
 		group.setName("部门领导");
 		group.setType("assignment");//1、assignment   2、security-role
 		identityService.saveGroup(group);
+		*/
+		
 		List<Group> groupList=identityService.createGroupQuery().groupId("deptLeader").list();
 		assertEquals(1,groupList.size());
 		System.out.println(String.format("新增Group信息，Group name=%s",groupList.get(0).getName()));

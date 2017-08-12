@@ -7,6 +7,7 @@ import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -33,4 +34,9 @@ public abstract class BaseSpringActivitiTester {
 	protected FormService formService;
 	@Autowired
 	protected ProcessEngine processEngine;
+	
+	@BeforeClass
+	public static void BeforeClass(){
+		
+	}
 }
