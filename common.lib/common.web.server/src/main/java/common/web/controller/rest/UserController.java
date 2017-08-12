@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import common.db.base.exception.DaoException;
 import common.db.base.exception.OutOfPageRangeException;
 import common.db.model.identity.User;
-import common.db.repository.jpa.identity.UserDAO;
+import common.db.repository.identity.UserDAO;
 import common.security.AuthenticationUser;
 import common.security.PasswordEncoderAssist;
 import common.security.SimpleUserDetailsService;

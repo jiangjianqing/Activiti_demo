@@ -23,7 +23,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import common.db.base.exception.DaoException;
 import common.db.model.identity.Role;
 import common.db.model.identity.User;
-import common.db.repository.jpa.identity.impl.UserDaoImpl;
+import common.db.repository.identity.jpa.impl.UserDaoImpl;
 import common.security.exception.PasswardInvalidException;
 import common.service.utils.AbstractHelperClass;
 

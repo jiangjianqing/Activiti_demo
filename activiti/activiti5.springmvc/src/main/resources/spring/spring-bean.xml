@@ -26,11 +26,11 @@
     	<context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />  
     </context:component-scan>  
     
-	<bean id="userDao" class="common.db.repository.jpa.identity.impl.UserDaoImpl">
+	<bean id="userDao" class="common.db.repository.identity.jpa.impl.UserDaoImpl">
 		
 	</bean> 
 	
-	<bean id="roleDao" class="common.db.repository.jpa.identity.impl.RoleDaoImpl">
+	<bean id="roleDao" class="common.db.repository.identity.jpa.impl.RoleDaoImpl">
 		
 	</bean> 
 	

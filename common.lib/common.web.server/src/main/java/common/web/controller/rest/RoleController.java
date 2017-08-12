@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import common.db.base.exception.DaoException;
 import common.db.base.exception.OutOfPageRangeException;
 import common.db.model.identity.Role;
-import common.db.repository.jpa.identity.RoleDao;
+import common.db.repository.identity.RoleDao;
 import common.service.utils.BindingResultHelper;
 import common.web.controller.AbstractRestController;
 import common.web.model.WrappedResponseBody;
