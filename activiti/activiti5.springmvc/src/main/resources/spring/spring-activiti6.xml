@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans     
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	">
+	<!-- activiti引擎配置 -->
+	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">  
+		<!-- 20170713 整合activiti-identity,使用创建view替代的方式 -->
+		<property name="dbIdentityUsed" value="false"/>  
+		
+		<!-- 配置数据源,和系统使用同一个数据源 -->  
+		<property name="dataSource" ref="dataSource" />  
+		<property name="transactionManager" ref="jdbcTransactionManager" />  
+		<property name="databaseSchemaUpdate" value="true" />  
+		<property name="asyncExecutorActivate" value="false" />
+		<!--  
+		<property name="jobExecutorActivate" value="false" />  
+		-->
+		
+		<!-- 历史归档级别
+		none:		skips all history archiving. This is the most performant for runtime process execution, but no historical information will be available. 
+		activity: 	archives all process instances and activity instances. No details will be archived 
+		audit: 		This is the default. It archives all process instances, activity instances and all form properties that are submitted so that all user interaction through forms is traceable and can be audited. 
+		full: 		This is the highest level of history archiving and hence the slowest. This level stores all information as in the audit level plus all other possible details like process variable updates. 
+		测试时使用full，正式时使用audit-->
+		<property name="history" value="full" />
+		
+		<!-- 如果没有beans属性表示所有bean都可以暴露给activiti的流程文件xml访问。
+			如果配置beans但是没有配置map中bean信息，则没有暴露的bean。
+			如果map中配置部分bean表示只是暴露部分bean给activiti使用。 -->
+		<property name="beans">
+			<map>		
+				<entry key="myBean" value-ref="myBean" />		
+				<entry key="processEndListener" value-ref="processEndListener"/>
+				<entry key="taskAssignmentDelegate" value-ref="taskAssignmentDelegate"/>
+			</map>		
+		</property>
+		
+		<!-- 自动资源部署（Automatic resource deploy） -->
+		 <!--
+		<property name="deploymentResources" value="classpath:diagrams/MyProcess.bpmn" />
+		-->
+		<!-- 20170812 运行测试需要自动资源部署（Automatic resource deploy） -->
+		<property name="deploymentResources" value="classpath:diagrams/*.bpmn" />
+		
+		
+		<!--  字体设置  -->
+		<!-- 是否存在问题 ？？ 20150818暂时屏蔽
+		<property name="activityFontName"  value="宋体" />  
+  		<property name="labelFontName"  value="宋体" />  
+  		-->
+	</bean>
+	
+	<!-- 加载activiti引擎 -->  
+	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">  
+		<property name="processEngineConfiguration" ref="processEngineConfiguration" />  
+	</bean>  
+	
+	<!-- activiti的各种服务接口 -->  
+	<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />  
+	<bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />  
+	<bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />  
+	<bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />  
+	<bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" /> 
+	<bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService" /> 
+	<bean id="formService" factory-bean="processEngine" factory-method="getFormService" /> 
+	
+	<!-- 下面为自定义的activiti bean -->
+	<bean id="myBean"  class="my.activiti.bean.MyBean"/>
+	<bean id="processEndListener" class="my.activiti.bean.listener.ProcessEndExecutionListener"/>
+	<bean id="taskAssignmentDelegate" class="my.activiti.bean.listener.TaskAssigneeListener"/>
+	
+</beans>

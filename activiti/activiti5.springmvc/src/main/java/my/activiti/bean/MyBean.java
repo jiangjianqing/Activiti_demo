@@ -20,7 +20,7 @@ public class MyBean implements Serializable {
 	}
 	
 	public String printBkey(DelegateExecution execution){
-		String processBusinessKey=execution.getProcessBusinessKey();
+		String processBusinessKey=execution.getProcessInstanceBusinessKey();
 		System.out.println("process instance id:"+execution.getProcessInstanceId()+",business key:"+processBusinessKey);
 		return processBusinessKey;
 	}

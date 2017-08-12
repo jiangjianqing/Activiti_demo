@@ -6,7 +6,7 @@ import org.activiti.engine.delegate.ExecutionListener;
 public class ProcessEndExecutionListener implements ExecutionListener {
 
 	@Override
-	public void notify(DelegateExecution execution) throws Exception {
+	public void notify(DelegateExecution execution) {
 		execution.setVariable("setInEndListener", true);
 		System.out.println(this.getClass().getSimpleName()+","+execution.getEventName());
 	}
