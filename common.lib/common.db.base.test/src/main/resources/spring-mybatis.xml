@@ -9,11 +9,13 @@
                         http://www.springframework.org/schema/context/spring-context.xsd    
 						">
 						
-	<!-- 引入配置文件 -->
-	<context:property-placeholder location="classpath:db.properties" />
 	
-	<!-- 自动扫描 -->
-	<context:component-scan base-package="**.db.repository.mybatis.**.impl" />
+	<!-- 2017.08.14 更新，将测试用的db.properties转移到common.db.base.test中 -->
+	<!-- 引入配置文件 -->
+	<context:property-placeholder location="classpath*:db.properties" />
+	
+	<!-- 2017.08.14 自动扫描无法发现Dao实现类，这是bug -->
+	<context:component-scan base-package="**.db.repository.mybatis.**.impl , common.db.repository.**.mybatis.impl.*" />
 	
 
 	<!-- 20170808 使用通用mapper，其目前只支持单表 报错：No typehandler found for property users -->
