@@ -13,7 +13,7 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
 		
 	<!-- 如果使用了mybatis-generator-maven-plugin，那么在pom.xml中定义的properties都可以直接在generatorConfig.xml中使用 -->
 	
-	<properties resource="db.properties"/>
+	<properties resource="mybatis-db.properties"/>
 	
 	<context id="generatorTables" targetRuntime="MyBatis3">
 		
