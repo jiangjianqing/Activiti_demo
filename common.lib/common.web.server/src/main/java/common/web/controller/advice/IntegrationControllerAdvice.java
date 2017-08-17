@@ -2,6 +2,7 @@ package common.web.controller.advice;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -13,7 +14,8 @@ import common.web.service.SystemIntegrator;
 @ControllerAdvice //(basePackages = "com.github") //basePackages用于指定对哪些包里的Controller起作用。
 public class IntegrationControllerAdvice extends AbstractHelperClass {
 
-	@Resource
+	//20170817 加入required=false ,当SystemIntegrator没有注册时不会报错
+	@Autowired(required=false) 
 	private SystemIntegrator systemIntegrator;
 	
 	//用于自动绑定前台请求参数到Model中。
@@ -32,7 +34,10 @@ public class IntegrationControllerAdvice extends AbstractHelperClass {
      */
   	@ModelAttribute  
     public void onRequest() {  
-  		systemIntegrator.onServletRequest();
+  		if (systemIntegrator!=null){
+  			systemIntegrator.onServletRequest();
+  		}
+  		
 
     }
     
