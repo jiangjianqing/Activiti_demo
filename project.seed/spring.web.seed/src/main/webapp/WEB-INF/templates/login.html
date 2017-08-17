@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/dialect-layout}" >
+<!--上述为 layout文件路径-->
+
+<head>
+	<title>login</title>
+
+</head>
+
+<body>
+	<div layout:fragment="topnav" style="display:none">
+
+	</div>
+	<!-- 重写<div layout:fragment = "content">元素，css文件和js文件均可继承 -->
+	<div layout:fragment="content"
+		style="width: 96%; margin-left: auto; margin-right: auto;">
+		<form action="${loginUrl}" th:attr="action=@{${loginUrl}}" method="post">   
+			<p th:if="${param.error != null}">
+				Invalid username or password.
+			</p> 
+			<p th:if="${param.logout != null}">
+				You have been logged out.
+			</p> 
+			<p th:if="${param.invalidsession != null}">
+				Your session have been invalid.
+			</p> 
+			<p>
+				<label for="username" th:text="#{i18n.username}">username</label>
+				<input type="text" id="username" name="username"/>	
+			</p>
+			<p>
+				<label for="password" th:text="#{i18n.password}">password</label>
+				<input type="password" id="password" name="password"/>	
+			</p>
+			<input type="hidden"                        
+				name="${_csrf.parameterName}" th:attr="name=${_csrf.parameterName} , value=${_csrf.token}"
+				value="${_csrf.token}"/>
+			<button type="submit" class="btn btn-default">Log in</button>
+		</form>
+
+		<div th:replace="fragments/varlist :: list">
+	</div>
+	
+	
+	
+	
+	<div layout:fragment="otherScripts">
+		<!--重要： 这里用于插入其他自定义js代码 -->
+		<!-- 20170706:如果文件不存在，会出现警告信息：
+			[WARNING] Error page loop /404.html
+		
+		<script src="../../static/js/security/mainframe.js"
+				th:src="@{/js/security/mainframe.js}"></script>
+ -->
+	</div>
+	
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+		window.onLoad
+		function showConsoleInfo() {
+			console.log("这里是测试thymeleaf 脚本功能");
+			var list=/*[[${param}]]*/;
+			var message=/*[[${session.SPRING_SECURITY_LAST_EXCEPTION}]]*/;
+			console.log("param = ");
+			console.log(list);
+			console.log("last_exception = ");
+			console.log(message);
+		}
+		window.onload=function(){
+			showConsoleInfo()
+		}
+	/*]]>*/
+	</script>
+</body>
+</html>

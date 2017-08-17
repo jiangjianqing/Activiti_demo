@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans     
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/mvc  
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	">
+	<!-- 以下都是专用于security的自定义bean配置（自己开发的组件都在这里定义，如果是使用spring的，则在spring-security.xml中定义） -->
+	
+	<bean name="customAuthenticationProvider" class="common.security.SimpleAuthenticationProvider">
+		<property name="userDetailsService" ref="userDetailsService"/>
+    </bean> 	
+    
+    <bean name="userDetailsService" class="common.security.SimpleUserDetailsService">  
+    	<property name="passwordEncoderAssist" ref="passwordEncoderAssist"/>
+    </bean>  
+    
+    <!-- 20170807 这里使用SimplePasswordEncoderAssist完成用户名、密码的验证和生成，并兼具PasswordEncoder功能 -->
+     <bean id="passwordEncoderAssist" class="common.security.SimplePasswordEncoderAssist">
+		<property name="passwordEncoder" ref="md5PasswordEncoder"/>
+	</bean>
+    
+    <!-- 对密码进行MD5编码 --> 
+    <bean id="md5PasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+		<constructor-arg name="strength" value="9" />
+	</bean>
+    <bean id="testPasswordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder"/>
+    
+     <!-- 已被上面的PasswordEncoder 替代
+    <bean id="oldPasswordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/> 
+     -->
+    
+</beans>  

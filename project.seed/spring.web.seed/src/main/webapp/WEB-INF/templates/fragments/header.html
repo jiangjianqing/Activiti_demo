@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head th:fragment="header (title)">
+	<meta charset="UTF-8" />
+	<title th:text="${title}"></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="shortcut icon" th:href="@{/static/img/favicon.gif}"
+		type="image/gif" />
+	
+	<link rel="stylesheet" href="../../../styles/bootstrap.min.css" th:href="@{styles/bootstrap.min.css}" />
+	<link rel="stylesheet" th:href="@{/resources/css/jQuery.ui.all.css}" />
+	<link rel="stylesheet" th:href="@{/resources/css/jquery.ui.customer.css}" />
+	<script th:src="@{/resources/js/jquery-1.9.1.min.js}"></script>
+	<script th:src="@{/resource/js/bootstrap.min.js}"></script>
+	<style type="text/css">
+	body {
+		font-family: 微软雅黑;
+		font-size: 14px;
+	}
+	</style>
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top"
+		th:fragment="nav">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".nav-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">My project</a>
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li th:classappend="${module == 'home' ? 'active' : ''}"><a
+						href="#" th:href="@{/}">Home</a></li>
+					<li th:classappend="${module == 'tasks' ? 'active' : ''}"><a
+						href="#" th:href="@{/task}">Tasks</a></li>
+				</ul>
+				<!-- 
+          <ul class="nav navbar-nav navbar-right">
+            <li th:if="${#authorization.expression('!isAuthenticated()')}">
+              <a href="/signin" th:href="@{/signin}">
+                <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;Sign in
+              </a>
+            </li>
+            <li th:if="${#authorization.expression('isAuthenticated()')}">
+              <a href="/logout" th:href="@{#}" onclick="$('#form').submit();">
+                <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;Logout
+              </a>
+             <form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form>
+            </li>
+          </ul>
+          -->
+			</div>
+		</div>
+	</div>
+</body>
+</html>

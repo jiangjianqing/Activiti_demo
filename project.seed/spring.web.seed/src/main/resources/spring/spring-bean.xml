@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans     
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	">
+	<!-- 重要： 整个系统中只能设置一次 加载资源文件  其中包含变量信息，必须在Spring配置文件的最前面加载，即第一个加载-->
+	<context:property-placeholder location="classpath:db.properties,classpath:system.properties" />
+   
+	<!-- 开启Spring的Bean自动扫描机制来查找与管理Bean实例 ,需要注解才能生效
+	<context:component-scan base-package="common.db.service.*.impl" />	    
+	-->
+	<context:component-scan base-package="com.itxxz" use-default-filters="false">  
+    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />  
+    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />  
+    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />  
+    </context:component-scan>  
+    
+	<bean id="userDao" class="common.db.repository.identity.jpa.impl.UserDaoImpl">
+		
+	</bean> 
+	
+	<bean id="roleDao" class="common.db.repository.identity.jpa.impl.RoleDaoImpl">
+		
+	</bean> 
+	
+	<bean id="moduleLogDao" class="common.db.repository.log.jpa.impl.ModuleLogDaoImpl">
+		
+	</bean> 
+	
+	
+       
+	<!--  这里开始定义Spring bean例子  -->
+	
+	
+	<!-- 当需要与其他系统对接时提供SystemIntegrationHelper接口的实现类
+	<bean id="systemIntegrationHelper" class="prj.web.utils.SystemIntegratorImpl"/> 
+	 -->
+	<!-- 重要：Session日志记录只需要继承SessionEvent即可 -->
+	<bean id="sessionLogger" class="common.web.service.impl.SessionLoggerImpl">
+		<property name="sessionLogDao">
+		<bean class="common.db.repository.log.jpa.impl.SessionLogDaoImpl">
+		
+		</bean> 
+		</property>
+	</bean> 
+	
+	<!-- 20170808 静态方法调用，静态变量赋值
+	name="staticMethod" ：固定写法，顾名思义就是静态方法。
+	value="com.sojson.core.domain.DomainDistribution.setDomainInfo" ：对应的静态方法，
+	com.sojson.core.domain.DomainDistribution 是类的全路径，而setDomainInfo 是静态方法名称。
+	name="arguments" ：参数，而我的array 是因为我要注入的是一个数组，其实是一个 json  数组。
+	 -->
+	<!-- 
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+         <property name="staticMethod" value="common.db.base.AbstractDao.setDomainInfo"/>
+         <property name="arguments">
+         	<array>
+         		<value>{"convert":"word2spell,cn2spark,pingindic,low2up,fullhalf"}</value>
+         		<value>{"color":"cj,img,online,page,select,use,web"}</value>
+         	</array>
+         </property>
+    </bean>
+     -->
+	 
+</beans>

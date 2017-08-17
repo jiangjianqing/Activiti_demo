@@ -1,0 +1,22 @@
+/* 防止闪烁*/
+[ng-cloak] {
+    display: none;
+}
+
+
+/* ng-invalid和ng-valid都是angular在表单验证是自动添加的css	*/
+input.ng-invalid {/*表单非法时设置*/
+    border: 1px solid red;
+}
+
+input.ng-valid {/*表单合法时设置*/
+    border: 1px solid green;
+}
+
+input.ng-pristine{/*表单未进行修改时设置*/
+
+}
+
+input.ng-dirty{/*表单进行过修改时设置*/
+
+}

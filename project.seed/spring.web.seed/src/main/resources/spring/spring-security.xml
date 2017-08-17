@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<b:beans xmlns="http://www.springframework.org/schema/security"  
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:b="http://www.springframework.org/schema/beans" 
+        xmlns:mvc="http://www.springframework.org/schema/mvc"    
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+        xsi:schemaLocation="
+        	http://www.springframework.org/schema/context	http://www.springframework.org/schema/context/spring-context.xsd
+        	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        	http://www.springframework.org/schema/mvc  	http://www.springframework.org/schema/mvc/spring-mvc.xsd  
+            http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd">  
+	
+	<!-- 重要：注意spring-security-x.x.xsd 的版本号 -->
+	<!-- 以下都是专用于security的配置 -->
+	
+
+<!-- 20160425 对方法进行安全控制的设置 note that:Security annotations take precedence over pointcuts.-->
+	<global-method-security access-decision-manager-ref="methodInvocationAccessDecisionManager"  secured-annotations="enabled" jsr250-annotations="enabled" pre-post-annotations="enabled" >
+		<!-- 
+		<protect-pointcut expression="execution(* com.mycompany.*Service.*(..))" access="ROLE_USER"/>
+		 -->
+	</global-method-security>
+   	 
+   	<!-- 注意:静态资源**代表可以多级目录，即使已经在mvc:resource中设为静态资源的内容也需要再次设置，
+   		因为静态资源是不通过filter和interceptor的
+   	 -->  
+	<http pattern="/i18n/**" security="none"/>  
+    <http pattern="/language/**" security="none"/>   
+    <http pattern="/static/**" security="none"/> 
+    <http pattern="/styles/**" security="none"/> 
+    <http pattern="/fonts/**" security="none"/> 
+    <http pattern="/images/**" security="none"/> 
+    <http pattern="/lib/**" security="none"/> 
+    <http pattern="/js/**" security="none"/> 
+    <http pattern="/css/**" security="none"/> 
+    <http pattern="/vender/**" security="none"/> 
+   
+    <!-- 验证码不校验 -->  
+    <http pattern="/verify/**" security="none"/>  
+    
+    <!-- caution：测试、开发时才允许打开匿名可访问，生产环境中必须关闭 -->
+    <http pattern="/rest/**" security="none"/>  
+
+<!--20170711 spring-security4.2 移除该设置 access-denied-page="/auth/denied" -->
+    <!-- auto-config="true" 不推荐使用，其会自动注册一些默认的过滤器 -->
+    <!-- 20170711 使用form-login 代替   entry-point-ref="loginEntryPoint" -->
+    <http access-decision-manager-ref="webUrlAccessDecisionManager"   use-expressions="true" >  <!--  当访问被拒绝时，403.jsp  -->
+    	
+    	<!-- caution：测试、开发时才允许打开匿名可访问，生产环境中必须关闭
+    	<intercept-url pattern="/rest/**" access="permitAll"/>
+    	 -->
+    	
+    	<intercept-url pattern="${security.invalidSessionUrl}" access="permitAll"/>  
+    	<!-- 登录页,不需要拦截 -->  
+        <intercept-url pattern="${security.loginPage}" access="permitAll"/>  
+        <intercept-url pattern="/user/hello" access="hasRole('ROLE_ADMIN')"/>  
+        
+        <!-- 20160517 重要：security with default -->
+        <intercept-url pattern="/**" access="isAuthenticated()"/> 
+        
+        <!-- 实现免登陆验证 -->  
+        <!-- 
+        <remember-me />   --> 
+        
+        <!-- login-page:需要登陆时 拦截后执行的请求
+            default-target-url:身份验证通过后执行的请求
+            authentication-failure-url:如果验证失败，则转向URL
+            username-parameter:表示登录时用户使用的是哪个参数，即用户名输入框的name
+            password-parameter:表示登录时密码使用的是哪个参数，即密码输入框的name
+             -->
+        <!--  20160517 默认的form-login无法支持用户名和密码之外的登录信息，customLoginFilter完成替换 -->
+        <form-login login-page="${security.loginPage}" default-target-url="${security.mainPage}"
+        	authentication-failure-url="${security.authenticationFailureUrl}"
+        	login-processing-url="${security.loginProcessingUrl}"
+            username-parameter="username"
+            password-parameter="password"/>
+           
+       	
+
+        <!-- 开启了session失效功能.
+			20160425 注销时删除JSESSIONID cookie (Unfortunately this can’t be guaranteed to work with every servlet container, so you will need to test it in your environment)
+			注销URL为:/auth/logout
+			注销成功后转向:/auth/login -->
+        <logout  delete-cookies="JSESSIONID"  
+                invalidate-session="true"   
+                logout-success-url="${security.logoutSuccessUrl}"   
+                logout-url="${security.logoutUrl}"/>  
+            
+        <!-- invalid-session-url是配置会话失效转向地址，可以在该地址中加入几秒后自动转入登录页面的功能；
+        max-sessions是设置单个用户最大并行会话数；You can set the maximumSession property to -1 to allow unlimited sessions
+        error-if-maximum-exceeded是配置当用户登录数达到最大时是否报错，设置为true时会报错且后登录的会话不能登录，默认为false不报错且将前一会话置为失效 -->
+        <!-- 2016-01-21 由于调试restful api需要，暂时屏蔽session-manage配置 -->
+        <!-- 2017-07-11 如果不希望session失效后就进入invalid-session-url ，删除该配置属性即可 -->
+
+        <session-management session-authentication-strategy-ref="sas" invalid-session-url="${security.invalidSessionUrl}">  
+            <!-- 重点：设置了custom-filter可能会导致下述简单配置失效，所以直接使用explicit setup ： session-authentication-strategy-ref
+            	20160517 ：<concurrency-control>和session-authentication-strategy-ref两者不能同时使用，conflict！！！
+            -->
+            
+            <!--    并发控制方式一：防止重复登录，同一用户第二次登录会让第一次登录失效        
+            <concurrency-control max-sessions="1" />  
+             -->  
+            <!--    并发控制方式二：如果第二次登录，阻止，并显示错误信息          
+            <concurrency-control max-sessions="1"  error-if-maximum-exceeded="true"  />  
+             -->
+        </session-management>        
+
+    </http>  
+    
+    <!--  认证管理器，实现用户认证的入口，主要实现UserDetailsService接口即可  -->    
+    <!-- 20160425 使用Namespace方式配置Spring Security时会自动创建一个AuthenticationManager（你无法将其替换），这里使用alias attribute设定了其属性名，方便其他bean引用 -->
+    <authentication-manager alias="authenticationManager">  
+    	<!-- 非常重要：Spring Security将会按照顺序，依次从上向下调用所有Provider，只要任何一个Provider校验通过，整个认证将通过  -->
+    	<!-- 非常重要：authentication-manager存在bug，如果自定义provider使用了支持更多验证内容的Token时，
+    	最后一个provider的结果会覆盖前面provider的结果，切记！！！    	 -->
+    	<!--
+			测试新PasswordEncoder用,生产环境中一定要屏蔽
+			测试用的provider一定要放在最前，防止覆盖后续正式provider的处理结果
+		    rod/koala  
+            dianne/emu  
+            scott/wombat  
+            peter/opal   
+		 -->
+		<authentication-provider>  		
+            <password-encoder ref="testPasswordEncoder"/>  
+            <user-service>  
+                <user name="rod" password="4efe081594ce25ee4efd9f7067f7f678a347bccf2de201f3adf2a3eb544850b465b4e51cdc3fcdde" authorities="supervisor, user, teller" />  
+                <user name="dianne" password="957ea522524a41cbfb649a3e293d56268f840fd5b661b499b07858bc020d6d223f912e3ab303b00f" authorities="user,teller" />  
+                <user name="scott" password="fb1f9e48058d30dc21c35ab4cf895e2a80f2f03fac549b51be637196dfb6b2b7276a89c65e38b7a1" authorities="user" />  
+                <user name="peter" password="e175750688deee19d7179d444bfaf92129f4eea8b4503d83eb8f92a7dd9cda5fbae73638c913e420" authorities="user" />  
+            </user-service>  
+        </authentication-provider>  
+        
+        <!-- 自定义的认证Provider -->
+        <authentication-provider ref="customAuthenticationProvider" />
+                
+    </authentication-manager>  
+    
+    <b:bean id="loginEntryPoint"  class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<!-- 默认登录页的url -->
+		<b:constructor-arg value="${security.loginPage}" />
+	</b:bean>
+    
+    <!-- sessionManagementFilter 重要：
+        If you are using a customized authentication filter for form-based login, 
+        then you have to configure concurrent session control support explicitly. 
+        More details can be found in the Session Management chapter.  
+        20170711 在v4.2中没有了默认构造函数，且带expiredUrl参数的构造函数已经被标记为deprecated
+    -->  
+	<b:bean id="concurrencyFilter"  
+	    class="org.springframework.security.web.session.ConcurrentSessionFilter">  
+	    <b:constructor-arg name="sessionRegistry" ref="sessionRegistry" />  
+	    <b:constructor-arg name="expiredUrl" value="/session-expired.htm" />  
+	</b:bean>  
+
+	<!--20170711 :ConcurrentSessionControlStrategy 改名为 ConcurrentSessionControlAuthenticationStrategy -->
+	<b:bean id="sas" class="org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy">
+		<b:constructor-arg name="sessionRegistry" ref="sessionRegistry" />
+		<b:property name="maximumSessions" value="1" />
+	</b:bean>
+	<b:bean id="sessionRegistry"  class="org.springframework.security.core.session.SessionRegistryImpl" />  
+	
+	<!--  http使用的访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源,默认为AffirmativeBased,RoleVoter+AuthenticatedVoter  -->
+    <b:bean name="webUrlAccessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+    	<b:constructor-arg >
+    		<b:list>
+    		<!-- 
+    			<b:bean class="com.platform.web.security.access.vote.WildcardPermissionVoter" />
+    		 -->
+    			<b:bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+				<b:bean class="org.springframework.security.access.vote.RoleVoter" />
+				<b:bean class="org.springframework.security.web.access.expression.WebExpressionVoter" />
+				
+				
+			</b:list>
+    	</b:constructor-arg>
+    </b:bean>  
+    <!-- methodinvocation使用的表决器，在这里不能使用WebExpressionVoter，所以分开定义 -->
+    <b:bean name="methodInvocationAccessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+    	<b:constructor-arg >
+    		<b:list>
+    		<!-- 
+    			<b:bean class="com.platform.web.security.access.vote.WildcardPermissionVoter" />
+    		-->
+    			<b:bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+				<b:bean class="org.springframework.security.access.vote.RoleVoter" />
+				
+				
+			</b:list>
+    	</b:constructor-arg>
+    </b:bean>  
+	
+</b:beans>  

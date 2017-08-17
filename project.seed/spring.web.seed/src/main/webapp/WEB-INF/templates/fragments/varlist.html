@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:fragment="list" >
+		<table class="table">
+			<thead>
+				<tr>
+					<th>目标函数</th>
+					<th>返回值</th>
+					<th>状态</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Web-ContextPath(request.getContextPath())</td>
+					<td th:text="${#httpServletRequest.getContextPath()}"><</td>
+				</tr>
+				<tr>
+					<td >request.getRequestURI()</td>
+					<td th:text="${#httpServletRequest.getRequestURI()}"></td>
+				</tr>
+				<tr>
+					<td >request.getServletPath()</td>
+					<td th:text="${#httpServletRequest.getServletPath()}"></td>
+				</tr>
+				<tr>
+					<td>ServletContext.getRealPath("/")</td>
+					<td th:text="${#httpServletRequest.getServletContext().getResource('/')}"></td>
+					<td>Deprecated</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<h3>Session 变量区</h3>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody >
+				<tr th:each="mapEntry : ${session}">
+					<td th:text="${mapEntry.getKey()}"></td>
+					<td th:text="${mapEntry.getValue()}"><</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<h3>ServletContext 变量区</h3>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody >
+				<tr th:each="mapEntry : ${application}">
+					<td th:text="${mapEntry.getKey()}"></td>
+					<td th:text="${mapEntry.getValue()}"><</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
