@@ -1,25 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
-
-	<meta charset="utf-8" />
-	<title>首页</title>
-	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	
-	<!-- bootstrap -->
-	<link rel="stylesheet"
-		href="../../styles/bootstrap.min.css"
-		th:href="@{/styles/bootstrap.min.css}" />
-	
-	<style type="text/css">
-	body {
-		font-family: 微软雅黑;
-		font-size: 14px;
-	}
-	</style>
-
+<head th:replace="fragments/header :: header(~{::title},~{::link})">
+	<link rel="shortcut icon" th:href="@{/static/img/favicon.gif}"
+		type="image/gif" />
 </head>
 
 <body>
@@ -123,12 +107,12 @@
 	<div layout:fragment="content"></div>
 	
 	
-	<!-- put the scripts below -->
+	<!-- put the scripts below 
 	<script src="../../lib/jquery/jquery.js"
 			th:src="@{/lib/jquery/jquery.js}"></script>
 	<script src="../../lib/bootstrap/bootstrap.js"
 			th:src="@{/lib/bootstrap/bootstrap.js}"></script>
-	
+	-->
 	<div layout:fragment="otherScripts" style="display:none;position:absolute;width:0;height:0">
 		<!--重要： 这里用于插入其他自定义js代码 -->
 	</div>

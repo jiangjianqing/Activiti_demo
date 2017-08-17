@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html>
-<head th:fragment="header (title)">
+<head th:fragment="header (title,links)">
 	<meta charset="UTF-8" />
-	<title th:text="${title}"></title>
+	<title th:replace="${title}">The awesome application</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="shortcut icon" th:href="@{/static/img/favicon.gif}"
 		type="image/gif" />
 	
-	<link rel="stylesheet" href="../../../styles/bootstrap.min.css" th:href="@{styles/bootstrap.min.css}" />
-	<link rel="stylesheet" th:href="@{/resources/css/jQuery.ui.all.css}" />
+	<link rel="stylesheet" href="../../../styles/bootstrap.min.css" th:href="@{/static/vendor/bootstrap3/css/bootstrap.min.css}" />
+	<link rel="stylesheet" th:href="@{/static/vendor/font-awesome4/css/font-awesome.min.css}" />
+	<!-- 对应root目录
 	<link rel="stylesheet" th:href="@{/resources/css/jquery.ui.customer.css}" />
-	<script th:src="@{/resources/js/jquery-1.9.1.min.js}"></script>
-	<script th:src="@{/resource/js/bootstrap.min.js}"></script>
+	 -->
+	<script th:src="@{/static/vendor/jquery.min.js}"></script>
+	<script th:src="@{/static/vendor/bootstrap3/js/bootstrap.min.js}"></script>
+	
+	<!--/* Per-page placeholder for additional links */-->
+  	<th:block th:replace="${links}" />
+  	
 	<style type="text/css">
 	body {
 		font-family: 微软雅黑;
