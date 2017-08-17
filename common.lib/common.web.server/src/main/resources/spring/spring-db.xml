@@ -162,6 +162,7 @@
 				<value>common.db.base.jpa.*</value>  
 				<value>common.db.model.*</value>  
 				<value>business.db.model.*</value>  
+				<value>*.db.model.*</value>  
 			</list>  
 		</property>  
   
