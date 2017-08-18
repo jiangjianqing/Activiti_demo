@@ -60,12 +60,14 @@ public class RestControllerExceptionAdvice extends AbstractHelperClass {
      * @param ex
      * @return
      */
+    /* 2017.08.18屏蔽，在处理机制不完善的情况下，Advice中绝对不能去处理Exception，否则会看不到逻辑思路之外的异常信息
     @ExceptionHandler(Exception.class)  
     @ResponseBody  //重要：如果不使用@ResponseBody标注，返回一个逻辑视图名  
 	public WrappedResponseBody processEntityNotFoundException(NativeWebRequest request, Exception ex){
     	logger.debug("processed by  @ExceptionHandler(Exception.class)  ");
     	return new WrappedResponseBody(ex);
 	}
+    */
 
     /*
     @ExceptionHandler(OutOfPageRangeException.class)  
