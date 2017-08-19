@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.core.SpringSecurityMessageSource;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /*
  * 为其他类提供基础功能服务，建议其他业务类都从该类继承
@@ -62,4 +63,20 @@ public abstract class AbstractHelperClass {
 			}.getClassName()
 		);
 	*/
+	
+	/**
+	 * 获取当前Conotrller的RequestMapping中第一个value值（url），目前主要用于redirect
+	 * @return
+	 * @throws Exception
+	 */
+	protected String getDefaultRequestMappingUrl() throws Exception {
+		RequestMapping mapping = this.getClass().getAnnotation(RequestMapping.class);
+		if(mapping == null) {
+			throw new Exception(this.getClass().getName()+"没有增加RequestMapping 注解.");
+		}
+		if (mapping.value().length==0) {
+			throw new Exception(this.getClass().getName()+" RequestMapping 注解中尚未加入value");
+		}
+		return mapping.value()[0];
+	}
 }
