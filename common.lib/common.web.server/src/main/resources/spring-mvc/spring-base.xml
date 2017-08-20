@@ -19,6 +19,6 @@
 	<!-- 20170820 重要： ApiAnnotationConfigProcesser 需要使用Application，但spring-mvc和 spring两套context是分离的
 		所以需要在Spring-mvc中注册
 	 -->
-    <bean class="common.service.api.ApiAnnotationConfigProcesser"></bean>	
+    <bean class="common.service.api.WebApiAnnotationConfigProcesser"></bean>	
 	 
 </beans>
