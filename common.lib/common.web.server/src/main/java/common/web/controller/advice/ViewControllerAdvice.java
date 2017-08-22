@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import common.service.utils.AbstractHelperClass;
 import common.web.service.SystemIntegrator;
+import common.web.utils.SessionHelper;
 
 @ControllerAdvice //(basePackages = "com.github") //basePackages用于指定对哪些包里的Controller起作用。
 public class ViewControllerAdvice extends AbstractHelperClass {
@@ -37,6 +38,7 @@ public class ViewControllerAdvice extends AbstractHelperClass {
   	@ModelAttribute  
     public void onRequest(Model model) {  
   		model.addAttribute("logoutUrl", this.logoutUrl);
+  		model.addAttribute("authenticatedUser", SessionHelper.getAuthenticatedUser());
     }
     
 }
