@@ -58,6 +58,8 @@
 		<property name="templateMode" value="HTML" />
 		<!-- #开发时关闭缓存,不然没法看到实时页面 -->
 		<property name="cacheable" value="false" />
+		<!--解决中文乱码 -->
+		<property name="characterEncoding" value="UTF-8"/>
 	</bean>
 	<bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
 		<property name="templateResolver" ref="templateResolver" />
