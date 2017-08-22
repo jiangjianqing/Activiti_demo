@@ -25,9 +25,10 @@ import common.web.controller.AbstractViewController;
 @Controller
 @RequestMapping("/")
 public class IndexController extends AbstractViewController {
-	
+	/*
 	@Value("${security.logoutUrl}")
 	private String logoutUrl;
+	*/
 
 	public IndexController() {
 		// TODO Auto-generated constructor stub
@@ -38,7 +39,8 @@ public class IndexController extends AbstractViewController {
     		, RedirectAttributes redirectAttributes){
 		//特别注意：这里返回的是WEB-INFO/templates中定义的.html文件名称
 		ModelAndView model = new ModelAndView("index");
-		model.addObject("logoutUrl", this.logoutUrl);
+		//2017.08.22 将logoutUrl参数放入ViewControllerAdivce统一传递，因为每个View页面都需要使用该参数
+		//model.addObject("logoutUrl", this.logoutUrl);
         return model;
     }
 	
