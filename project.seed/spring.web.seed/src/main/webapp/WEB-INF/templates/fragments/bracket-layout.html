@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	th:fragment="page"
+	>
+<head th:replace="fragments/Bracket/header :: header(~{::title},~{::link})">
+	<link rel="stylesheet">
+	<!-- 2017.08.23 由header-template完成加载
+	<link rel="stylesheet" th:href="@{/static/styles/theme.css}" />
+	 -->
+</head>
+
+<body>
+
+<!-- Preloader -->
+<div id="preloader">
+    <div id="status"><i class="fa fa-spinner fa-spin"></i></div>
+</div>
+
+
+<section>
+
+	<div th:replace="fragments/Bracket/left-panel :: left-panel"></div>
+	<div th:replace="fragments/Bracket/main-panel :: main-panel"></div>
+
+	<div th:replace="fragments/Bracket/right-panel :: right-panel"></div>
+
+</section>
+
+<script th:src="@{/static/ui-template/Bracket/js/custom.js}"></script>
+
+<!-- Optionally, you can add Slimscroll and FastClick plugins.
+     Both of these plugins are recommended to enhance the
+     user experience. -->
+     
+<div style="text-align:center;">
+<p>来源：<a href="http://www.mycodes.net/" target="_blank">源码之家</a></p>
+</div>
+</body>
+
+</html>
