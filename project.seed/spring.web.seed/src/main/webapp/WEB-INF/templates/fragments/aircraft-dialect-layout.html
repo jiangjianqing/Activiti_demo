@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="fragments/aircraft/header :: header(~{::title},~{::link})">
+	<link rel="stylesheet">
+	<!-- 2017.08.23 由header-template完成加载
+	<link rel="stylesheet" th:href="@{/static/styles/theme.css}" />
+	 -->
+</head>
+
+<body class="theme-blue">
+	<div th:replace="fragments/aircraft/nav :: nav">
+	</div>
+	<!-- 导航条 -->
+
+	<div th:replace="fragments/aircraft/sidebar :: sidebar('dashboard','index')">
+	</div>
+	
+	<div class="content" layout:fragment="content">
+
+	</div>
+	
+	
+	
+
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<!--上述为 layout文件路径-->
+
+<head th:replace="fragments/aircraft/header :: header(~{::title},~{::link})">
+	<title>Module</title>
+	<link rel="stylesheet">
+	<!-- 2017.08.23 由header-template完成加载
+	<link rel="stylesheet" th:href="@{/static/styles/theme.css}" />
+	 -->
+</head>
+
+<body class=" theme-blue">
+
+    <script type="text/javascript">
+        $(function() {
+            var uls = $('.sidebar-nav > ul > *').clone();
+            uls.addClass('visible-xs');
+            $('#main-menu').append(uls.clone());
+        });
+    </script>
+	<!-- 重写<div layout:fragment = "content">元素，css文件和js文件均可继承 -->
+	
+	<div th:replace="fragments/aircraft/nav :: nav">
+	</div>
+	
+	<div th:replace="fragments/aircraft/sidebar :: sidebar('dashboard','module')">
+	</div>
+	
+	<div class="content">
+		<div th:replace="fragments/aircraft/content-header :: header('首页')"></div>
+		<div class="main-content" >
+
+			<div style="font-size: 18px;">测试thymeleaf layout布局 模式套用 js css
+				全部继承自layout content 因页面不同而不同</div>
+	
+			<div style="margin: 20px;"></div>
+	
+			<div style="font-size: 16px; margin: 20px 0px;">
+				<a href="/tools/editTable1" target="_blank">可编辑表格插件一测试</a>
+			</div>
+			<div style="font-size: 16px;">
+				<a href="/tools/editTable2" target="_blank">可编辑表格插件二测试</a>
+			</div>
+
+		</div>
+		
+
+	</div>
+	
+	
+</body>
+</html>

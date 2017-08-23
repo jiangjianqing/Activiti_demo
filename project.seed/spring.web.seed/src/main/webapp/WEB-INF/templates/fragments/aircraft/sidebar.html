@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head >
+
+</head>
+<body>
+
+
+<div class="sidebar-nav" th:fragment="sidebar(activeGroup,activeItem)">
+	<div th:if="${sidebarGroups == null}">没有从model中找到sidebarGroups ， 请检查ControllerAdvice的设置</div>
+    <ul  th:if="${sidebarGroups != null}">
+    	<th:block th:each="group : ${sidebarGroups}">
+	    	<li>
+	        	<a  href="#" th:attr="data-target='.'+${group.uniqueGroupClass}" class="nav-header" data-toggle="collapse">
+	        		<i th:class="${group.graphClasses}"></i><span th:text="${group.title}"></span> <i class="fa fa-collapse"></i>
+	        	</a>
+	        </li>
+	        <!-- 2017.08.22 重要 通过thymeleaf直接修改a 的text会导致图标丢失，通过th:attr却无法修改a的text，所以在a的text区域又加了一个span来接收文本 -->
+	        <li>
+	            <ul th:class="${group.uniqueGroupClass}+' nav nav-list collapse '" th:classappend="${activeGroup} == ${group.name} ? 'in' : ''">
+	            	<li th:each="item : ${group.items}" th:class= "${activeGroup} == ${group.name} and ${activeItem} == ${item.name} ? active : ''"><a th:href="@{${item.href}}" th:attr="text=${item.title}"><span class="fa fa-caret-right"></span><span th:text="${item.title}"></span></a></li>
+	                <!-- 
+	                <li th:class="${activeItem} == 'module' ? active : ''"><a th:href="@{/module}"><span class="fa fa-caret-right"></span>Module</a></li>
+	                <li th:class="${activeItem} == 'develop' ? active : ''"><a th:href="@{/develop}"><span class="fa fa-caret-right"></span>Develop</a></li>
+	                 -->
+	            </ul>
+	        </li>
+    	</th:block>
+    	
+    	<script th:inline="javascript">
+		/*<![CDATA[*/
+			//2017.08.22 将多个collapse联动，打开一个，则关闭其他
+			$(".sidebar-nav a.nav-header").on('click' , function(event){
+				var $a = $(this);
+				$(".sidebar-nav ul.collapse").each(function(){
+					var $ul = $(this);
+					if ($ul.is($a.data("target"))){
+						
+					}else{
+						$ul.collapse("hide");
+					}
+					console.log();
+				})
+			})
+						
+		/*]]>*/
+		</script>
+    </ul>
+    
+    
+</div>
+
+</body>
+</html>
