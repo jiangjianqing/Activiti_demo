@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	th:fragment="page(activeGroup,activeItem,activeItemTitle)"
+	>
 <head th:replace="fragments/aircraft/header :: header(~{::title},~{::link})">
 	<link rel="stylesheet">
 	<!-- 2017.08.23 由header-template完成加载
@@ -13,14 +15,17 @@
 	</div>
 	<!-- 导航条 -->
 
-	<div th:replace="fragments/aircraft/sidebar :: sidebar('dashboard','index')">
+	<div th:replace="fragments/aircraft/sidebar :: sidebar(${activeGroup},${activeItem})">
 	</div>
 	
-	<div class="content" layout:fragment="content">
+	<div class="content">
+		<div th:replace="fragments/aircraft/content-header :: header(${activeItemTitle})"></div>
+		<div class="main-content" th:include="this :: main-content">
+
+		</div>
+		
 
 	</div>
-	
-	
 	
 
 </body>

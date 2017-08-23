@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	th:fragment="page"
+	>
 <head th:replace="fragments/AdminLTE/header :: header(~{::title},~{::link})">
 	<link rel="stylesheet">
 	<!-- 2017.08.23 由header-template完成加载
@@ -9,7 +10,7 @@
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper" layout:fragment="wrapper">
+<div class="wrapper">
 
   <!-- Main Header -->
   <header th:replace="fragments/AdminLTE/main-header :: main-header"/>
@@ -22,8 +23,8 @@
     <!-- Content Header (Page header) -->
     <section th:replace="fragments/AdminLTE/content-header :: content-header"/>
 
-    <!-- Main content -->
-    <section class="content container-fluid" layout:fragment="main-content">
+    <!-- Main content --><!-- 2017.08.23 这里使用th:include非常非常重要！！ -->
+    <section class="content container-fluid" th:include="this :: main-content" >
 
       <!--------------------------
         | Your Page Content Here |

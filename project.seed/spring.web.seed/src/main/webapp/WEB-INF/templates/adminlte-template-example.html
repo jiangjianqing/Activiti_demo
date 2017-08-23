@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{fragments/adminlte-dialect-layout}" >
+	
+	th:include="fragments/adminlte-layout :: page"
+	>
+	<!--2017.08.23 使用th:include后 可以完全废弃 layout:decorate="~{fragments/dialect-layout}"  -->
 <!--上述为 layout文件路径-->
 <head >
 	<title>index</title>
@@ -9,7 +12,9 @@
 </head>
 
 <body>
-	
+	<div th:fragment="main-content">
+            这里是测试页面的内容
+    </div>
 
 </body>
 
