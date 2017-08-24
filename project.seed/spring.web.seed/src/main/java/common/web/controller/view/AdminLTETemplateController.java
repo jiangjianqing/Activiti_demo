@@ -44,7 +44,7 @@ public class AdminLTETemplateController extends AbstractViewController{
     public String getAll(Model model,HttpServletRequest request,HttpServletResponse response){
 		model.addAttribute("name", "Dear");
 		//特别注意：这里返回的是tiles.xml中定义的definition.name
-        return "adminlte-template-example";
+        return "admin-lte-template-example";
     }
 
 }
