@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
-	th:fragment="page"
+	th:fragment="page(activeGroup,activeItem)"
 	>
 <head th:replace="fragments/admin-lte/header :: header(~{::title},~{::link})">
 	<link rel="stylesheet">
@@ -16,7 +16,7 @@
   <header th:replace="fragments/admin-lte/main-header :: main-header"/>
   
   <!-- Left side column. contains the logo and sidebar -->
-  <aside th:replace="fragments/admin-lte/main-sidebar :: main-sidebar"/>
+  <aside th:replace="fragments/admin-lte/main-sidebar :: main-sidebar(${activeGroup},${activeItem})"/>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">

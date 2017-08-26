@@ -7,7 +7,7 @@
 
 <body >
 	<!-- Left side column. contains the logo and sidebar -->
-	<aside class="main-sidebar" th:fragment="main-sidebar">
+	<aside class="main-sidebar" th:fragment="main-sidebar(activeGroup,activeItem)">
 
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
@@ -18,7 +18,7 @@
           <img th:src="@{/static/images/AdminLTE-user2-160x160.jpg}" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Alexander Pierce</p>
+          <p th:text="${authenticatedUser.userName}">Alexander Pierce</p>
           <!-- Status -->
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
@@ -40,7 +40,7 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
+        <li><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
         <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
@@ -53,6 +53,17 @@
             <li><a href="#">Link in level 2</a></li>
           </ul>
         </li>
+             
+      	<li th:each="group : ${sidebarGroups}" class="treeview" th:classappend="${activeGroup} == ${group.name} ? 'active' : ''">
+      		<a href="#"><i class="fa fa-link"></i> <span th:text="${group.title}">Multilevel</span>
+	        	<span class="pull-right-container">
+	            	<i class="fa fa-angle-left pull-right"></i>
+	        	</span>
+	        </a>
+          	<ul class="treeview-menu">
+            	<li th:each="item : ${group.items}" th:class= "${activeGroup} == ${group.name} and ${activeItem} == ${item.name} ? active : ''"><a th:href="@{${item.href}}" th:text="${item.title}">Link in level 2</a></li>
+          	</ul>
+      	</li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>

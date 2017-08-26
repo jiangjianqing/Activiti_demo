@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	
+	th:include="fragments/admin-lte-layout :: page('workflow','process')"
+	>
+	<!--2017.08.23 使用th:include后 可以完全废弃 layout:decorate="~{fragments/dialect-layout}"  -->
+<!--上述为 layout文件路径-->
+<head >
+	<title>index</title>
+
+</head>
+
+<body>
+	<div th:fragment="main-content">
+	
+		<div class="btn-group">
+			<button type="button" disabled class="btn btn-primary" data-toggle="modal" data-target="#createModuleModal">创建模块</button>
+			<button type="button" class="btn btn-default" data-toggle="modal" data-target="#deployProcessDefinition">部署流程定义</button>
+		</div>
+		<table class="table">
+			<caption>流程定义列表</caption>
+			<thead>
+				<tr>
+					<th>流程定义ID</th>
+					<th>部署ID</th>
+					<th>流程定义名称</th>
+					<th>流程定义KEY</th>
+					<th>版本号</th>
+					<th>XML资源名称</th>
+					<th>图片资源名称</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="pd : ${processDefinitionList}">
+					<td th:text="${pd.id}"></td>
+					<td th:text="${pd.deploymentId}"></td>
+					<td th:text="${pd.name}"></td>
+					<td th:text="${pd.key}"></td>
+					<td th:text="${pd.version}"></td>
+					<td><a th:text="${pd.resourceName}" target="_blank" th:href="@{process/read-resource(pdid=${pd.id},resourceName=${pd.resourceName})}"></a></td>
+					<td><a th:text="${pd.diagramResourceName}" target="_blank" th:href="@{process/read-resource(pdid=${pd.id},resourceName=${pd.diagramResourceName})}"></a></td>
+					<td>
+						<div class="btn-group">
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModuleModal">创建模块</button>
+							<a type="button" class="btn btn-danger" th:href="@{process/delete-deployment(deploymentId=${pd.deploymentId})}">删除</a>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<!-- 模态框（Modal） -->
+			<div class="modal fade" id="deployProcessDefinition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+								&times;
+							</button>
+							<h4 class="modal-title" id="myModalLabel">
+								上传流程文件
+							</h4>
+						</div>
+						<form class="form-horizontal" role="form"
+							action="${logoutUrl}" th:action="@{process/deploy(${_csrf.parameterName}=${_csrf.token})}" method="post" enctype="multipart/form-data"
+							>
+							<div class="modal-body">
+								<div class="form-group">
+									<label for="lastname" class="col-sm-2 control-label">BPMN文件</label>
+									<div class="col-sm-10">
+										<input type="file" name="file" >
+									</div>
+								</div>
+							</div>
+							
+							<div class="modal-body">
+								<div class="form-group">
+									<label for="lastname" class="col-sm-2 control-label">BPMN文件</label>
+									<div class="col-sm-10">
+										<input type="file" name="file" >
+									</div>
+								</div>
+							</div>
+							
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+								</button>
+								<button type="submit" class="btn btn-primary">
+									上传
+								</button>
+							</div>
+						</form>
+						
+						
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal -->
+			</div>
+		
+	</div>
+</body>
+
+</html>
