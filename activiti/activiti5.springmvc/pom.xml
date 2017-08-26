@@ -16,6 +16,37 @@
 		<groovy-version>2.4.3</groovy-version>
 		<h2-version>1.4.193</h2-version>
 	</properties>
+	
+	<profiles>
+	    <profile>
+	        <!-- 本地开发环境 -->
+	        <id>dev</id>
+	        <properties>
+	        	<env>dev</env>  
+	            <profiles.active>dev</profiles.active>
+	        </properties>
+	        <activation>
+	            <!-- 设置默认激活这个配置 -->
+	            <activeByDefault>true</activeByDefault>
+	        </activation>
+	    </profile>
+	    <profile>
+	        <!-- 发布环境 -->
+	        <id>release</id>
+	        <properties>
+	        	<env>release</env>  
+	            <profiles.active>release</profiles.active>
+	        </properties>
+	    </profile>
+	    <profile>
+	        <!-- 测试环境 -->
+	        <id>beta</id>
+	        <properties>
+	        	<env>beta</env>  
+	            <profiles.active>beta</profiles.active>
+	        </properties>
+	    </profile>
+	</profiles> 
 
 	<dependencies>	
 		<dependency>
@@ -99,6 +130,19 @@
 	</dependencies>
 
 	<build>
+		<!-- filters中定义了变量配置文件的地址，其中地址中的环境变量就是上面profile中定义的值 -->
+		<filters>  
+            <filter>config/db/db-${env}.properties</filter>
+            <filter>config/log4j/log4j-${env}.properties</filter>  
+        </filters>  
+        <!-- resources中是定义哪些目录下的文件会被配置文件中定义的变量替换，一般我们会把项目的配置文件放在src/main/resources下
+        	，像db,bean等，里面用到的变量在打包时就会根据filter中的变量配置替换成固定值 -->
+        <resources>  
+            <resource>  
+                <directory>src/main/resources</directory>  
+                <filtering>true</filtering>  
+            </resource>  
+        </resources>
 		<plugins>
 			<!-- 20170808 从parent.spring.web继承了配置 ， mvn clean jetty:run直接运行即可 -->
 			
