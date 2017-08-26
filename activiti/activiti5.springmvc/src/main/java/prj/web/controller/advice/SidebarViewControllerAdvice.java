@@ -75,6 +75,26 @@ public class SidebarViewControllerAdvice extends AbstractHelperClass {
   		
   		list.add(group);
   		
+  		//---加入identity组
+  		group=new SimpleSidebarGroup();
+  		group.setName("identity");
+  		group.setTitle("Identity");
+  		group.setUniqueGroupClass("debug-menu");
+  		group.setGraphClasses("fa fa-fw fa-legal");
+  		group.setItems(new ArrayList<SimpleSidebarItem>());
+  		item=new SimpleSidebarItem();
+  		item.setName("user");
+  		item.setTitle("User");
+  		item.setHref("/identity/user");
+  		group.getItems().add(item);
+  		item=new SimpleSidebarItem();
+  		item.setName("role");
+  		item.setTitle("Role");
+  		item.setHref("/identity/role");
+  		group.getItems().add(item);
+  		
+  		list.add(group);
+  		
   		//---加入测试组
   		group=new SimpleSidebarGroup();
   		group.setName("debug");

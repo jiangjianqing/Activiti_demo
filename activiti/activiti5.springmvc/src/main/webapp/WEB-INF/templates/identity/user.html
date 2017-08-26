@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:include="fragments/admin-lte-layout :: page('identity','user')"
+	>
+	<!--2017.08.23 使用th:include后 可以完全废弃 layout:decorate="~{fragments/dialect-layout}"  -->
+<!--上述为 layout文件路径-->
+<head >
+	<title>task</title>
+
+</head>
+
+<body>
+	<div th:fragment="main-content">
+		<div class="btn-group">
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModuleModal">新增</button>
+			<button type="button" class="btn btn-default" data-toggle="modal" data-target="#deployProcessDefinition">部署流程定义</button>
+		</div>
+		<table class="table">
+			<caption>用户列表</caption>
+			<thead>
+				<tr>
+					<th>用户ID</th>
+					<th>用户名称</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user : ${users}">
+					<td th:text="${user.id}"></td>
+					<td th:text="${user.userName}"></td>
+					<td>
+						操作
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+	</div>
+</body>
+
+</html>
