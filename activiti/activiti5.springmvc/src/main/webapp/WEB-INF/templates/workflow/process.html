@@ -43,7 +43,7 @@
 					<td><a th:text="${pd.diagramResourceName}" target="_blank" th:href="@{process/read-resource(pdid=${pd.id},resourceName=${pd.diagramResourceName})}"></a></td>
 					<td>
 						<div class="btn-group">
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModuleModal">创建模块</button>
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModuleModal">启动</button>
 							<a type="button" class="btn btn-danger" th:href="@{process/delete-deployment(deploymentId=${pd.deploymentId})}">删除</a>
 						</div>
 					</td>
