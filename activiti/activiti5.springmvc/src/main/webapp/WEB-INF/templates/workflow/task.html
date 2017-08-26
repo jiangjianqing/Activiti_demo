@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:include="fragments/admin-lte-layout :: page('workflow','task')"
+	>
+	<!--2017.08.23 使用th:include后 可以完全废弃 layout:decorate="~{fragments/dialect-layout}"  -->
+<!--上述为 layout文件路径-->
+<head >
+	<title>task</title>
+
+</head>
+
+<body>
+	<div th:fragment="main-content">
+
+		<table class="table">
+			<caption>Task列表</caption>
+			<thead>
+				<tr>
+					<th>任务ID</th>
+					<th>任务名称</th>
+					<th>流程实例ID</th>
+					<th>任务创建时间</th>
+					<th>办理人</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="task : ${tasks}">
+					<td th:text="${task.id}"></td>
+					<td th:text="${task.name}"></td>
+					<td th:text="${task.processInstanceId}"></td>
+					<td th:text="${task.createTime}"></td>
+					<td th:text="${task.assignee}"></td>
+					<td>
+						操作
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+	</div>
+</body>
+
+</html>
