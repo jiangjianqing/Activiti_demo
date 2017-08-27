@@ -73,7 +73,7 @@ public class SessionHelper extends AbstractHelperClass {
 	
 	public static AuthenticationUser getAuthenticatedUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(authentication instanceof AnonymousAuthenticationToken){
+		if(authentication instanceof AnonymousAuthenticationToken || authentication==null){
 			logger.error("用户尚未登陆，无法执行getAuthenticatedUser");
 			return null;
 		}
