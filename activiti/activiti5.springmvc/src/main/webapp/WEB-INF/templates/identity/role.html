@@ -81,6 +81,7 @@
 					<form class="form-horizontal" role="form"
 						th:action="@{role(${_csrf.parameterName}=${_csrf.token})}" method="post" 
 						>
+						
 						<div class="modal-body">
 							<div class="form-group">
 								<label for="lastname" class="col-sm-2 control-label">角色类型</label>
@@ -90,9 +91,7 @@
 									</select>
 								</div>
 							</div>
-						</div>
-						
-						<div class="modal-body">
+
 							<div class="form-group">
 								<label for="lastname" class="col-sm-2 control-label">角色名称</label>
 								<div class="col-sm-10">
