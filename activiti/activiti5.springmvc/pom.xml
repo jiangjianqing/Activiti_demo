@@ -25,10 +25,6 @@
 	        	<env>dev</env>  
 	            <profiles.active>dev</profiles.active>
 	        </properties>
-	        <activation>
-	            <!-- 设置默认激活这个配置 -->
-	            <activeByDefault>true</activeByDefault>
-	        </activation>
 	    </profile>
 	    <profile>
 	        <!-- 发布环境 -->
@@ -45,6 +41,10 @@
 	        	<env>beta</env>  
 	            <profiles.active>beta</profiles.active>
 	        </properties>
+	        <activation>
+	            <!-- 设置默认激活这个配置 -->
+	            <activeByDefault>true</activeByDefault>
+	        </activation>
 	    </profile>
 	</profiles> 
 
