@@ -104,11 +104,11 @@ public class ProcessManageController extends AbstractViewController{
 	 * @return
 	 * @throws Exception 
 	 */
-	@RequestMapping(value = "/start-process/{processDefinitionId}")
+	@RequestMapping(value = "/get-start-form/{processDefinitionId}",method=RequestMethod.GET)
 	public ModelAndView getStartForm(@PathVariable("processDefinitionId") String processDefinitionId) throws Exception{
 		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(processDefinitionId).singleResult();
         boolean hasStartFormKey = processDefinition.hasStartFormKey();
-		ModelAndView mav=new ModelAndView(getDefaultRequestMappingUrl());
+		ModelAndView mav=new ModelAndView("workflow/process-get-start-form");
 		// 根据是否有formkey属性判断使用哪个展示层
 		// 判断是否有formkey属性
         if (hasStartFormKey) {
@@ -117,18 +117,21 @@ public class ProcessManageController extends AbstractViewController{
         } else { // 动态表单字段
             StartFormData startFormData = formService.getStartFormData(processDefinitionId);
             mav.addObject("startFormData", startFormData);
+            System.out.println("startFormData.size="+startFormData.getFormProperties().size());
         }
         mav.addObject("processDefinition", processDefinition);
         mav.addObject("hasStartFormKey", hasStartFormKey);
+        System.out.println("hasStartFormKey="+hasStartFormKey);
+        
 		return mav;
 	}
 	
-	@RequestMapping(value="/start-process-instance/{processDefinitionId}")
+	@RequestMapping(value="/start-process-instance/{processDefinitionId}",method=RequestMethod.POST)
 	public String startProcessInstance(@PathVariable String processDefinitionId,HttpSession session,HttpServletRequest request) throws Exception{
 		String url="";
 
 		if(SessionHelper.isAuthenticated()){
-			User user=(User)SessionHelper.getAuthenticatedUser();
+			//User user=(User)SessionHelper.getAuthenticatedUser();
 			//identityService.setAuthenticatedUserId(user.getId());//登录时已经执行过，20150905测试代码：有时StartUserID=null，导致任务无法继续处理
 			System.out.println("注意观察StartUserID=空的情况，会导致任务无法处理");
 			StartFormData formData=formService.getStartFormData(processDefinitionId);

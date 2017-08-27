@@ -122,7 +122,6 @@ public class MyProcessDefinition implements ProcessDefinition {
 		return tenantId;
 	}
 
-	@Override
 	public String getEngineVersion() {
 		// TODO Auto-generated method stub
 		return "1.2.3";

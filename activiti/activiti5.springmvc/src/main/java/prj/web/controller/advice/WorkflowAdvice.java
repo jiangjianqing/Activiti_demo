@@ -59,7 +59,9 @@ public class WorkflowAdvice extends AbstractHelperClass {
 		*/
 		//activiti5.16以后提供的方法，一步就可以获取上述两种任务
   		if(user!=null) {
+  			//2017.08.27 注意StartUserId为空的情况，会导致任务找不到
   			List<Task> allTasks=taskService.createTaskQuery().taskCandidateOrAssigned(user.getUsername()).list();
+  			System.out.println("allTasks.size="+allTasks.size());
   			return allTasks; 
   		}else {
   			return null;
