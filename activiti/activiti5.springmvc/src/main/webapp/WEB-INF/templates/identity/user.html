@@ -21,6 +21,7 @@
 				<tr>
 					<th>用户ID</th>
 					<th>用户名称</th>
+					<th>角色列表</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -28,6 +29,11 @@
 				<tr th:each="user : ${users}">
 					<td th:text="${user.id}"></td>
 					<td th:text="${user.userName}"></td>
+					<td>
+						<ul th:each="role : ${user.roles}">
+							<li th:text="${role.name}"/>
+						</ul>
+					</td>
 					<td>
 						<button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit-device">修改</button> <a class="btn btn-default btn-xs" th:href="@{'user/delete/'+${user.id}}">删除</a>
 					</td>
