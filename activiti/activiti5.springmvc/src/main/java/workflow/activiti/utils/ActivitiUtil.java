@@ -17,6 +17,8 @@ import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,6 +27,24 @@ import common.service.utils.SpringContextHolder;
 import common.web.utils.SessionHelper;
 
 public class ActivitiUtil {
+	
+	//由AbstractHelperClass提供的静态类方法支持函数，必须放在子类中
+	protected final static String getStaticClassName(){
+					return new Object() {
+						//静态方法中获取当前类名
+						public String getClassName() {
+							String className = this.getClass().getName();
+							return className.substring(0, className.lastIndexOf('$'));
+						}
+					}.getClassName();
+				}
+				
+		
+	protected final static Logger logger = LoggerFactory
+						.getLogger(getStaticClassName());
+		//------------------static 方法模板定义结束---------------------	
+	
+	private static String FP_PREFIX="bpmn_fp_";
 	/**
 	 * 根据输入的参数生成提交数据，process和task通用
 	 * @param hasFormKey
@@ -41,8 +61,8 @@ public class ActivitiUtil {
 				String key=entry.getKey();
 				//formValues.put(key, entry.getValue()[0]);
 				//2017.08.29 为确保没有过多的垃圾数据保存到activiti数据库，所以要求将需要保存的数据加上'fp_'前缀
-				if(key.startsWith("bpmn_fp_")) {
-					formValues.put(key.substring("bpmn_fp_".length()), entry.getValue()[0]);
+				if(key.startsWith(FP_PREFIX)) {
+					formValues.put(key.substring(FP_PREFIX.length()), entry.getValue()[0]);
 				}else {
 					//logger.debug();
 				}
@@ -51,7 +71,7 @@ public class ActivitiUtil {
 		}else{//动态表单
 			for(FormProperty prop:formProperties){
 				if(prop.isWritable()){
-					String propId = "bpmn_fp_"+prop.getId();
+					String propId = FP_PREFIX+prop.getId();
 					//2017.08.29 为确保没有过多的垃圾数据保存到activiti数据库，所以要求将需要保存的数据加上'fp_'前缀
 					String value=request.getParameter(propId);
 					//String value=request.getParameter(prop.getId());
@@ -84,7 +104,7 @@ public class ActivitiUtil {
         }
         mav.addObject("processDefinition", processDefinition);
         mav.addObject("hasStartFormKey", hasStartFormKey);
-
+        mav.addObject("FP_PREFIX", FP_PREFIX);
 		return mav;
 	}
 	
@@ -99,7 +119,7 @@ public class ActivitiUtil {
 		
 		User user=(User)SessionHelper.getAuthenticatedUser();
 		identityService.setAuthenticatedUserId(user.getUserName());//登录时已经执行过，20150905测试代码：有时StartUserID=null，导致任务无法继续处理
-		System.out.println("注意观察StartUserID=空的情况，会导致任务无法处理");
+		logger.debug("注意观察StartUserID=空的情况，会导致任务无法处理");
 		StartFormData formData=formService.getStartFormData(processDefinitionId);
 		List<FormProperty> formProperties=formData.getFormProperties();
 		boolean hasFormKey=formData.getFormKey()!=null && formData.getFormKey().length()>0;
@@ -127,6 +147,7 @@ public class ActivitiUtil {
 		}else{
 			mav.addObject("formData", taskFormData);
 		}
+		mav.addObject("FP_PREFIX", FP_PREFIX);
 		return mav;
 	}
 	
