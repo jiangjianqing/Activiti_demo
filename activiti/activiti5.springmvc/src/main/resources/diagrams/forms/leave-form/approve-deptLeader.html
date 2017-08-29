@@ -6,7 +6,7 @@
 	<label class="col-md-2 control-label" for="startDate">请假开始日期:</label>
     <div class="col-md-5">                  
 		<div  class="input-group date form_date col-md-5"  data-date="${startDate}" data-type="date" data-date-format="yyyy-mm-dd"  data-link-field="dtp_input2_startDate" data-link-format="yyyy-mm-dd">
-			<input id="startDate" name="startDate" disabled class="form-control" size="16" type="text" value="${startDate}" >
+			<input name="startDate" disabled class="form-control" size="16" type="text" value="${startDate}" >
 			<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 			<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 		</div>
@@ -17,7 +17,7 @@
 	<label class="col-md-2 control-label" for="endDate">请假结束日期:</label>
 	<div class="col-md-5">
 		<div  class="input-group date form_date col-md-5"  data-date="${endDate}" data-type="date" data-date-format="yyyy-mm-dd"  data-link-field="dtp_input2_endDate" data-link-format="yyyy-mm-dd">
-			<input id="endDate" name="endDate" disabled class="form-control" size="16" type="text" value="${endDate}" >
+			<input name="endDate" disabled class="form-control" size="16" type="text" value="${endDate}" >
 			<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 			<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 		</div>
@@ -27,14 +27,14 @@
 <div class="form-group">
 	<label class="col-md-2 control-label" for="reason">请假原因:</label>
 	<div class="col-md-5">
-		<input type="text" id="reason" name="reason" data-type="string" value="${reason}" class="form-control"  disabled readonly>
+		<input type="text" name="reason" data-type="string" value="${reason}" class="form-control"  disabled readonly>
 	</div>
 </div>
 
 <div class="form-group">
-	<label class="col-md-2 control-label" for="deptLeaderApproved">审批意见:</label>
+	<label class="col-md-2 control-label" for="bpmn_fp_deptLeaderApproved">审批意见:</label>
 	<div class="col-md-5">
-		<select id="deptLeaderApproved" name="deptLeaderApproved"   class="form-control">
+		<select name="bpmn_fp_deptLeaderApproved"   class="form-control">
 			<option value="true"  > 同意</option>
 			<option value="false"  > 拒绝</option>  
 		</select>
