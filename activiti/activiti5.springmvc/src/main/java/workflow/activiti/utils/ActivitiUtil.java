@@ -32,7 +32,7 @@ public class ActivitiUtil {
 	 * @param request
 	 * @return
 	 */
-	public static Map<String,String> generateFormValueMap(boolean hasFormKey,List<FormProperty> formProperties,HttpServletRequest request){
+	private static Map<String,String> generateFormValueMap(boolean hasFormKey,List<FormProperty> formProperties,HttpServletRequest request){
 		Map<String,String> formValues=new HashMap<String,String>();
 		if(hasFormKey){//外置表单
 			Map<String,String[]> parameterMap=request.getParameterMap();
@@ -52,6 +52,11 @@ public class ActivitiUtil {
 		return formValues;
 	}
 	
+	/**
+	 * 流程启动步骤1：获取启动流程的Form参数
+	 * @param processDefinitionId
+	 * @return
+	 */
 	public static ModelAndView getProcessStartForm(String processDefinitionId){
 		FormService formService = SpringContextHolder.getBean(FormService.class);
 		RepositoryService repositoryService = SpringContextHolder.getBean(RepositoryService.class);
@@ -62,19 +67,22 @@ public class ActivitiUtil {
 		// 判断是否有formkey属性
         if (hasStartFormKey) {
             Object renderedStartForm = formService.getRenderedStartForm(processDefinitionId);
-            mav.addObject("startFormData", renderedStartForm);
+            mav.addObject("formData", renderedStartForm);
         } else { // 动态表单字段
             StartFormData startFormData = formService.getStartFormData(processDefinitionId);
-            mav.addObject("startFormData", startFormData);
-            System.out.println("startFormData.size="+startFormData.getFormProperties().size());
+            mav.addObject("formData", startFormData);
         }
         mav.addObject("processDefinition", processDefinition);
         mav.addObject("hasStartFormKey", hasStartFormKey);
-        System.out.println("hasStartFormKey="+hasStartFormKey);
-        
+
 		return mav;
 	}
 	
+	/**
+	 * 流程启动步骤2：根据用户输入的form数据启动流程
+	 * @param processDefinitionId
+	 * @param request
+	 */
 	public static void  startProcessInstance(String processDefinitionId,HttpServletRequest request) {
 		FormService formService = SpringContextHolder.getBean(FormService.class);
 		IdentityService identityService = SpringContextHolder.getBean(IdentityService.class);
@@ -89,6 +97,11 @@ public class ActivitiUtil {
 		formService.submitStartFormData(processDefinitionId, formValues);//生成提交数据
 	}
 	
+	/**
+	 * Task步骤1：获取完成当前任务的Form
+	 * @param taskId
+	 * @return
+	 */
 	public static ModelAndView getTaskForm(String taskId){
 		FormService formService = SpringContextHolder.getBean(FormService.class);
 		TaskService taskService = SpringContextHolder.getBean(TaskService.class);
@@ -107,6 +120,11 @@ public class ActivitiUtil {
 		return mav;
 	}
 	
+	/**
+	 * Task步骤2：根据用户输入的form数据完成Task
+	 * @param taskId
+	 * @param request
+	 */
 	public static void completeTask(String taskId,HttpServletRequest request) {
 		FormService formService= SpringContextHolder.getBean(FormService.class);
 		TaskFormData taskFormData=formService.getTaskFormData(taskId);
