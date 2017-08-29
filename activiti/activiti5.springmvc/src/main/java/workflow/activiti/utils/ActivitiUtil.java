@@ -39,12 +39,22 @@ public class ActivitiUtil {
 			Set<Entry<String,String[]>> entrySet=parameterMap.entrySet();
 			for(Entry<String,String[]> entry:entrySet){
 				String key=entry.getKey();
-				formValues.put(key, entry.getValue()[0]);
+				//formValues.put(key, entry.getValue()[0]);
+				//2017.08.29 为确保没有过多的垃圾数据保存到activiti数据库，所以要求将需要保存的数据加上'fp_'前缀
+				if(key.startsWith("bpmn_fp_")) {
+					formValues.put(key.substring("bpmn_fp_".length()), entry.getValue()[0]);
+				}else {
+					//logger.debug();
+				}
+				
 			}
 		}else{//动态表单
 			for(FormProperty prop:formProperties){
 				if(prop.isWritable()){
-					String value=request.getParameter(prop.getId());
+					String propId = "bpmn_fp_"+prop.getId();
+					//2017.08.29 为确保没有过多的垃圾数据保存到activiti数据库，所以要求将需要保存的数据加上'fp_'前缀
+					String value=request.getParameter(propId);
+					//String value=request.getParameter(prop.getId());
 					formValues.put(prop.getId(), value);
 				}
 			}

@@ -11,21 +11,21 @@
 
 <body>
 	<div th:fragment="main-content">
-	
+		<h3 th:text="'启动流程 - 【'+${processDefinition.name} + '】, 版本号:'+${processDefinition.version}">启动流程-</h3>
 		<form class="form-horizontal" role="form"
 		  th:action="@{'/workflow/process/start-process-instance/'+${processDefinition.id}}" method="post">
 			
-			<div th:if="${hasStartFormKey}" th:utext="${startFormData}">
+			<div th:if="${hasStartFormKey}" th:utext="${formData}">
 			</div>
 			<th:block th:if="${hasStartFormKey} == false">
-				<div class="form-group" th:each="fp : ${startFormData.formProperties}">
+				<div class="form-group" th:each="fp : ${formData.formProperties}">
 					<label class="col-md-2  control-label" th:text="${fp.name}"></label>
 					<div class="col-sm-10" >
 						<input th:if="${fp.type.name == 'string' || fp.type.name == 'long'}"
-							class="form-control" type="text" th:name="${fp.id}" th:data-type="${fp.type.name}" value="" />
+							th:name="'bpmn_fp_'+${fp.id}" class="form-control" type="text" th:data-type="${fp.type.name}" value="" />
 							 
 						<input th:if="${fp.type.name == 'date'}"
-							th:name="${fp.id}" class="form-control" size="16" type="text" value="" >
+							th:name="'bpmn_fp_'+${fp.id}" class="form-control" size="16" type="text" value="" >
 					</div>
 				</div>
 			</th:block>
