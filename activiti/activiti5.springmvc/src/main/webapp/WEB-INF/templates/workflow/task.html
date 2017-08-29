@@ -31,8 +31,9 @@
 					<td th:text="${task.processInstanceId}"></td>
 					<td th:text="${task.createTime}"></td>
 					<td th:text="${task.assignee}"></td>
-					<td>
-						操作
+					<td>						
+						<a th:if="${task.assignee} == null" class="btn btn-danger" th:href="@{task/claim-task/{id}(id=${task.id})}">claim</a>
+						<a th:if="${task.assignee} != null" class="btn btn-primary" th:href="@{task/get-task-form/{id}(id=${task.id})}">办理</a>
 					</td>
 				</tr>
 			</tbody>

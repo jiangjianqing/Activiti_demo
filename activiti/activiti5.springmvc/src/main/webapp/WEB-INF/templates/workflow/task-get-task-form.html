@@ -13,19 +13,25 @@
 	<div th:fragment="main-content">
 	
 		<form class="form-horizontal" role="form"
-		  th:action="@{'/workflow/process/start-process-instance/'+${processDefinition.id}}" method="post">
+			th:action="@{/workflow/task/complete-task/{id}(id=${task.id})}" method="post">
 			
-			<div th:if="${hasStartFormKey}" th:text="${startFormData}">
+			<div th:if="${hasFormKey}" th:text="${startFormData}">
 			</div>
-			<th:block th:if="${hasStartFormKey} == false">
-				<div class="form-group" th:each="fp : ${startFormData.formProperties}">
+			<th:block th:if="${hasFormKey} == false">
+				<div class="form-group" th:each="fp : ${formData.formProperties}">
 					<label class="col-md-2  control-label" th:text="${fp.name}"></label>
 					<div class="col-sm-10" >
 						<input th:if="${fp.type.name == 'string' || fp.type.name == 'long'}"
-							class="form-control" type="text" th:name="${fp.id}" th:data-type="${fp.type.name}" value="" />
+							th:value="${fp.value}"
+							class="form-control" type="text" th:disabled="${fp.writable == false}" th:name="${fp.id}" th:data-type="${fp.type.name}" value="" />
 							 
-						<input th:if="${fp.type.name == 'date'}"
-							th:name="${fp.id}" class="form-control" size="16" type="text" value="" >
+						<input th:if="${fp.type.name == 'date'}" th:data-date-format="${fp.type.getInformation('datePattern')}"
+							th:value="${fp.value}"
+							id="${fp.id}" name="${fp.id}" th:disabled="${fp.writable == false}" class="form-control" size="16" type="text" value="" >
+					
+						<select th:if="${fp.type.name == 'enum'}" th:name="${fp.id}" class="form-control">
+							<option th:each="item : ${fp.type.getInformation('values')}" th:value="${item.key}" th:text="${item.value}"></option>
+						</select>
 					</div>
 				</div>
 			</th:block>

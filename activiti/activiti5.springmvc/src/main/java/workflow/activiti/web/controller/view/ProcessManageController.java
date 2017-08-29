@@ -13,10 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.activiti.engine.FormService;
+import org.activiti.engine.IdentityService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
-import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.DeploymentBuilder;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
@@ -31,12 +31,17 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import common.db.model.identity.User;
 import common.web.controller.AbstractViewController;
 import common.web.utils.SessionHelper;
+import workflow.activiti.utils.ActivitiUtil;
 
 @Controller
 @RequestMapping("workflow/process")
 public class ProcessManageController extends AbstractViewController{
+	
+	@Autowired
+	protected IdentityService identityService;
 	
 	@Autowired
 	private RepositoryService repositoryService;
@@ -131,13 +136,13 @@ public class ProcessManageController extends AbstractViewController{
 		String url="";
 
 		if(SessionHelper.isAuthenticated()){
-			//User user=(User)SessionHelper.getAuthenticatedUser();
-			//identityService.setAuthenticatedUserId(user.getId());//登录时已经执行过，20150905测试代码：有时StartUserID=null，导致任务无法继续处理
+			User user=(User)SessionHelper.getAuthenticatedUser();
+			identityService.setAuthenticatedUserId(user.getUserName());//登录时已经执行过，20150905测试代码：有时StartUserID=null，导致任务无法继续处理
 			System.out.println("注意观察StartUserID=空的情况，会导致任务无法处理");
 			StartFormData formData=formService.getStartFormData(processDefinitionId);
 			List<FormProperty> formProperties=formData.getFormProperties();
 			boolean hasFormKey=formData.getFormKey()!=null && formData.getFormKey().length()>0;
-			Map<String,String> formValues=generateFormValueMap(hasFormKey,formProperties,request);
+			Map<String,String> formValues=ActivitiUtil.generateFormValueMap(hasFormKey,formProperties,request);
 			formService.submitStartFormData(processDefinitionId, formValues);//生成提交数据
 			
 			url="redirect:/"+getDefaultRequestMappingUrl();
@@ -148,30 +153,5 @@ public class ProcessManageController extends AbstractViewController{
 		return url;
 	}
 	
-	/**
-	 * 根据输入的参数生成提交数据，process和task通用
-	 * @param hasFormKey
-	 * @param formProperties
-	 * @param request
-	 * @return
-	 */
-	private Map<String,String> generateFormValueMap(boolean hasFormKey,List<FormProperty> formProperties,HttpServletRequest request){
-		Map<String,String> formValues=new HashMap<String,String>();
-		if(hasFormKey){//外置表单
-			Map<String,String[]> parameterMap=request.getParameterMap();
-			Set<Entry<String,String[]>> entrySet=parameterMap.entrySet();
-			for(Entry<String,String[]> entry:entrySet){
-				String key=entry.getKey();
-				formValues.put(key, entry.getValue()[0]);
-			}
-		}else{//动态表单
-			for(FormProperty prop:formProperties){
-				if(prop.isWritable()){
-					String value=request.getParameter(prop.getId());
-					formValues.put(prop.getId(), value);
-				}
-			}
-		}	
-		return formValues;
-	}
+	
 }
