@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import common.db.model.identity.User;
@@ -38,9 +39,19 @@ public class TaskManageController extends AbstractViewController {
 	}
 	
 	@RequestMapping(value="claim-task/{taskId}")
-	public String claimTask(@PathVariable String taskId,HttpSession session) throws Exception {
+	public String claimTask(@PathVariable String taskId,@RequestParam("nextDo") String nextDo,HttpSession session) throws Exception {
 		User user=(User)SessionHelper.getAuthenticatedUser();
 		taskService.claim(taskId, user.getUserName());
+		if(nextDo != null && nextDo.equals("handle")) {
+			return "redirect:/"+getDefaultRequestMappingUrl()+"/get-task-form/"+taskId;
+		}
+		return "redirect:/"+getDefaultRequestMappingUrl();
+	}
+	
+	@RequestMapping(value="unclaim-task/{taskId}")
+	public String unClaimTask(@PathVariable String taskId,HttpSession session) throws Exception {
+		User user=(User)SessionHelper.getAuthenticatedUser();
+		taskService.claim(taskId, null);
 		return "redirect:/"+getDefaultRequestMappingUrl();
 	}
 	

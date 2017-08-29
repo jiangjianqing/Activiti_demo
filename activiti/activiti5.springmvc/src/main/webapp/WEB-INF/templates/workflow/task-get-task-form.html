@@ -38,7 +38,9 @@
 			<div class="form-group">
 				<div class="controls">
 					<a href="javascript:history.back();" class="btn"><i class="icon-backward"></i>返回列表</a>
-					<button type="submit" class="btn btn-primary"><i class="icon-play"></i>确认</button>
+					<a th:if="${task.assignee == null}" th:href="@{/workflow/task/claim-task/{id}(id=${task.id},nextDo=handle)}" type="submit" class="btn btn-danger"><i class="icon-play"></i>Claim</a>
+					<a th:if="${task.assignee != null}" th:href="@{/workflow/task/unclaim-task/{id}(id=${task.id},nextDo=handle)}" type="submit" class="btn btn-danger"><i class="icon-play"></i>反Claim</a>
+					<button th:if="${task.assignee != null}" type="submit" class="btn btn-primary"><i class="icon-play"></i>完成任务</button>
 				</div>
 			</div>
 		</form>

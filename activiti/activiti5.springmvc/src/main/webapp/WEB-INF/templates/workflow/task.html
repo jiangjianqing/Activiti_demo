@@ -32,7 +32,10 @@
 					<td th:text="${task.createTime}"></td>
 					<td th:text="${task.assignee}"></td>
 					<td>						
+					<!-- 2017.08.29 改为在task form中签收
 						<a th:if="${task.assignee} == null" class="btn btn-danger" th:href="@{task/claim-task/{id}(id=${task.id})}">claim</a>
+					 -->
+						<a class="btn btn-warning" th:href="@{task/get-task-form/{id}(id=${task.id})}">查看</a>
 						<a th:if="${task.assignee} != null" class="btn btn-primary" th:href="@{task/get-task-form/{id}(id=${task.id})}">办理</a>
 					</td>
 				</tr>
