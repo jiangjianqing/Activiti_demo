@@ -61,7 +61,14 @@
 	        	</span>
 	        </a>
           	<ul class="treeview-menu">
-            	<li th:each="item : ${group.items}" th:class= "${activeGroup} == ${group.name} and ${activeItem} == ${item.name} ? active : ''"><a th:href="@{${item.href}}" th:text="${item.title}">Link in level 2</a></li>
+            	<li th:each="item : ${group.items}" th:class= "${activeGroup} == ${group.name} and ${activeItem} == ${item.name} ? active : ''">
+            		<a th:href="@{${item.href}}" ><span th:text="${item.title}">Link in level 2</span>
+            		<span class="pull-right-container" th:if="${item.name=='task' && tasks.size()>0}">
+            			<span class="label label-danger pull-right" th:text="${tasks.size()}">4</span>
+            		</span>	
+            		</a>
+            		
+            	</li>
           	</ul>
       	</li>
       </ul>
