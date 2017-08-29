@@ -46,18 +46,8 @@ public class TaskManageController extends AbstractViewController {
 	
 	@RequestMapping(value="/get-task-form/{taskId}")
 	public ModelAndView getTaskForm(@PathVariable String taskId){
-		ModelAndView mav=new ModelAndView("workflow/task-get-task-form");
-		Task task=taskService.createTaskQuery().taskId(taskId).singleResult();
-		TaskFormData taskFormData=formService.getTaskFormData(taskId);
-		boolean hasFormKey=taskFormData.getFormKey()!=null && taskFormData.getFormKey().length()>0;
-		mav.addObject("task",task);
-		mav.addObject("hasFormKey",hasFormKey);
-		if(task.getFormKey()!=null){
-			Object renderFormData=formService.getRenderedTaskForm(taskId);		
-			mav.addObject("formData", renderFormData);
-		}else{
-			mav.addObject("formData", taskFormData);
-		}
+		ModelAndView mav=ActivitiUtil.getTaskForm(taskId);
+		mav.setViewName("workflow/task-get-task-form");
 		return mav;
 	}
 	

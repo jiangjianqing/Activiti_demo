@@ -9,11 +9,20 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 
 import org.activiti.engine.FormService;
+import org.activiti.engine.IdentityService;
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.task.Task;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.ModelAndView;
 
+import common.db.model.identity.User;
 import common.service.utils.SpringContextHolder;
+import common.web.utils.SessionHelper;
 
 public class ActivitiUtil {
 	/**
@@ -41,6 +50,61 @@ public class ActivitiUtil {
 			}
 		}	
 		return formValues;
+	}
+	
+	public static ModelAndView getProcessStartForm(String processDefinitionId){
+		FormService formService = SpringContextHolder.getBean(FormService.class);
+		RepositoryService repositoryService = SpringContextHolder.getBean(RepositoryService.class);
+		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(processDefinitionId).singleResult();
+        boolean hasStartFormKey = processDefinition.hasStartFormKey();
+		ModelAndView mav=new ModelAndView();
+		// 根据是否有formkey属性判断使用哪个展示层
+		// 判断是否有formkey属性
+        if (hasStartFormKey) {
+            Object renderedStartForm = formService.getRenderedStartForm(processDefinitionId);
+            mav.addObject("startFormData", renderedStartForm);
+        } else { // 动态表单字段
+            StartFormData startFormData = formService.getStartFormData(processDefinitionId);
+            mav.addObject("startFormData", startFormData);
+            System.out.println("startFormData.size="+startFormData.getFormProperties().size());
+        }
+        mav.addObject("processDefinition", processDefinition);
+        mav.addObject("hasStartFormKey", hasStartFormKey);
+        System.out.println("hasStartFormKey="+hasStartFormKey);
+        
+		return mav;
+	}
+	
+	public static void  startProcessInstance(String processDefinitionId,HttpServletRequest request) {
+		FormService formService = SpringContextHolder.getBean(FormService.class);
+		IdentityService identityService = SpringContextHolder.getBean(IdentityService.class);
+		
+		User user=(User)SessionHelper.getAuthenticatedUser();
+		identityService.setAuthenticatedUserId(user.getUserName());//登录时已经执行过，20150905测试代码：有时StartUserID=null，导致任务无法继续处理
+		System.out.println("注意观察StartUserID=空的情况，会导致任务无法处理");
+		StartFormData formData=formService.getStartFormData(processDefinitionId);
+		List<FormProperty> formProperties=formData.getFormProperties();
+		boolean hasFormKey=formData.getFormKey()!=null && formData.getFormKey().length()>0;
+		Map<String,String> formValues=ActivitiUtil.generateFormValueMap(hasFormKey,formProperties,request);
+		formService.submitStartFormData(processDefinitionId, formValues);//生成提交数据
+	}
+	
+	public static ModelAndView getTaskForm(String taskId){
+		FormService formService = SpringContextHolder.getBean(FormService.class);
+		TaskService taskService = SpringContextHolder.getBean(TaskService.class);
+		ModelAndView mav=new ModelAndView();
+		Task task=taskService.createTaskQuery().taskId(taskId).singleResult();
+		TaskFormData taskFormData=formService.getTaskFormData(taskId);
+		boolean hasFormKey=taskFormData.getFormKey()!=null && taskFormData.getFormKey().length()>0;
+		mav.addObject("task",task);
+		mav.addObject("hasFormKey",hasFormKey);
+		if(task.getFormKey()!=null){
+			Object renderFormData=formService.getRenderedTaskForm(taskId);		
+			mav.addObject("formData", renderFormData);
+		}else{
+			mav.addObject("formData", taskFormData);
+		}
+		return mav;
 	}
 	
 	public static void completeTask(String taskId,HttpServletRequest request) {

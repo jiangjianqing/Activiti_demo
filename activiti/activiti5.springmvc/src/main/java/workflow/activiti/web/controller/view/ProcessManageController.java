@@ -110,47 +110,16 @@ public class ProcessManageController extends AbstractViewController{
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = "/get-start-form/{processDefinitionId}",method=RequestMethod.GET)
-	public ModelAndView getStartForm(@PathVariable("processDefinitionId") String processDefinitionId) throws Exception{
-		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(processDefinitionId).singleResult();
-        boolean hasStartFormKey = processDefinition.hasStartFormKey();
-		ModelAndView mav=new ModelAndView("workflow/process-get-start-form");
-		// 根据是否有formkey属性判断使用哪个展示层
-		// 判断是否有formkey属性
-        if (hasStartFormKey) {
-            Object renderedStartForm = formService.getRenderedStartForm(processDefinitionId);
-            mav.addObject("startFormData", renderedStartForm);
-        } else { // 动态表单字段
-            StartFormData startFormData = formService.getStartFormData(processDefinitionId);
-            mav.addObject("startFormData", startFormData);
-            System.out.println("startFormData.size="+startFormData.getFormProperties().size());
-        }
-        mav.addObject("processDefinition", processDefinition);
-        mav.addObject("hasStartFormKey", hasStartFormKey);
-        System.out.println("hasStartFormKey="+hasStartFormKey);
-        
+	public ModelAndView getProcessStartForm(@PathVariable("processDefinitionId") String processDefinitionId){
+		ModelAndView mav=ActivitiUtil.getProcessStartForm(processDefinitionId);
+		mav.setViewName("workflow/process-get-start-form");     
 		return mav;
 	}
 	
 	@RequestMapping(value="/start-process-instance/{processDefinitionId}",method=RequestMethod.POST)
 	public String startProcessInstance(@PathVariable String processDefinitionId,HttpSession session,HttpServletRequest request) throws Exception{
-		String url="";
-
-		if(SessionHelper.isAuthenticated()){
-			User user=(User)SessionHelper.getAuthenticatedUser();
-			identityService.setAuthenticatedUserId(user.getUserName());//登录时已经执行过，20150905测试代码：有时StartUserID=null，导致任务无法继续处理
-			System.out.println("注意观察StartUserID=空的情况，会导致任务无法处理");
-			StartFormData formData=formService.getStartFormData(processDefinitionId);
-			List<FormProperty> formProperties=formData.getFormProperties();
-			boolean hasFormKey=formData.getFormKey()!=null && formData.getFormKey().length()>0;
-			Map<String,String> formValues=ActivitiUtil.generateFormValueMap(hasFormKey,formProperties,request);
-			formService.submitStartFormData(processDefinitionId, formValues);//生成提交数据
-			
-			url="redirect:/"+getDefaultRequestMappingUrl();
-		}else{
-			System.out.println("当前没有登陆的用户");
-			url="redirect:/identity/user";
-		}
-		return url;
+		ActivitiUtil.startProcessInstance(processDefinitionId, request);
+		return "redirect:/"+getDefaultRequestMappingUrl();
 	}
 	
 	
