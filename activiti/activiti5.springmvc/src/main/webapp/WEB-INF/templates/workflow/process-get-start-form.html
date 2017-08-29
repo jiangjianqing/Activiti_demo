@@ -15,7 +15,7 @@
 		<form class="form-horizontal" role="form"
 		  th:action="@{'/workflow/process/start-process-instance/'+${processDefinition.id}}" method="post">
 			
-			<div th:if="${hasStartFormKey}" th:text="${startFormData}">
+			<div th:if="${hasStartFormKey}" th:utext="${startFormData}">
 			</div>
 			<th:block th:if="${hasStartFormKey} == false">
 				<div class="form-group" th:each="fp : ${startFormData.formProperties}">

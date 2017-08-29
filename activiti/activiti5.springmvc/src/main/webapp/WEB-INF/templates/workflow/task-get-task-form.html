@@ -15,7 +15,7 @@
 		<form class="form-horizontal" role="form"
 			th:action="@{/workflow/task/complete-task/{id}(id=${task.id})}" method="post">
 			
-			<div th:if="${hasFormKey}" th:text="${startFormData}">
+			<div th:if="${hasFormKey}" th:utext="${formData}">
 			</div>
 			<th:block th:if="${hasFormKey} == false">
 				<div class="form-group" th:each="fp : ${formData.formProperties}">
@@ -38,7 +38,7 @@
 			<div class="form-group">
 				<div class="controls">
 					<a href="javascript:history.back();" class="btn"><i class="icon-backward"></i>返回列表</a>
-					<button type="submit" class="btn"><i class="icon-play"></i>启动流程</button>
+					<button type="submit" class="btn btn-primary"><i class="icon-play"></i>确认</button>
 				</div>
 			</div>
 		</form>
