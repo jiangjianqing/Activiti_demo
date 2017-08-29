@@ -23,17 +23,17 @@ CREATE VIEW ACT_ID_GROUP as select
     Convert(COMMON_ID_ROLE.NAME,char(64)) as ID_
     ,0 as REV_
     ,COMMON_ID_ROLE.NAME as NAME_
-    ,COMMON_ID_ROLE.TYPE as TYPE_
+    ,'assignment' as TYPE_
     from COMMON_ID_ROLE
 ;
 
-/*20170812 以下表格中使用了USER.id Role.id，可能存在问题*/
-
 DROP VIEW if exists ACT_ID_MEMBERSHIP;
-CREATE VIEW ACT_ID_MEMBERSHIP as select 
-    Convert(COMMON_ID_USER_ROLE.USER_ID,char(64)) as USER_ID_
-    ,Convert(COMMON_ID_USER_ROLE.ROLE_ID,char(64)) as GROUP_ID_
-    from COMMON_ID_USER_ROLE
+CREATE VIEW ACT_ID_MEMBERSHIP as  select 
+    Convert(COMMON_ID_USER.USERNAME,char(64)) as USER_ID_
+    ,Convert(COMMON_ID_ROLE.NAME,char(64)) as GROUP_ID_
+    from COMMON_ID_USER,COMMON_ID_ROLE,COMMON_ID_USER_ROLE 
+    where COMMON_ID_USER.ID = COMMON_ID_USER_ROLE.USER_ID 
+		and COMMON_ID_ROLE.ID = COMMON_ID_USER_ROLE.ROLE_ID
 ;
 
 
@@ -41,7 +41,7 @@ DROP VIEW if exists ACT_ID_INFO;
 CREATE VIEW ACT_ID_INFO as select 
     Convert(COMMON_ID_USER.ID,char(64)) as ID_
     ,0 as REV_
-    ,Convert(COMMON_ID_USER.ID,char(64)) as USER_ID_
+    ,Convert(COMMON_ID_USER.USERNAME,char(64)) as USER_ID_
     ,Convert('',char(64)) as TYPE_
     ,Convert('',char(255)) as KEY_
     ,Convert('',char(255)) as VALUE_
@@ -49,4 +49,3 @@ CREATE VIEW ACT_ID_INFO as select
     ,Convert('',char(255)) as PARENT_ID_
     from COMMON_ID_USER
 ;
-

@@ -35,7 +35,7 @@
 						</ul>
 					</td>
 					<td>
-						<button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit-device">修改</button> <a class="btn btn-default btn-xs" th:href="@{'user/delete/'+${user.id}}">删除</a>
+						<button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit-device">修改</button> <a class="btn btn-default btn-xs" th:href="@{user/delete/{id}(id=${user.id})}">删除</a>
 					</td>
 				</tr>
 			</tbody>
