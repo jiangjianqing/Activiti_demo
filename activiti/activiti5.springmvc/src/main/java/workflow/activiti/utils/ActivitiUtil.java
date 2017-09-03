@@ -9,12 +9,14 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 
 import org.activiti.engine.FormService;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.slf4j.Logger;
@@ -141,10 +143,13 @@ public class ActivitiUtil {
 	public static ModelAndView getTaskForm(String taskId){
 		FormService formService = SpringContextHolder.getBean(FormService.class);
 		TaskService taskService = SpringContextHolder.getBean(TaskService.class);
+		HistoryService historyService = SpringContextHolder.getBean(HistoryService.class);
 		ModelAndView mav=new ModelAndView();
 		Task task=taskService.createTaskQuery().taskId(taskId).singleResult();
+		List<HistoricTaskInstance> subTasks = historyService.createHistoricTaskInstanceQuery().taskParentTaskId(taskId).list();
 		mav.addObject("task",task);
-		
+		mav.addObject("subTasks",subTasks);
+
 		boolean hasFormKey= false;
 		TaskFormData taskFormData=formService.getTaskFormData(taskId);
 		if (taskFormData != null) {//当taskFormData == null时，为sub task
