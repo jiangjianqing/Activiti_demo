@@ -69,15 +69,21 @@ public class ActivitiUtil {
 				
 			}
 		}else{//动态表单
-			for(FormProperty prop:formProperties){
-				if(prop.isWritable()){
-					String propId = FP_PREFIX+prop.getId();
-					//2017.08.29 为确保没有过多的垃圾数据保存到activiti数据库，所以要求将需要保存的数据加上'fp_'前缀
-					String value=request.getParameter(propId);
-					//String value=request.getParameter(prop.getId());
-					formValues.put(prop.getId(), value);
-				}
+			logger.debug("generateFormValueMap正在处理动态表单...");
+			if (formProperties!=null) {
+				for(FormProperty prop:formProperties){
+					if(prop.isWritable()){
+						String propId = FP_PREFIX+prop.getId();
+						//2017.08.29 为确保没有过多的垃圾数据保存到activiti数据库，所以要求将需要保存的数据加上'fp_'前缀
+						String value=request.getParameter(propId);
+						//String value=request.getParameter(prop.getId());
+						formValues.put(prop.getId(), value);
+					}
+				}	
+			}else {
+				logger.debug("formProperties == null，正在处理sub task");
 			}
+			
 		}	
 		return formValues;
 	}
@@ -137,16 +143,20 @@ public class ActivitiUtil {
 		TaskService taskService = SpringContextHolder.getBean(TaskService.class);
 		ModelAndView mav=new ModelAndView();
 		Task task=taskService.createTaskQuery().taskId(taskId).singleResult();
-		TaskFormData taskFormData=formService.getTaskFormData(taskId);
-		boolean hasFormKey=taskFormData.getFormKey()!=null && taskFormData.getFormKey().length()>0;
 		mav.addObject("task",task);
-		mav.addObject("hasFormKey",hasFormKey);
-		if(task.getFormKey()!=null){
-			Object renderFormData=formService.getRenderedTaskForm(taskId);		
-			mav.addObject("formData", renderFormData);
-		}else{
-			mav.addObject("formData", taskFormData);
+		
+		boolean hasFormKey= false;
+		TaskFormData taskFormData=formService.getTaskFormData(taskId);
+		if (taskFormData != null) {//当taskFormData == null时，为sub task
+			hasFormKey=taskFormData.getFormKey()!=null && taskFormData.getFormKey().length()>0;
+			if(task.getFormKey()!=null){
+				Object renderFormData=formService.getRenderedTaskForm(taskId);		
+				mav.addObject("formData", renderFormData);
+			}else{
+				mav.addObject("formData", taskFormData);
+			}
 		}
+		mav.addObject("hasFormKey",hasFormKey);
 		mav.addObject("FP_PREFIX", FP_PREFIX);
 		return mav;
 	}
@@ -158,10 +168,18 @@ public class ActivitiUtil {
 	 */
 	public static void completeTask(String taskId,HttpServletRequest request) {
 		FormService formService= SpringContextHolder.getBean(FormService.class);
+		TaskService taskService = SpringContextHolder.getBean(TaskService.class);
 		TaskFormData taskFormData=formService.getTaskFormData(taskId);
-		boolean hasFormKey=taskFormData.getFormKey()!=null && taskFormData.getFormKey().length()>0;
-		List<FormProperty> formProperties=taskFormData.getFormProperties();
-		Map<String,String> formValues=ActivitiUtil.generateFormValueMap(hasFormKey,formProperties,request);//生成提交数据
-		formService.submitTaskFormData(taskId, formValues);
+		
+		if(taskFormData!=null) { //bpm中的任务使用formService.submitTaskFormData来完成任务
+			boolean hasFormKey = taskFormData.getFormKey()!=null && taskFormData.getFormKey().length()>0;
+			List<FormProperty>  formProperties=taskFormData.getFormProperties();
+			Map<String,String> formValues=ActivitiUtil.generateFormValueMap(hasFormKey,formProperties,request);//生成提交数据
+			System.out.println(formValues);
+			formService.submitTaskFormData(taskId, formValues);
+		}else {//非常重要：当taskFormData == null时，为sub task,需要使用taskService.complete来完成任务
+			taskService.complete(taskId, null);
+		}
+		
 	}
 }

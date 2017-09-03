@@ -1,5 +1,6 @@
 package workflow.activiti.web.controller.view;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.activiti.engine.FormService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.IdentityLinkType;
 import org.activiti.engine.task.Task;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -92,5 +95,34 @@ public class TaskManageController extends AbstractViewController {
 	public String completeTask(@PathVariable String taskId,HttpServletRequest request) throws Exception{
 		ActivitiUtil.completeTask(taskId, request);
 		return "redirect:/"+getDefaultRequestMappingUrl();
+	}
+	
+	@RequestMapping(value="subtask/add/{taskId}",method=RequestMethod.GET)
+	public ModelAndView getSubTaskForm(@PathVariable("taskId") String parentTaskId) {
+		ModelAndView mav = new ModelAndView("workflow/task-get-sub-task-form");
+		Task parentTask = taskService.createTaskQuery().taskId(parentTaskId).singleResult();
+		mav.addObject("parentTask", parentTask);
+		return mav;
+	}
+	
+	@RequestMapping(value="subtask/add/{taskId}",method=RequestMethod.POST)
+	public ModelAndView addSubTask(@PathVariable("taskId") String parentTaskId
+			,@RequestParam("taskName") String taskName,@RequestParam(value="description",required = false) String description) throws Exception {
+		//ModelAndView mav=ActivitiUtil.getTaskForm(taskId);
+		Task newTask = taskService.newTask();//非常重要：这里创建任务时可以指定ID，不由Activiti自动生成
+		newTask.setParentTaskId(parentTaskId);
+		User user=(User)SessionHelper.getAuthenticatedUser();
+		newTask.setOwner(user.getUserName());//设置拥有人
+		newTask.setAssignee(user.getUserName());//设置办理人
+		newTask.setName(taskName);//设置任务名称
+		newTask.setDescription(description);
+		newTask.setDueDate(new Date());
+		//newTask.setFormKey(formKey);
+		//newTask.setPriority(priority);
+		//newTask.setTenantId(tenantId);
+		taskService.saveTask(newTask);
+		ModelAndView mav = new ModelAndView("redirect:/"+getDefaultRequestMappingUrl()+"/get-task-form/"+parentTaskId);
+
+		return mav;
 	}
 }
