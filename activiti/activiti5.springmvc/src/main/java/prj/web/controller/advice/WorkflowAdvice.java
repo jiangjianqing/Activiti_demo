@@ -1,5 +1,6 @@
 package prj.web.controller.advice;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.activiti.engine.TaskService;
@@ -47,20 +48,22 @@ public class WorkflowAdvice extends AbstractHelperClass {
   	@ModelAttribute("tasks")
     public List<Task> addTasks() {  
   		AuthenticationUser user=(AuthenticationUser)SessionHelper.getAuthenticatedUser();
-		/* 2017.08.26 屏蔽
-  		//读取直接分配给当前用户或已经签收的任务
-		List<Task> doingTasks=taskService.createTaskQuery().taskAssignee(user.getId()).list();
-		//等待签收的任务
-		List<Task> wattingClaimTasks=taskService.createTaskQuery().taskCandidateUser(user.getId()).list();
-		//合并两种任务
-		List<Task> allTasks=new ArrayList<Task>();
-		allTasks.addAll(doingTasks);
-		allTasks.addAll(wattingClaimTasks);
-		*/
+
 		//activiti5.16以后提供的方法，一步就可以获取上述两种任务
   		if(user!=null) {
   			//2017.08.27 注意StartUserId为空的情况，会导致任务找不到
-  			List<Task> allTasks=taskService.createTaskQuery().taskCandidateOrAssigned(user.getUsername()).list();
+  			//List<Task> allTasks=taskService.createTaskQuery().taskCandidateOrAssigned(user.getUsername()).list();
+  			//读取直接分配给当前用户或已经签收的任务
+  			List<Task> doingTasks=taskService.createTaskQuery().taskAssignee(user.getUsername()).list();
+  			//等待签收的任务
+  			List<Task> wattingClaimTasks=taskService.createTaskQuery().taskCandidateUser(user.getUsername()).list();
+  			//除了包含taskAssignee，还包含owner 
+  			List<Task> involvedTasks = taskService.createTaskQuery().taskInvolvedUser(user.getUsername()).list();
+  			//合并两种任务
+  			List<Task> allTasks=new ArrayList<Task>();
+  			//allTasks.addAll(doingTasks);
+  			allTasks.addAll(wattingClaimTasks);
+  			allTasks.addAll(involvedTasks);
   			System.out.println("allTasks.size="+allTasks.size());
   			return allTasks; 
   		}else {

@@ -11,7 +11,23 @@
 
 <body>
 	<div th:fragment="main-content">
-	
+		<span>
+			<i class="glyphicon glyphicon-calendar"></i>
+			<span th:text="'到期日：'+(${task.dueDate} == null ? '无到期日' : ${task.dueDate})"/>
+		</span>
+		
+		<span>
+			<i class="glyphicon glyphicon-flag"></i>
+			<span th:if="${task.priority} >=0 and ${task.priority} <= 19" th:text="'优先级：低'"/>
+			<span th:if="${task.priority} >=20 and ${task.priority} <= 39" th:text="'优先级：较低'"/>
+			<span th:if="${task.priority} >=40 and ${task.priority} <= 59" th:text="'优先级：一般'"/>
+			<span th:if="${task.priority} >=60 and ${task.priority} <= 79" th:text="'优先级：较高'"/>
+			<span th:if="${task.priority} >=80 and ${task.priority} <= 100" th:text="'优先级：高'"/>
+		</span>
+		<span>
+			<i class="glyphicon glyphicon-calendar"></i>
+			<span th:text="'创建日期：'+${task.createTime}"/>
+		</span>
 		<form class="form-horizontal" role="form"
 			th:action="@{/workflow/task/complete-task/{id}(id=${task.id})}" method="post">
 			
@@ -37,9 +53,12 @@
 			</th:block>
 			<div class="form-group">
 				<div class="controls">
-					<a href="javascript:history.back();" class="btn"><i class="icon-backward"></i>返回列表</a>
+				<!-- <a href="javascript:history.back();" class="btn"><i class="icon-backward"></i>返回列表</a> -->
+					<a th:href="@{/workflow/task}" class="btn"><i class="icon-backward"></i>返回列表</a>
 					<a th:if="${task.assignee == null}" th:href="@{/workflow/task/claim-task/{id}(id=${task.id},nextDo=handle)}" type="submit" class="btn btn-danger"><i class="icon-play"></i>Claim</a>
+					<th:block th:if="${canUnclaim}">
 					<a th:if="${task.assignee != null}" th:href="@{/workflow/task/unclaim-task/{id}(id=${task.id},nextDo=handle)}" type="submit" class="btn btn-danger"><i class="icon-play"></i>反Claim</a>
+					</th:block>
 					<button th:if="${task.assignee != null}" type="submit" class="btn btn-primary"><i class="icon-play"></i>完成任务</button>
 				</div>
 			</div>
