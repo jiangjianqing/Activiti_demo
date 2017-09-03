@@ -13,10 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.activiti.engine.FormService;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.repository.DeploymentBuilder;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
@@ -44,6 +47,9 @@ public class ProcessManageController extends AbstractViewController{
 	protected IdentityService identityService;
 	
 	@Autowired
+	protected HistoryService historyService;
+	
+	@Autowired
 	private RepositoryService repositoryService;
 	@Autowired
 	private FormService formService;
@@ -53,6 +59,25 @@ public class ProcessManageController extends AbstractViewController{
 		ModelAndView mav = new ModelAndView(getDefaultRequestMappingUrl());
 		List<ProcessDefinition> processDefinitionList=repositoryService.createProcessDefinitionQuery().list();
 		mav.addObject("processDefinitionList", processDefinitionList);
+		return mav;
+	}
+	
+	@RequestMapping(value="/finished")
+	public ModelAndView getFinishedProcessInstanceList() throws Exception {
+		//Page<HistoricProcessInstance> page = new Page<HistoricProcessInstance>(20, 0);//分页
+		HistoricProcessInstanceQuery query= historyService.createHistoricProcessInstanceQuery().finished();//只查询已经结束的数据
+		//query.involvedUser(userId)
+		//query.processDefinitionId(processDefinitionId)//可以只查询目标process
+		//query.listPage(firstResult, maxResults)
+		List<HistoricProcessInstance> historicProcessInstanceList = query.list();
+		Map<String,ProcessDefinition> definitionMap = new HashMap<String,ProcessDefinition>();
+		for(HistoricProcessInstance historicProcessInstance:historicProcessInstanceList) {
+			//将ProcessDefinition转换到definitionMap中
+			//definitionCache(definitionMap,historicProcessInstance.getProcessDefinitionId());
+		}
+		ModelAndView mav = new ModelAndView(getDefaultRequestMappingUrl()+"-historic");
+		mav.addObject("historicProcessInstanceList", historicProcessInstanceList);
+		//注意：HistoricProcessInstance中的Map<String, Object> getProcessVariables()可以获取process变量
 		return mav;
 	}
 	

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:include="fragments/admin-lte-layout :: page('workflow','historic-process')"
+	>
+	<!--2017.08.23 使用th:include后 可以完全废弃 layout:decorate="~{fragments/dialect-layout}"  -->
+<!--上述为 layout文件路径-->
+<head >
+	<title>index</title>
+
+</head>
+
+<body>
+	<div th:fragment="main-content">
+	
+		<table class="table">
+			<caption>流程定义列表</caption>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>流程定义名称</th>
+					<th>流程定义ID</th>
+					<th>StartUserId</th>
+					<th>StartActivityId</th>
+					<th>StartTime</th>
+					<th>EndTime</th>
+					<th>BusinessKey</th>
+					<th>SuperProcessInstanceId</th>
+					<th>TenantId</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="hpi : ${historicProcessInstanceList}">
+					<td th:text="${hpi.id}"></td>
+					<td th:text="${hpi.name}"></td>
+					<td th:text="${hpi.processDefinitionId}"></td>
+					<td th:text="${hpi.startUserId}"></td>
+					<td th:text="${hpi.startActivityId}"></td>
+					<td th:text="${hpi.startTime}"></td>
+					<td th:text="${hpi.endTime}"></td>
+					<td th:text="${hpi.businessKey}"></td>
+					<td th:text="${hpi.superProcessInstanceId}"></td>
+					<td th:text="${hpi.tenantId}"></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<!-- 模态框（Modal） -->
+			<div class="modal fade" id="deployProcessDefinition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+								&times;
+							</button>
+							<h4 class="modal-title" id="myModalLabel">
+								上传流程文件
+							</h4>
+						</div>
+						<form class="form-horizontal" role="form"
+							action="${logoutUrl}" th:action="@{process/deploy(${_csrf.parameterName}=${_csrf.token})}" method="post" enctype="multipart/form-data"
+							>
+							<div class="modal-body">
+								<div class="form-group">
+									<label for="lastname" class="col-sm-2 control-label">BPMN文件</label>
+									<div class="col-sm-10">
+										<input type="file" name="file" >
+									</div>
+								</div>
+							</div>
+							
+							<div class="modal-body">
+								<div class="form-group">
+									<label for="lastname" class="col-sm-2 control-label">BPMN文件</label>
+									<div class="col-sm-10">
+										<input type="file" name="file" >
+									</div>
+								</div>
+							</div>
+							
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+								</button>
+								<button type="submit" class="btn btn-primary">
+									上传
+								</button>
+							</div>
+						</form>
+						
+						
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal -->
+			</div>
+		
+	</div>
+</body>
+
+</html>
