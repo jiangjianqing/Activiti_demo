@@ -148,6 +148,10 @@ public class ActivitiUtil {
 		Task task=taskService.createTaskQuery().taskId(taskId).singleResult();
 		List<HistoricTaskInstance> subTasks = historyService.createHistoricTaskInstanceQuery().taskParentTaskId(taskId).list();
 		mav.addObject("task",task);
+		if (task.getParentTaskId()!=null) {
+			HistoricTaskInstance parentTask = historyService.createHistoricTaskInstanceQuery().taskId(task.getParentTaskId()).singleResult();
+			mav.addObject("parentTask", parentTask);
+		}
 		mav.addObject("subTasks",subTasks);
 
 		boolean hasFormKey= false;

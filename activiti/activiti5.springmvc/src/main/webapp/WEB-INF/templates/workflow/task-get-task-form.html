@@ -11,6 +11,10 @@
 
 <body>
 	<div th:fragment="main-content">
+		<span th:if="${parentTask}">
+			<i class="glyphicon glyphicon-info-sign"></i>
+			<span th:text="'父任务:'+${parentTask.name}"></span>
+		</span>
 		<span>
 			<i class="glyphicon glyphicon-calendar"></i>
 			<span th:text="'到期日：'+(${task.dueDate} == null ? '无到期日' : ${task.dueDate})"/>
