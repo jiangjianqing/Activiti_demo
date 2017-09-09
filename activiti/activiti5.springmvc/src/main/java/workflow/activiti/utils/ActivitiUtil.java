@@ -18,6 +18,8 @@ import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.task.Attachment;
+import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,12 +124,8 @@ public class ActivitiUtil {
 	 * @param request
 	 */
 	public static void  startProcessInstance(String processDefinitionId,HttpServletRequest request) {
+		setAuthenticatedUserId();
 		FormService formService = SpringContextHolder.getBean(FormService.class);
-		IdentityService identityService = SpringContextHolder.getBean(IdentityService.class);
-		
-		User user=(User)SessionHelper.getAuthenticatedUser();
-		identityService.setAuthenticatedUserId(user.getUserName());//登录时已经执行过，20150905测试代码：有时StartUserID=null，导致任务无法继续处理
-		logger.debug("注意观察StartUserID=空的情况，会导致任务无法处理");
 		StartFormData formData=formService.getStartFormData(processDefinitionId);
 		List<FormProperty> formProperties=formData.getFormProperties();
 		boolean hasFormKey=formData.getFormKey()!=null && formData.getFormKey().length()>0;
@@ -148,9 +146,26 @@ public class ActivitiUtil {
 		Task task=taskService.createTaskQuery().taskId(taskId).singleResult();
 		List<HistoricTaskInstance> subTasks = historyService.createHistoricTaskInstanceQuery().taskParentTaskId(taskId).list();
 		mav.addObject("task",task);
+		
+		//特别注意：获取流程的审批意见时，可以获取整个processInstance的，也可以获取指定task的
+		//获取task的审批意见 应用模式还没有想好
+		logger.debug("审批意见的应用模式还没有想好，要注意");
+		String processInstanceId = taskService.createTaskQuery().taskId(taskId).singleResult().getProcessInstanceId();
+		List<HistoricTaskInstance> list = historyService.createHistoricTaskInstanceQuery().processInstanceId(processInstanceId).list();
+		Map<String,String> taskNames = new HashMap<String,String>();
+		for(HistoricTaskInstance historicTaskInstance : list) {
+			taskNames.put(historicTaskInstance.getId(), historicTaskInstance.getName());
+		}
+		mav.addObject("taskNames", taskNames);//方便获取comment是在哪个task提交
+		
 		if (task.getParentTaskId()!=null) {
 			HistoricTaskInstance parentTask = historyService.createHistoricTaskInstanceQuery().taskId(task.getParentTaskId()).singleResult();
 			mav.addObject("parentTask", parentTask);
+			//subtask没有流程实例，所以其comment需要通过TASK类型获取
+			mav.addObject("comments", ActivitiUtil.getComments(ActivitiDataType.TASK, taskId, null));
+		}else {
+			//普通task的comment可以直接通过PROCESSINSTANCE获取
+			mav.addObject("comments", ActivitiUtil.getComments(ActivitiDataType.PROCESSINSTANCE, processInstanceId, null));
 		}
 		mav.addObject("subTasks",subTasks);
 
@@ -167,6 +182,7 @@ public class ActivitiUtil {
 		}
 		mav.addObject("hasFormKey",hasFormKey);
 		mav.addObject("FP_PREFIX", FP_PREFIX);
+		
 		return mav;
 	}
 	
@@ -190,5 +206,103 @@ public class ActivitiUtil {
 			taskService.complete(taskId, null);
 		}
 		
+	}
+	
+	/**
+	 * 添加activiti Comment（审批意见） ,审批意见是工作流引擎中一个不可或缺的模块
+	 * 注意：意见总是和task相关，而人可以参与的任务只有用户任务，所以意见依附于用户任务
+	 * @param taskId
+	 * @param processInstanceId
+	 * @param type
+	 * @param message
+	 */
+	public static void addComment(String taskId,String processInstanceId,String type,String message) {
+		setAuthenticatedUserId();
+		TaskService taskService = SpringContextHolder.getBean(TaskService.class);
+		if(processInstanceId==null || processInstanceId.trim().length()==0) {
+			processInstanceId = taskService.createTaskQuery().taskId(taskId).singleResult().getProcessInstanceId();
+		}
+		if(type!=null && type.trim().length()>0) {
+			taskService.addComment(taskId, processInstanceId, type, message);
+		}else {
+			taskService.addComment(taskId, processInstanceId, message);
+		}
+	
+	}
+	
+	/**
+	 * 获取指定类型的审批意见列表
+	 * @param commentDataType
+	 * @param id processInstanceId 或者 taskId
+	 * @param type
+	 * @return
+	 */
+	public static List<Comment> getComments(ActivitiDataType dataType,String id,String type){
+		TaskService taskService = SpringContextHolder.getBean(TaskService.class);
+		List<Comment> ret = null;
+		switch(dataType) {
+			case PROCESSINSTANCE:{
+				if(type!=null && type.trim().length()>0) {
+					ret = taskService.getProcessInstanceComments(id, type); 
+				}else {
+					ret = taskService.getProcessInstanceComments(id);
+				}
+				break;
+			}
+			case TASK:{
+				if(type!=null && type.trim().length()>0) {
+					ret = taskService.getTaskComments(id, type); 
+				}else {
+					ret = taskService.getTaskComments(id);
+				}
+				break;
+			}
+			default:{
+				logger.error("ActivitiDataType 未处理，无法获取数据");
+			}
+				
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * 获取附件清单
+	 * @param dataType
+	 * @param id
+	 * @return
+	 */
+	public static List<Attachment> getAttachments(ActivitiDataType dataType,String id){
+		TaskService taskService = SpringContextHolder.getBean(TaskService.class);
+		List<Attachment> ret = null;
+		switch(dataType) {
+			case PROCESSINSTANCE:{
+				ret = taskService.getProcessInstanceAttachments(id);
+				break;
+			}
+			case TASK:{
+				ret = taskService.getTaskAttachments(id);
+				break;
+			}
+			default:{
+				logger.error("ActivitiDataType 未处理，无法获取数据");
+			}
+		}
+		
+		return ret;
+	}
+	
+	
+	/**
+	 * 设定当前操作activiti的用户,在需要修改activiti数据时一般都需要先进行本动作
+	 * @return
+	 */
+	private static User setAuthenticatedUserId() {
+		IdentityService identityService = SpringContextHolder.getBean(IdentityService.class);
+		
+		User user=(User)SessionHelper.getAuthenticatedUser();
+		identityService.setAuthenticatedUserId(user.getUserName());//登录时已经执行过，20150905测试代码：有时StartUserID=null，导致任务无法继续处理
+		logger.debug("注意观察StartUserID=空的情况，会导致任务无法处理");
+		return user;
 	}
 }

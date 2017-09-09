@@ -1,6 +1,7 @@
 package workflow.activiti.web.controller.view;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,9 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.activiti.engine.FormService;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.IdentityLinkType;
@@ -26,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import common.db.model.identity.User;
 import common.web.controller.AbstractViewController;
 import common.web.utils.SessionHelper;
+import workflow.activiti.utils.ActivitiDataType;
 import workflow.activiti.utils.ActivitiUtil;
 
 @Controller
@@ -36,6 +40,9 @@ public class TaskManageController extends AbstractViewController {
 	
 	@Autowired
 	private FormService formService;
+	
+	@Autowired
+	private HistoryService historyService;
 
 	@RequestMapping(value= {"","/"})
 	public ModelAndView getTaskList() throws Exception {
@@ -69,6 +76,14 @@ public class TaskManageController extends AbstractViewController {
 		ModelAndView mav=ActivitiUtil.getTaskForm(taskId);
 		mav.setViewName("workflow/task-get-task-form");
 		mav.addObject("canUnclaim", canUnclaim(taskId));
+		return mav;
+	}
+	
+	@RequestMapping(value="/comment/add/{taskId}",method=RequestMethod.POST)
+	public ModelAndView addComment(@PathVariable String taskId
+			,@RequestParam(value="processInstanceId",required=false,defaultValue="") String processInstanceId,@RequestParam("message") String message){
+		ActivitiUtil.addComment(taskId, processInstanceId, null, message);
+		ModelAndView mav = new ModelAndView("redirect:/"+getDefaultRequestMappingUrl()+"/get-task-form/"+taskId); 
 		return mav;
 	}
 	
