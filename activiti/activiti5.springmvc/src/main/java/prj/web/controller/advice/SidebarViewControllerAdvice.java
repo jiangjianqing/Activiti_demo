@@ -77,7 +77,11 @@ public class SidebarViewControllerAdvice extends AbstractHelperClass {
   		item.setHref("/workflow/task");
   		group.getItems().add(item);
   		
-  		
+  		item=new SimpleSidebarItem();
+  		item.setName("execution");
+  		item.setTitle("Execution");
+  		item.setHref("/workflow/execution");
+  		group.getItems().add(item);
   		
   		list.add(group);
   		

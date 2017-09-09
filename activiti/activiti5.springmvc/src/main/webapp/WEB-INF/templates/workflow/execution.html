@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:include="fragments/admin-lte-layout :: page('workflow','execution')"
+	>
+	<!--2017.08.23 使用th:include后 可以完全废弃 layout:decorate="~{fragments/dialect-layout}"  -->
+<!--上述为 layout文件路径-->
+<head >
+	<title>index</title>
+
+</head>
+
+<body>
+	<div th:fragment="main-content">
+	
+		<table class="table">
+			<caption>流程定义列表</caption>
+			<thead>
+				<tr>
+					<th>执行ID</th>
+					<th>activityId</th>
+					<th>流程实例ID</th>
+					<th>所属流程</th>
+					<th>流程定义ID</th>
+					<th>当前节点</th>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:each="activity : ${currentActivityMap}">
+				<tr th:each="activityId : ${activity.value}" >
+					<td th:text="${activity.key}"/>
+					<td th:text="${activityId}"/>
+					<td th:text="${taskMap.get(activityId).processInstanceId}"/>
+					<td th:text="${definitionMap.get(taskMap.get(activityId).processDefinitionId).name}"/>
+					<td th:text="${taskMap.get(activityId).processDefinitionId}"/>
+
+					<td >
+					<!-- 还没有找到判断是否引用了外部流程的办法 p319
+						<span title="引用了外部流程" 
+							th:if="${taskMap.get(activityId).processDefinitionId == e.processDefinitionId}"
+							th:text="${definitionMap.get(taskMap.get(activityId).processDefinitionId).name}"></span>
+							 -->
+						<span th:text="${taskMap.get(activityId).name}"></span>
+						<span class="text-info" th:if="${taskMap.get(activityId).assignee == null}">(未签收)</span>
+						<span class="text-info" th:if="${taskMap.get(activityId).assignee}" th:text="${'(办理中 '+taskMap.get(activityId).assignee+')'}"></span>
+					</td>
+				</tr>
+				</th:block>
+				
+			</tbody>
+		</table>
+		
+		
+	</div>
+</body>
+
+</html>
