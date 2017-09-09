@@ -27,7 +27,7 @@
 			<tbody>
 				<tr th:each="task : ${tasks}">
 					<td th:text="${task.id}"></td>
-					<td th:text="${task.name}"></td>
+					<td th:text="${task.name} + (${task.parentTaskId}!=null?'(subTask)':'')"></td>
 					<td th:text="${task.processInstanceId}"></td>
 					<td th:text="${task.createTime}"></td>
 					<td th:text="${task.assignee}"></td>

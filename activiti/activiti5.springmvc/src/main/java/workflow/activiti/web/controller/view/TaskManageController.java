@@ -105,6 +105,14 @@ public class TaskManageController extends AbstractViewController {
 		return mav;
 	}
 	
+	@RequestMapping(value="subtask/delete/{taskId}",method=RequestMethod.GET)
+	public ModelAndView deleteSubTask(@PathVariable("taskId") String taskId, @RequestParam("parentTaskId") String parentTaskId) throws Exception {
+		ModelAndView mav = new ModelAndView("redirect:/"+getDefaultRequestMappingUrl()+"/get-task-form/"+parentTaskId);
+		taskService.deleteTask(taskId);
+		mav.addObject("parentTask", parentTaskId);
+		return mav;
+	}
+	
 	@RequestMapping(value="subtask/add/{taskId}",method=RequestMethod.POST)
 	public ModelAndView addSubTask(@PathVariable("taskId") String parentTaskId
 			,@RequestParam("taskName") String taskName,@RequestParam(value="description",required = false) String description) throws Exception {

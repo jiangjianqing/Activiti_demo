@@ -79,9 +79,13 @@
 				</div>
 			</div>
 		</form>
-		<a th:href="@{../subtask/add/{id}(id=${task.id})}">添加子任务</a>
+		<i class= "glyphicon glyphicon-plus"></i><a th:href="@{../subtask/add/{id}(id=${task.id})}">添加子任务</a>
 		<ul>
-			<li th:each="task : ${subTasks}" th:text="${task.name}+(${task.endTime} ? '(已完成)':'')"></li>
+			<li th:each="task : ${subTasks}">
+				<div style="display:inline-block"><i class="glyphicon glyphicon-ok"></i><span th:text="${task.name}+(${task.endTime} ? ' | (已完成)'+${task.endTime}:'')"></span></div>
+				
+				<a th:href="@{../subtask/delete/{taskId}(taskId=${task.id},parentTaskId=${task.parentTaskId})}" th:if="${task.endTime} == null">删除</a>
+			</li>
 		</ul>
 	</div>
 </body>
