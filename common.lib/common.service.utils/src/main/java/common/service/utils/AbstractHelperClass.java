@@ -69,13 +69,15 @@ public abstract class AbstractHelperClass {
 	 * @return
 	 * @throws Exception
 	 */
-	protected String getDefaultRequestMappingUrl() throws Exception {
+	protected String getDefaultRequestMappingUrl() {
 		RequestMapping mapping = this.getClass().getAnnotation(RequestMapping.class);
 		if(mapping == null) {
-			throw new Exception(this.getClass().getName()+"没有增加RequestMapping 注解.");
+			logger.error("没有增加RequestMapping 注解.");
+			//throw new Exception(this.getClass().getName()+"没有增加RequestMapping 注解.");
 		}
 		if (mapping.value().length==0) {
-			throw new Exception(this.getClass().getName()+" RequestMapping 注解中尚未加入value");
+			logger.error("RequestMapping 注解中尚未加入value");
+			//throw new Exception(this.getClass().getName()+" RequestMapping 注解中尚未加入value");
 		}
 		return mapping.value()[0];
 	}
