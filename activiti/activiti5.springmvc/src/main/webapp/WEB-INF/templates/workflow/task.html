@@ -11,7 +11,9 @@
 
 <body>
 	<div th:fragment="main-content">
-
+		<div class="btn-group">
+			<a class="btn btn-primary" th:href="@{task/add}">添加手动任务</a>
+		</div>
 		<table class="table">
 			<caption>Task列表</caption>
 			<thead>
@@ -27,7 +29,9 @@
 			<tbody>
 				<tr th:each="task : ${tasks}">
 					<td th:text="${task.id}"></td>
-					<td th:text="${task.name} + (${task.parentTaskId}!=null?'(subTask)':'')"></td>
+					<td th:text="${task.name}" th:if="${task.processInstanceId}!=null and ${task.parentTaskId}==null"/>
+					<td th:text="${task.name}+'(ManualTask)'" th:if="${task.processInstanceId}==null and ${task.parentTaskId}==null"/>
+					<td th:text="${task.name}+'(SubTask)'"    th:if="${task.processInstanceId}==null and ${task.parentTaskId}!=null"/>
 					<td th:text="${task.processInstanceId}"></td>
 					<td th:text="${task.createTime}"></td>
 					<td th:text="${task.assignee}"></td>
@@ -37,6 +41,7 @@
 					 -->
 						<a class="btn btn-warning" th:href="@{task/get-task-form/{id}(id=${task.id})}">查看</a>
 						<a th:if="${task.assignee} != null" class="btn btn-primary" th:href="@{task/get-task-form/{id}(id=${task.id})}">办理</a>
+						<a th:if="${task.processInstanceId}==null" class="btn btn-primary" th:href="@{task/delete/{id}(id=${task.id})}">删除</a>
 					</td>
 				</tr>
 			</tbody>

@@ -29,7 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import common.db.model.identity.User;
 import common.web.controller.AbstractViewController;
 import common.web.utils.SessionHelper;
-import workflow.activiti.utils.ActivitiDataType;
+import workflow.activiti.utils.ActivitiDataTypeEnum;
 import workflow.activiti.utils.ActivitiUtil;
 
 @Controller
@@ -112,28 +112,30 @@ public class TaskManageController extends AbstractViewController {
 		return "redirect:/"+getDefaultRequestMappingUrl();
 	}
 	
-	@RequestMapping(value="subtask/add/{taskId}",method=RequestMethod.GET)
-	public ModelAndView getSubTaskForm(@PathVariable("taskId") String parentTaskId) {
+//	@RequestMapping(value="subtask/add/{taskId}",method=RequestMethod.GET)
+//	public ModelAndView getSubTaskForm(@PathVariable(value="taskId",required=false) String parentTaskId) {
+	@RequestMapping(value="add",method=RequestMethod.GET)
+	public ModelAndView getSubTaskForm(@RequestParam(value="parentTaskId",required=false) String parentTaskId) {
 		ModelAndView mav = new ModelAndView("workflow/task-get-sub-task-form");
-		Task parentTask = taskService.createTaskQuery().taskId(parentTaskId).singleResult();
-		mav.addObject("parentTask", parentTask);
+		//重要：parentTaskId！=null时为sub task，否则为manual task
+		if(parentTaskId!=null) {
+			Task parentTask = taskService.createTaskQuery().taskId(parentTaskId).singleResult();
+			mav.addObject("parentTask", parentTask);
+		}		
 		return mav;
 	}
 	
-	@RequestMapping(value="subtask/delete/{taskId}",method=RequestMethod.GET)
-	public ModelAndView deleteSubTask(@PathVariable("taskId") String taskId, @RequestParam("parentTaskId") String parentTaskId) throws Exception {
-		ModelAndView mav = new ModelAndView("redirect:/"+getDefaultRequestMappingUrl()+"/get-task-form/"+parentTaskId);
-		taskService.deleteTask(taskId);
-		mav.addObject("parentTask", parentTaskId);
-		return mav;
-	}
-	
-	@RequestMapping(value="subtask/add/{taskId}",method=RequestMethod.POST)
-	public ModelAndView addSubTask(@PathVariable("taskId") String parentTaskId
+	//@RequestMapping(value="subtask/add/{taskId}",method=RequestMethod.POST)
+	//public ModelAndView addSubTask(@PathVariable("taskId") String parentTaskId
+	@RequestMapping(value="add",method=RequestMethod.POST)
+	public ModelAndView addSubTask(@RequestParam(value="parentTaskId",required=false) String parentTaskId
 			,@RequestParam("taskName") String taskName,@RequestParam(value="description",required = false) String description) throws Exception {
 		//ModelAndView mav=ActivitiUtil.getTaskForm(taskId);
 		Task newTask = taskService.newTask();//非常重要：这里创建任务时可以指定ID，不由Activiti自动生成
-		newTask.setParentTaskId(parentTaskId);
+		//重要：parentTaskId！=null时为sub task，否则为manual task
+		if(parentTaskId!=null) {
+			newTask.setParentTaskId(parentTaskId);
+		}
 		User user=(User)SessionHelper.getAuthenticatedUser();
 		newTask.setOwner(user.getUserName());//设置拥有人
 		newTask.setAssignee(user.getUserName());//设置办理人
@@ -144,8 +146,26 @@ public class TaskManageController extends AbstractViewController {
 		//newTask.setPriority(priority);
 		//newTask.setTenantId(tenantId);
 		taskService.saveTask(newTask);
-		ModelAndView mav = new ModelAndView("redirect:/"+getDefaultRequestMappingUrl()+"/get-task-form/"+parentTaskId);
+		
+		ModelAndView mav = new ModelAndView();
+		if(parentTaskId!=null) {//如果有parentTaskId，则打开parentTask的form
+			mav.setViewName("redirect:/"+getDefaultRequestMappingUrl()+"/get-task-form/"+parentTaskId);
+		}else {//进入task 列表界面
+			mav.setViewName("redirect:/"+getDefaultRequestMappingUrl());
+		}
 
+		return mav;
+	}
+	
+	@RequestMapping(value="delete/{taskId}",method=RequestMethod.GET)
+	public ModelAndView deleteSubTask(@PathVariable("taskId") String taskId, @RequestParam(value="parentTaskId",required=false) String parentTaskId) {
+		taskService.deleteTask(taskId);
+		ModelAndView mav = new ModelAndView();
+		if(parentTaskId!=null) {//如果有parentTaskId，则打开parentTask的form
+			mav.setViewName("redirect:/"+getDefaultRequestMappingUrl()+"/get-task-form/"+parentTaskId);
+		}else {//进入task 列表界面
+			mav.setViewName("redirect:/"+getDefaultRequestMappingUrl());
+		}
 		return mav;
 	}
 }

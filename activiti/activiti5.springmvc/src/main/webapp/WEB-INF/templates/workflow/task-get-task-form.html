@@ -37,7 +37,7 @@
 			
 			<div th:if="${hasFormKey}" th:utext="${formData}">
 			</div>
-			<th:block th:if="${hasFormKey} == false and ${task.parentTaskId} == null">
+			<th:block th:if="${hasFormKey} == false and ${task.processInstanceId} != null"><!-- 用processInstanceId判断属于bpmn的 task -->
 				<div class="form-group" th:each="fp : ${formData.formProperties}">
 					<label class="col-md-2  control-label" th:text="${fp.name}"></label>
 					<div class="col-sm-10" >
@@ -55,7 +55,7 @@
 					</div>
 				</div>
 			</th:block>
-			<th:block th:if="${task.parentTaskId} != null">
+			<th:block th:if="${task.processInstanceId} == null"><!-- 用processInstanceId判断subtask 和 manual task -->
 				<div class="form-group" >
 					<label class="col-md-2  control-label">任务名称</label>
 					<div class="col-sm-10" >
@@ -83,12 +83,25 @@
 				</div>
 			</div>
 		</form>
-		<i class= "glyphicon glyphicon-plus"></i><a th:href="@{../subtask/add/{id}(id=${task.id})}">添加子任务</a>
+		<a class="btn btn-primary" th:href="@{../add(parentTaskId=${task.id})}"><i class="glyphicon glyphicon-plus"></i>添加子任务</a>
 		<ul>
 			<li th:each="task : ${subTasks}">
-				<div style="display:inline-block"><i class="glyphicon glyphicon-ok"></i><span th:text="${task.name}+(${task.endTime} ? ' | (已完成)'+${task.endTime}:'')"></span></div>
-				
-				<a th:href="@{../subtask/delete/{taskId}(taskId=${task.id},parentTaskId=${task.parentTaskId})}" th:if="${task.endTime} == null">删除</a>
+				<th:block th:switch="${task.deleteReason}">
+					<div th:case="'completed'" style="display:inline-block">
+						<i class="glyphicon glyphicon-ok"></i>	
+							<span  th:text="${task.name}+'(已完成)'+${task.endTime}"></span>
+					</div>
+					<div th:case="'deleted'" style="display:inline-block">
+						<i class="glyphicon glyphicon-remove"></i>	
+							<span  th:text="${task.name}+'(已删除)'+${task.endTime}"></span>
+							<span th:case="*" th:text="${task.name}"></span>
+					</div>
+					<div th:case="*" style="display:inline-block">
+						<span th:text="${task.name}"></span>
+						<a th:href="@{../delete/{taskId}(taskId=${task.id},parentTaskId=${task.parentTaskId})}" th:if="${task.endTime} == null">删除</a>
+					</div>
+					
+				</th:block>
 			</li>
 		</ul>
 		<div class="btn-group">

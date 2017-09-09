@@ -158,14 +158,16 @@ public class ActivitiUtil {
 		}
 		mav.addObject("taskNames", taskNames);//方便获取comment是在哪个task提交
 		
-		if (task.getParentTaskId()!=null) {
-			HistoricTaskInstance parentTask = historyService.createHistoricTaskInstanceQuery().taskId(task.getParentTaskId()).singleResult();
-			mav.addObject("parentTask", parentTask);
+		if (task.getParentTaskId()!=null || task.getProcessInstanceId()==null) {//subtask和manual task需要分别的条件去判断
+			if (task.getParentTaskId()!=null ) {//subtask
+				HistoricTaskInstance parentTask = historyService.createHistoricTaskInstanceQuery().taskId(task.getParentTaskId()).singleResult();
+				mav.addObject("parentTask", parentTask);
+			}			
 			//subtask没有流程实例，所以其comment需要通过TASK类型获取
-			mav.addObject("comments", ActivitiUtil.getComments(ActivitiDataType.TASK, taskId, null));
+			mav.addObject("comments", ActivitiUtil.getComments(ActivitiDataTypeEnum.TASK, taskId, null));
 		}else {
 			//普通task的comment可以直接通过PROCESSINSTANCE获取
-			mav.addObject("comments", ActivitiUtil.getComments(ActivitiDataType.PROCESSINSTANCE, processInstanceId, null));
+			mav.addObject("comments", ActivitiUtil.getComments(ActivitiDataTypeEnum.PROCESSINSTANCE, processInstanceId, null));
 		}
 		mav.addObject("subTasks",subTasks);
 
@@ -237,7 +239,7 @@ public class ActivitiUtil {
 	 * @param type
 	 * @return
 	 */
-	public static List<Comment> getComments(ActivitiDataType dataType,String id,String type){
+	public static List<Comment> getComments(ActivitiDataTypeEnum dataType,String id,String type){
 		TaskService taskService = SpringContextHolder.getBean(TaskService.class);
 		List<Comment> ret = null;
 		switch(dataType) {
@@ -272,7 +274,7 @@ public class ActivitiUtil {
 	 * @param id
 	 * @return
 	 */
-	public static List<Attachment> getAttachments(ActivitiDataType dataType,String id){
+	public static List<Attachment> getAttachments(ActivitiDataTypeEnum dataType,String id){
 		TaskService taskService = SpringContextHolder.getBean(TaskService.class);
 		List<Attachment> ret = null;
 		switch(dataType) {

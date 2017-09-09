@@ -11,9 +11,10 @@
 
 <body>
 	<div th:fragment="main-content">
-		
+		<!-- th:action="@{{id}(id=${parentTask.id})}" method="post"> -->
 		<form class="form-horizontal" role="form"
-			th:action="@{{id}(id=${parentTask.id})}" method="post">
+			th:action="@{add}" method="post">
+			<input type="hidden" name="parentTaskId" th:if="${parentTask}" th:value="${parentTask.id}" />	
 			<div class="form-group" >
 				<label class="col-md-2  control-label" >任务名称</label>
 				<div class="col-sm-10" >

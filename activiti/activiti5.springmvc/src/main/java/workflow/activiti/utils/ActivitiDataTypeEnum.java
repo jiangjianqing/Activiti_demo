@@ -11,15 +11,19 @@ import common.db.base.AbstractEnum;
  * @author jjq
  *
  */
-public enum ActivitiDataType implements AbstractEnum<String> {
+public enum ActivitiDataTypeEnum implements AbstractEnum<String> {
 	// 这里的("xxx")其实就是下面构造函数的参数传入 StatusEnum(String code)
 	// 再配合toString() ,最终实现了类似C++中的enum赋值效果
 
-	PROCESSINSTANCE("ProcessInstance", "流程实例"), TASK("task", "任务");
+	//HistoricTaskInstance 的 deleteReason 标记了任务是为什么关闭:deleted\completed ,还是其他
+	PROCESSINSTANCE("ProcessInstance", "流程实例"), TASK("Task", "任务")
+	,COMPLETED("completed", "任务已完成")
+	,DELETED("deleted", "任务已删除")
+	;
 
 	// 重要：code必须要么设置=null，要么设置为unique string，即使空字符串也可以
 
-	private ActivitiDataType(String code, String description) {
+	private ActivitiDataTypeEnum(String code, String description) {
 			this.code = code;
 			this.description = description;
 		}
@@ -49,8 +53,8 @@ public enum ActivitiDataType implements AbstractEnum<String> {
 	}
 
 	// 子类必须实现代码解析的静态方法
-	public static ActivitiDataType parseCode(String code) {
-		for (ActivitiDataType s : ActivitiDataType.values()) {
+	public static ActivitiDataTypeEnum parseCode(String code) {
+		for (ActivitiDataTypeEnum s : ActivitiDataTypeEnum.values()) {
 			if (s.getCode().equalsIgnoreCase(code))
 				return s;
 		}
@@ -60,7 +64,7 @@ public enum ActivitiDataType implements AbstractEnum<String> {
 	// 子类必须实现取列表的静态方法
 	public static Map<String, String> getCodeAndDescriptions() {
 		Map<String, String> ret = new HashMap<String, String>();
-		for (ActivitiDataType s : ActivitiDataType.values()) {
+		for (ActivitiDataTypeEnum s : ActivitiDataTypeEnum.values()) {
 			ret.put(s.getCode(), s.getDescription());
 		}
 
