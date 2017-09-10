@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.activiti.engine.TaskService;
+import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
@@ -15,6 +16,7 @@ import common.security.AuthenticationUser;
 import common.service.utils.AbstractHelperClass;
 import common.web.controller.AbstractViewController;
 import common.web.utils.SessionHelper;
+import workflow.activiti.utils.ActivitiUtil;
 
 /**
  * 处理所有视图controller异常
@@ -72,6 +74,16 @@ public class WorkflowAdvice extends AbstractHelperClass {
 		
 
     }
+  	
+  	@ModelAttribute("executions")
+  	public List<Execution> addExecutions() {  
+  		AuthenticationUser user=(AuthenticationUser)SessionHelper.getAuthenticatedUser();
+  		if(user!=null) {
+  			return ActivitiUtil.getExecutionListByUserId(user.getUserName());
+  		}else {
+  			return null;
+  		}
+  	}
 
 }
 
