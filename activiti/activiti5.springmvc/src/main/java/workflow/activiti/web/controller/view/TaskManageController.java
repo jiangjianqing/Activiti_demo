@@ -129,7 +129,11 @@ public class TaskManageController extends AbstractViewController {
 	//public ModelAndView addSubTask(@PathVariable("taskId") String parentTaskId
 	@RequestMapping(value="add",method=RequestMethod.POST)
 	public ModelAndView addSubTask(@RequestParam(value="parentTaskId",required=false) String parentTaskId
-			,@RequestParam("taskName") String taskName,@RequestParam(value="description",required = false) String description) throws Exception {
+			,@RequestParam("taskName") String taskName
+			,@RequestParam(value="description",required = false) String description
+			,@RequestParam(value="priority") Integer priority
+			,@RequestParam(value="dueDate",required = false) Date dueDate
+			) throws Exception {
 		//ModelAndView mav=ActivitiUtil.getTaskForm(taskId);
 		Task newTask = taskService.newTask();//非常重要：这里创建任务时可以指定ID，不由Activiti自动生成
 		//重要：parentTaskId！=null时为sub task，否则为manual task
@@ -141,9 +145,9 @@ public class TaskManageController extends AbstractViewController {
 		newTask.setAssignee(user.getUserName());//设置办理人
 		newTask.setName(taskName);//设置任务名称
 		newTask.setDescription(description);
-		newTask.setDueDate(new Date());
+		newTask.setDueDate(dueDate);
 		//newTask.setFormKey(formKey);
-		//newTask.setPriority(priority);
+		newTask.setPriority(priority);
 		//newTask.setTenantId(tenantId);
 		taskService.saveTask(newTask);
 		

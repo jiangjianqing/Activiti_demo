@@ -5,7 +5,7 @@
 	<!--2017.08.23 使用th:include后 可以完全废弃 layout:decorate="~{fragments/dialect-layout}"  -->
 <!--上述为 layout文件路径-->
 <head >
-	<title>index</title>
+	<title>创建任务</title>
 
 </head>
 
@@ -26,6 +26,26 @@
 				<label class="col-md-2  control-label" >任务描述</label>
 				<div class="col-sm-10" >
 					<input name="description" class="form-control" type="text" />			 
+				</div>
+			</div>
+			
+			<div class="form-group" >
+				<label class="col-md-2  control-label" >优先级</label>
+				<div class="col-sm-10" >
+					<select name="priority" class="form-control">
+						<option value="10" th:text="'低'"/>
+						<option value="30"  th:text="'较低'"/>
+						<option value="50" selected th:text="'一般'"/>
+						<option value="70" th:text="'较高'"/>
+						<option value="90" th:text="'高'"/>
+					</select>		 
+				</div>
+			</div>
+			
+			<div class="form-group" >
+				<label class="col-md-2  control-label" >到期日</label>
+				<div class="col-sm-10" >
+					<input name="dueDate" class="form-control" type="text" />			 
 				</div>
 			</div>
 			
